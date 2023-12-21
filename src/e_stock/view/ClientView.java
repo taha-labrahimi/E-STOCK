@@ -16,6 +16,7 @@ public class ClientView extends javax.swing.JFrame {
     public ClientView() {
         initComponents();
         setResizable(false);
+        setLocationRelativeTo(null);
        
         
     }
