@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS clients (
+    clientCode VARCHAR(10) PRIMARY KEY,
+    firstName VARCHAR(100),
+    lastName VARCHAR(100),
+    address VARCHAR(255),
+    city VARCHAR(100),
+    country VARCHAR(100),
+    phoneNumber VARCHAR(20)
+);
+
