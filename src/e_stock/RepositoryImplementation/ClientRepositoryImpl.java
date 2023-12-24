@@ -28,7 +28,6 @@ public class ClientRepositoryImpl implements ClientRepository {
 
             if (rs.next()) {
                 return new Client(
-                    rs.getString("clientCode"),
                     rs.getString("firstName"),
                     rs.getString("lastName"),
                     rs.getString("address"),
@@ -55,7 +54,7 @@ public class ClientRepositoryImpl implements ClientRepository {
             
             while (rs.next()) {
                 clients.add(new Client(
-                    rs.getString("clientCode"),
+                    rs.getInt("clientCode"),
                     rs.getString("firstName"),
                     rs.getString("lastName"),
                     rs.getString("address"),
@@ -74,18 +73,15 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public void save(Client client) {
-        String sql = "INSERT INTO clients (clientCode, firstName, lastName, address, city, country, phoneNumber) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO clients (firstName, lastName, address, city, country, phoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, client.getClientCode());
-            pstmt.setString(2, client.getFirstName());
-            pstmt.setString(3, client.getLastName());
-            pstmt.setString(4, client.getAddress());
-            pstmt.setString(5, client.getCity());
-            pstmt.setString(6, client.getCountry());
-            pstmt.setString(7, client.getPhoneNumber());
-
+            pstmt.setString(1, client.getFirstName());
+            pstmt.setString(2, client.getLastName());
+            pstmt.setString(3, client.getAddress());
+            pstmt.setString(4, client.getCity());
+            pstmt.setString(5, client.getCountry());
+            pstmt.setString(6, client.getPhoneNumber());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(); 
@@ -106,7 +102,6 @@ public class ClientRepositoryImpl implements ClientRepository {
             pstmt.setString(4, client.getCity());
             pstmt.setString(5, client.getCountry());
             pstmt.setString(6, client.getPhoneNumber());
-            pstmt.setString(7, client.getClientCode());
 
             pstmt.executeUpdate();
         } catch (SQLException ex) {

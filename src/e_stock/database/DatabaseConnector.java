@@ -10,7 +10,7 @@ public class DatabaseConnector {
     public Connection getConnection() throws ClassNotFoundException {
         try {
             // Load MySQL JDBC Driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            //Class.forName("com.mysql.cj.jdbc.Driver");
             // Create connection URL for MySQL
             String url = "jdbc:mysql://localhost:3306/gestiondestock?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
             String user = "admin"; 

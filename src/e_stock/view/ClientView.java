@@ -9,18 +9,19 @@ import javax.swing.table.DefaultTableModel;
 
 public class ClientView extends javax.swing.JFrame {
     private ClientRepositoryImpl clientRepository;
+    private AddClientView addClientView;
     public ClientView() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null); 
-        
          // Initialize the database connection and repository
-        DatabaseConnector dbConnector = new DatabaseConnector(); // Make sure to properly handle database credentials
+        DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepository = new ClientRepositoryImpl(dbConnector);
         loadClientsAndPopulateTable();
+        
     }
     
-    private void loadClientsAndPopulateTable() {
+    protected void loadClientsAndPopulateTable() {
     List<Client> clients = clientRepository.findAll();
     DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
     System.out.println("Number of clients loaded: " + clients.size()); // For debugging
@@ -173,7 +174,11 @@ public class ClientView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addclientActionPerformed
-        // TODO add your handling code here:
+         if (addClientView == null) {
+        addClientView = new AddClientView(); // Lazy initialization
+    }
+        this.setVisible(false);
+        addClientView.setVisible(true);
     }//GEN-LAST:event_addclientActionPerformed
 
     /**
