@@ -11,13 +11,10 @@ public class DatabaseConnector {
         try {
             // Load MySQL JDBC Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-            
             // Create connection URL for MySQL
-            // Note: Change "mydatabase" to your actual database name, and adjust the user and password
             String url = "jdbc:mysql://localhost:3306/gestiondestock?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-            String user = "admin"; // or your MySQL username
-            String password = "admin"; // or your MySQL password
-
+            String user = "admin"; 
+            String password = "admin"; 
             // Establish connection to MySQL
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException ex) {
