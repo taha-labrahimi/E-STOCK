@@ -1,7 +1,7 @@
 package e_stock.Model;
 
 public class Client {
-    private String clientCode;
+    private Integer clientCode;
     private String firstName;
     private String lastName;
     private String address;
@@ -9,8 +9,16 @@ public class Client {
     private String country;
     private String phoneNumber;
 
-    public Client(String clientCode, String firstName, String lastName, String address, String city, String country, String phoneNumber) {
-        this.clientCode = clientCode;
+    public Client(String firstName, String lastName, String address, String city, String country, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.phoneNumber = phoneNumber;
+    }
+    public Client(Integer clientcode,String firstName, String lastName, String address, String city, String country, String phoneNumber) {
+        this.clientCode = clientcode;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -20,11 +28,11 @@ public class Client {
     }
 
     // Getters and setters for clientCode
-    public String getClientCode() {
+    public Integer getClientCode() {
         return clientCode;
     }
 
-    public void setClientCode(String clientCode) {
+    public void setClientCode(Integer clientCode) {
         this.clientCode = clientCode;
     }
 
