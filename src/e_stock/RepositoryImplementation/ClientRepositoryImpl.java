@@ -17,13 +17,12 @@ public class ClientRepositoryImpl implements ClientRepository {
         this.dbConnector = dbConnector;
     }
 
-    @Override
-    public Client findById(String clientCode) {
+    public Client findById(int clientCode) {
         String sql = "SELECT * FROM clients WHERE clientCode = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, clientCode);
+            pstmt.setInt(1, clientCode);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
