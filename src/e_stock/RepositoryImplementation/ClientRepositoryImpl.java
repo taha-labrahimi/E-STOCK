@@ -112,13 +112,12 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
     }
 
-    @Override
-    public void delete(String clientCode) {
+    public void delete(int clientCode) {
         String sql = "DELETE FROM clients WHERE clientCode = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, clientCode);
+            pstmt.setInt(1, clientCode);
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
