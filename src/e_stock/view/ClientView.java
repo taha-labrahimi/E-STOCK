@@ -217,6 +217,8 @@ public class ClientView extends javax.swing.JFrame {
             int deletedclientcode = Integer.parseInt(tableclient.getValueAt(selectedRowIndex, 0).toString());
             clientRepository.delete(deletedclientcode);
             JOptionPane.showMessageDialog(this, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+            
             this.loadClientsAndPopulateTable();
         }
         else {
