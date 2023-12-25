@@ -8,5 +8,5 @@ public interface ClientRepository {
     List<Client> findAll();
     void save(Client client);
     void update(Client client);
-    void delete(String clientCode);
+    void delete(int clientCode);
 }

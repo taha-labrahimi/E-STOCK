@@ -17,6 +17,7 @@ public class ClientView extends javax.swing.JFrame {
          // Initialize the database connection and repository
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepository = new ClientRepositoryImpl(dbConnector);
+        System.out.println("e_stock.view.ClientView.<init>()");
         loadClientsAndPopulateTable();
         
     }
@@ -100,6 +101,11 @@ public class ClientView extends javax.swing.JFrame {
         deleteclient.setBorder(null);
         deleteclient.setContentAreaFilled(false);
         deleteclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        deleteclient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteclientActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel1.setText("CLIENTS");
@@ -205,6 +211,21 @@ public class ClientView extends javax.swing.JFrame {
        JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_modifyclientActionPerformed
+
+    private void deleteclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteclientActionPerformed
+        int selectedRowIndex = tableclient.getSelectedRow();
+        if (selectedRowIndex != -1) {
+            int deletedclientcode = Integer.parseInt(tableclient.getValueAt(selectedRowIndex, 0).toString());
+            clientRepository.delete(deletedclientcode);
+            JOptionPane.showMessageDialog(this, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+            
+            this.loadClientsAndPopulateTable();
+        }
+        else {
+       JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_deleteclientActionPerformed
 
     /**
      * @param args the command line arguments
