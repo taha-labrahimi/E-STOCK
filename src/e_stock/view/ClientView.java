@@ -1,15 +1,18 @@
 package e_stock.view;
 
+import com.mysql.cj.protocol.Message;
 import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class ClientView extends javax.swing.JFrame {
     private ClientRepositoryImpl clientRepository;
     private AddClientView addClientView;
+    private ModifyClientView modifyClientView;
     public ClientView() {
         initComponents();
         setResizable(false);
@@ -23,7 +26,7 @@ public class ClientView extends javax.swing.JFrame {
     
     protected void loadClientsAndPopulateTable() {
     List<Client> clients = clientRepository.findAll();
-    DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+    DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
     System.out.println("Number of clients loaded: " + clients.size()); // For debugging
     String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
     tableModel.setColumnIdentifiers(columnNames);
@@ -51,7 +54,7 @@ public class ClientView extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableclient = new javax.swing.JTable();
         addclient = new javax.swing.JButton();
         modifyclient = new javax.swing.JButton();
         deleteclient = new javax.swing.JButton();
@@ -63,7 +66,7 @@ public class ClientView extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableclient.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -74,7 +77,7 @@ public class ClientView extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableclient);
 
         addclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsadd30.png"))); // NOI18N
         addclient.setBorder(null);
@@ -90,6 +93,11 @@ public class ClientView extends javax.swing.JFrame {
         modifyclient.setBorder(null);
         modifyclient.setContentAreaFilled(false);
         modifyclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyclient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyclientActionPerformed(evt);
+            }
+        });
 
         deleteclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsdelete30.png"))); // NOI18N
         deleteclient.setBorder(null);
@@ -175,11 +183,31 @@ public class ClientView extends javax.swing.JFrame {
 
     private void addclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addclientActionPerformed
          if (addClientView == null) {
-        addClientView = new AddClientView(); // Lazy initialization
+        addClientView = new AddClientView(); 
     }
         this.setVisible(false);
         addClientView.setVisible(true);
     }//GEN-LAST:event_addclientActionPerformed
+
+    private void modifyclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyclientActionPerformed
+        int selectedRowIndex = tableclient.getSelectedRow();
+    if (selectedRowIndex != -1) {
+        if (modifyClientView == null) {
+            modifyClientView = new ModifyClientView();
+        }
+        modifyClientView.setClientcode(tableclient.getValueAt(selectedRowIndex, 0).toString());
+        modifyClientView.setFirstname(tableclient.getValueAt(selectedRowIndex, 1).toString());
+        modifyClientView.setLastname(tableclient.getValueAt(selectedRowIndex, 2).toString());
+        modifyClientView.setAdresse(tableclient.getValueAt(selectedRowIndex, 3).toString());
+        modifyClientView.setCity(tableclient.getValueAt(selectedRowIndex, 4).toString());
+        modifyClientView.setCountry(tableclient.getValueAt(selectedRowIndex, 5).toString());
+        modifyClientView.setPhonenumber(tableclient.getValueAt(selectedRowIndex, 6).toString());
+        this.setVisible(false);
+        modifyClientView.setVisible(true);
+    } else {
+       JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_modifyclientActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,8 +252,8 @@ public class ClientView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton modifyclient;
+    private javax.swing.JTable tableclient;
     // End of variables declaration//GEN-END:variables
 }
