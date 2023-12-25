@@ -4,6 +4,7 @@ import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class AddClientView extends javax.swing.JFrame {
 
@@ -19,6 +20,53 @@ public class AddClientView extends javax.swing.JFrame {
         clientRepository = new ClientRepositoryImpl(dbConnector);
     }
 
+    public JTextField getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse.setText(adresse);
+    }
+
+    public JTextField getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city.setText(city);
+    }
+
+    public JTextField getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country.setText(country);
+    }
+
+    public JTextField getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname.setText(firstname);
+    }
+
+    public JTextField getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname.setText(lastname);
+    }
+
+    public JTextField getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber.setText(phonenumber);
+    } 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

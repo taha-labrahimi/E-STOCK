@@ -102,6 +102,7 @@ public class ClientRepositoryImpl implements ClientRepository {
             pstmt.setString(4, client.getCity());
             pstmt.setString(5, client.getCountry());
             pstmt.setString(6, client.getPhoneNumber());
+            pstmt.setInt(7, client.getClientCode());
 
             pstmt.executeUpdate();
         } catch (SQLException ex) {
