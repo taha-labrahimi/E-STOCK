@@ -31,7 +31,6 @@ public class ClientView extends javax.swing.JFrame {
     tableModel.setRowCount(0); // Clear the table before loading new data
     
     for (Client client : clients) {
-        System.out.println("Adding client to table: " + client); // For debugging
         tableModel.addRow(new Object[]{
             client.getClientCode(), 
             client.getFirstName(), 
@@ -56,8 +55,8 @@ public class ClientView extends javax.swing.JFrame {
         modifyclient = new javax.swing.JButton();
         deleteclient = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        searchtextfield = new javax.swing.JTextField();
+        searchbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,14 +108,24 @@ public class ClientView extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel1.setText("CLIENTS");
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchtextfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        searchtextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchtextfieldActionPerformed(evt);
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconssearch.png"))); // NOI18N
+        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconssearch.png"))); // NOI18N
+        searchbtn.setToolTipText("");
+        searchbtn.setBorder(null);
+        searchbtn.setBorderPainted(false);
+        searchbtn.setContentAreaFilled(false);
+        searchbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        searchbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,9 +138,9 @@ public class ClientView extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addclient)
@@ -148,9 +157,9 @@ public class ClientView extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(searchbtn)
+                    .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -179,9 +188,9 @@ public class ClientView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void searchtextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchtextfieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_searchtextfieldActionPerformed
 
     private void addclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addclientActionPerformed
          if (addClientView == null) {
@@ -226,6 +235,22 @@ public class ClientView extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_deleteclientActionPerformed
 
+    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
+        try {
+             int clientCode = Integer.parseInt(searchtextfield.getText());
+            Client client = clientRepository.findById(clientCode);
+            if(client !=null)
+            {
+                
+            }
+            
+        } catch (NumberFormatException e) {
+        }
+    
+       
+            
+    }//GEN-LAST:event_searchbtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -266,11 +291,11 @@ public class ClientView extends javax.swing.JFrame {
     private javax.swing.JButton addclient;
     private javax.swing.JButton deleteclient;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton modifyclient;
+    private javax.swing.JButton searchbtn;
+    private javax.swing.JTextField searchtextfield;
     private javax.swing.JTable tableclient;
     // End of variables declaration//GEN-END:variables
 }
