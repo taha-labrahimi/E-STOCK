@@ -14,6 +14,7 @@ public class ClientView extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null); 
+        System.out.println("taha taha");
          // Initialize the database connection and repository
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepository = new ClientRepositoryImpl(dbConnector);
