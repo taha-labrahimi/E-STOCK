@@ -250,24 +250,22 @@ public class ModifyClientView extends javax.swing.JFrame {
 
     private void modifyclientbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyclientbtnActionPerformed
     try {
-            Client client = new Client(Integer.parseInt(clientcode.getText()),firstname.getText(), lastname.getText(), adresse.getText(), city.getText(), country.getText(), phonenumber.getText());
-            clientRepository.update(client);
-            // Provide feedback
-            JOptionPane.showMessageDialog(this, "Client modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        int clientCode = Integer.parseInt(clientcode.getText());
+        Client client = new Client(clientCode, firstname.getText(), lastname.getText(), adresse.getText(), city.getText(), country.getText(), phonenumber.getText());
+        clientRepository.update(client);
+        JOptionPane.showMessageDialog(this, "Client modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            if (clientView != null) {
-                clientView.loadClientsAndPopulateTable();
-            }
-            this.setVisible(false);
-            if (clientView != null) {
-                clientView.setVisible(true);
-            }
-        } catch (Exception e) {
-            // Handle exception and provide feedback
-            JOptionPane.showMessageDialog(this, "Error of udpate client: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        if (clientView != null) {
+            clientView.loadClientsAndPopulateTable();
+            clientView.setVisible(true);
         }
-
+        this.setVisible(false);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Client code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error updating client: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_modifyclientbtnActionPerformed
 
     /**
