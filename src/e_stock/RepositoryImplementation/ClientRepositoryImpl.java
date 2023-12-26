@@ -19,28 +19,30 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     public Client findById(int clientCode) {
         String sql = "SELECT * FROM clients WHERE clientCode = ?";
-        try (Connection conn = dbConnector.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, clientCode);
-            ResultSet rs = pstmt.executeQuery();
+    try (Connection conn = dbConnector.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setInt(1, clientCode);
+        ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                return new Client(
-                    rs.getString("firstName"),
-                    rs.getString("lastName"),
-                    rs.getString("address"),
-                    rs.getString("city"),
-                    rs.getString("country"),
-                    rs.getString("phoneNumber")
-                );
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        if (rs.next()) {
+            Client client = new Client(
+                rs.getInt("clientCode"),
+                rs.getString("firstName"),
+                rs.getString("lastName"),
+                rs.getString("address"),
+                rs.getString("city"),
+                rs.getString("country"),
+                rs.getString("phoneNumber")
+            );
+            return client;
         }
-        return null;
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return null;
     }
 
     @Override

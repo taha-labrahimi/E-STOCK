@@ -24,7 +24,6 @@ public class ClientView extends javax.swing.JFrame {
     protected void loadClientsAndPopulateTable() {
     List<Client> clients = clientRepository.findAll();
     DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-    System.out.println("Number of clients loaded: " + clients.size()); // For debugging
     String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
     tableModel.setColumnIdentifiers(columnNames);
 
@@ -236,19 +235,34 @@ public class ClientView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteclientActionPerformed
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        try {
-             int clientCode = Integer.parseInt(searchtextfield.getText());
-            Client client = clientRepository.findById(clientCode);
-            if(client !=null)
-            {
-                
-            }
-            
-        } catch (NumberFormatException e) {
+         if (searchtextfield.getText().trim().isEmpty()) {
+        loadClientsAndPopulateTable();
+        return;
+    }
+
+    try {
+        int clientCode = Integer.parseInt(searchtextfield.getText().trim());
+        Client client = clientRepository.findById(clientCode);
+        if (client != null) {
+            DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
+            String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+            tableModel.setColumnIdentifiers(columnNames);
+            tableModel.setRowCount(0);
+            tableModel.addRow(new Object[]{
+                String.valueOf(client.getClientCode()),
+                client.getFirstName(),
+                client.getLastName(),
+                client.getAddress(),
+                client.getCity(),
+                client.getCountry(),
+                client.getPhoneNumber()
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
         }
-    
-       
-            
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
+    }     
     }//GEN-LAST:event_searchbtnActionPerformed
 
     /**

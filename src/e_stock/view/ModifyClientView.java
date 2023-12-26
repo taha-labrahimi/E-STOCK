@@ -254,7 +254,6 @@ public class ModifyClientView extends javax.swing.JFrame {
         Client client = new Client(clientCode, firstname.getText(), lastname.getText(), adresse.getText(), city.getText(), country.getText(), phonenumber.getText());
         clientRepository.update(client);
         JOptionPane.showMessageDialog(this, "Client modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
         if (clientView != null) {
             clientView.loadClientsAndPopulateTable();
             clientView.setVisible(true);
