@@ -1,48 +1,57 @@
 package e_stock.view;
+
 import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class ClientView extends javax.swing.JFrame {
+
     private ClientRepositoryImpl clientRepository;
     private AddClientView addClientView;
     private ModifyClientView modifyClientView;
+
     public ClientView() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null); 
-         // Initialize the database connection and repository
+        setLocationRelativeTo(null);
+        // Initialize the database connection and repository
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepository = new ClientRepositoryImpl(dbConnector);
         loadClientsAndPopulateTable();
-        
+
     }
-    
+
     protected void loadClientsAndPopulateTable() {
-    List<Client> clients = clientRepository.findAll();
-    DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-    String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
-    tableModel.setColumnIdentifiers(columnNames);
+        List<Client> clients = clientRepository.findAll();
+        DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
+        String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+        tableModel.setColumnIdentifiers(columnNames);
 
-    tableModel.setRowCount(0); // Clear the table before loading new data
-    
-    for (Client client : clients) {
-        tableModel.addRow(new Object[]{
-            client.getClientCode(), 
-            client.getFirstName(), 
-            client.getLastName(),
-            client.getAddress(),
-            client.getCity(),
-            client.getCountry(),
-            client.getPhoneNumber()
-        });
+        tableModel.setRowCount(0); // Clear the table before loading new data
+
+        for (Client client : clients) {
+            tableModel.addRow(new Object[]{
+                client.getClientCode(),
+                client.getFirstName(),
+                client.getLastName(),
+                client.getAddress(),
+                client.getCity(),
+                client.getCountry(),
+                client.getPhoneNumber()
+            });
+        }
     }
-}
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -56,6 +65,7 @@ public class ClientView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         searchtextfield = new javax.swing.JTextField();
         searchbtn = new javax.swing.JButton();
+        printbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,6 +136,16 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsprint30.png"))); // NOI18N
+        printbtn.setBorder(null);
+        printbtn.setContentAreaFilled(false);
+        printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        printbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printbtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -144,7 +164,8 @@ public class ClientView extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addclient)
                             .addComponent(modifyclient)
-                            .addComponent(deleteclient)))
+                            .addComponent(deleteclient)
+                            .addComponent(printbtn)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(484, 484, 484)
                         .addComponent(jLabel1)))
@@ -169,7 +190,9 @@ public class ClientView extends javax.swing.JFrame {
                         .addGap(39, 39, 39)
                         .addComponent(modifyclient)
                         .addGap(45, 45, 45)
-                        .addComponent(deleteclient)))
+                        .addComponent(deleteclient)
+                        .addGap(35, 35, 35)
+                        .addComponent(printbtn)))
                 .addGap(39, 39, 39))
         );
 
@@ -192,31 +215,31 @@ public class ClientView extends javax.swing.JFrame {
     }//GEN-LAST:event_searchtextfieldActionPerformed
 
     private void addclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addclientActionPerformed
-         if (addClientView == null) {
-        addClientView = new AddClientView(); 
-    }
+        if (addClientView == null) {
+            addClientView = new AddClientView();
+        }
         this.setVisible(false);
         addClientView.setVisible(true);
     }//GEN-LAST:event_addclientActionPerformed
 
     private void modifyclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyclientActionPerformed
         int selectedRowIndex = tableclient.getSelectedRow();
-    if (selectedRowIndex != -1) {
-        if (modifyClientView == null) {
-            modifyClientView = new ModifyClientView();
+        if (selectedRowIndex != -1) {
+            if (modifyClientView == null) {
+                modifyClientView = new ModifyClientView();
+            }
+            modifyClientView.setClientcode(tableclient.getValueAt(selectedRowIndex, 0).toString());
+            modifyClientView.setFirstname(tableclient.getValueAt(selectedRowIndex, 1).toString());
+            modifyClientView.setLastname(tableclient.getValueAt(selectedRowIndex, 2).toString());
+            modifyClientView.setAdresse(tableclient.getValueAt(selectedRowIndex, 3).toString());
+            modifyClientView.setCity(tableclient.getValueAt(selectedRowIndex, 4).toString());
+            modifyClientView.setCountry(tableclient.getValueAt(selectedRowIndex, 5).toString());
+            modifyClientView.setPhonenumber(tableclient.getValueAt(selectedRowIndex, 6).toString());
+            this.setVisible(false);
+            modifyClientView.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        modifyClientView.setClientcode(tableclient.getValueAt(selectedRowIndex, 0).toString());
-        modifyClientView.setFirstname(tableclient.getValueAt(selectedRowIndex, 1).toString());
-        modifyClientView.setLastname(tableclient.getValueAt(selectedRowIndex, 2).toString());
-        modifyClientView.setAdresse(tableclient.getValueAt(selectedRowIndex, 3).toString());
-        modifyClientView.setCity(tableclient.getValueAt(selectedRowIndex, 4).toString());
-        modifyClientView.setCountry(tableclient.getValueAt(selectedRowIndex, 5).toString());
-        modifyClientView.setPhonenumber(tableclient.getValueAt(selectedRowIndex, 6).toString());
-        this.setVisible(false);
-        modifyClientView.setVisible(true);
-    } else {
-       JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_modifyclientActionPerformed
 
     private void deleteclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteclientActionPerformed
@@ -225,50 +248,87 @@ public class ClientView extends javax.swing.JFrame {
             int deletedclientcode = Integer.parseInt(tableclient.getValueAt(selectedRowIndex, 0).toString());
             clientRepository.delete(deletedclientcode);
             JOptionPane.showMessageDialog(this, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-            
+
             this.loadClientsAndPopulateTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        else {
-       JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_deleteclientActionPerformed
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-         if (searchtextfield.getText().trim().isEmpty()) {
-        loadClientsAndPopulateTable();
-        return;
-    }
-
-    try {
-        int clientCode = Integer.parseInt(searchtextfield.getText().trim());
-        Client client = clientRepository.findById(clientCode);
-        if (client != null) {
-            DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-            String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
-            tableModel.setColumnIdentifiers(columnNames);
-            tableModel.setRowCount(0);
-            tableModel.addRow(new Object[]{
-                String.valueOf(client.getClientCode()),
-                client.getFirstName(),
-                client.getLastName(),
-                client.getAddress(),
-                client.getCity(),
-                client.getCountry(),
-                client.getPhoneNumber()
-            });
-        } else {
-            JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+        if (searchtextfield.getText().trim().isEmpty()) {
+            loadClientsAndPopulateTable();
+            return;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
-    }     
+
+        try {
+            int clientCode = Integer.parseInt(searchtextfield.getText().trim());
+            Client client = clientRepository.findById(clientCode);
+            if (client != null) {
+                DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
+                String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+                tableModel.setColumnIdentifiers(columnNames);
+                tableModel.setRowCount(0);
+                tableModel.addRow(new Object[]{
+                    String.valueOf(client.getClientCode()),
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getAddress(),
+                    client.getCity(),
+                    client.getCountry(),
+                    client.getPhoneNumber()
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_searchbtnActionPerformed
+
+    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
+        printTable();
+    }//GEN-LAST:event_printbtnActionPerformed
+    private void printTable() {
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setJobName("Print Data");
+
+        job.setPrintable(new Printable() {
+            public int print(Graphics pg, PageFormat pf, int pageNum) {
+                if (pageNum > 0) {
+                    return Printable.NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2 = (Graphics2D) pg;
+                g2.translate(pf.getImageableX(), pf.getImageableY());
+                g2.scale(0.6, 0.6); // Adjust the scaling if needed
+
+                // Print the table header
+                JTableHeader header = tableclient.getTableHeader();
+                g2.translate(0, 0);
+                header.print(g2);
+
+                // Print the table. The table is translated below the header.
+                g2.translate(0, header.getHeight());
+                tableclient.print(g2);
+
+                return Printable.PAGE_EXISTS;
+            }
+        });
+
+        boolean doPrint = job.printDialog();
+        if (doPrint) {
+            try {
+                job.print();
+            } catch (PrinterException e) {
+                // Handle the printer exceptions
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
      */
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -308,6 +368,7 @@ public class ClientView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modifyclient;
+    private javax.swing.JButton printbtn;
     private javax.swing.JButton searchbtn;
     private javax.swing.JTextField searchtextfield;
     private javax.swing.JTable tableclient;
