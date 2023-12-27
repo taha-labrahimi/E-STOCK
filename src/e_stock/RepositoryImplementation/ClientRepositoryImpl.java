@@ -18,9 +18,9 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     public Client findById(int clientCode) {
-        String sql = "SELECT * FROM clients WHERE clientCode = ?";
+    String sql = "SELECT * FROM clients WHERE clientCode = ?";
     try (Connection conn = dbConnector.getConnection();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
         
         pstmt.setInt(1, clientCode);
         ResultSet rs = pstmt.executeQuery();
@@ -76,7 +76,7 @@ public class ClientRepositoryImpl implements ClientRepository {
     public void save(Client client) {
         String sql = "INSERT INTO clients (firstName, lastName, address, city, country, phoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = dbConnector.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, client.getFirstName());
             pstmt.setString(2, client.getLastName());
             pstmt.setString(3, client.getAddress());
