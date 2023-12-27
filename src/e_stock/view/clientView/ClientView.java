@@ -1,5 +1,6 @@
-package e_stock.view;
+package e_stock.view.clientView;
 
+import e_stock.view.clientView.AddClientView;
 import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
