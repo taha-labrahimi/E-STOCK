@@ -8,3 +8,13 @@ CREATE TABLE IF NOT EXISTS clients (
     phoneNumber VARCHAR(20)
 );
 
+CREATE TABLE IF NOT EXISTS suppliers (
+    supplierCode int auto_increment PRIMARY KEY,
+    firstName VARCHAR(100),
+    lastName VARCHAR(100),
+    address VARCHAR(255),
+    city VARCHAR(100),
+    country VARCHAR(100),
+    phoneNumber VARCHAR(20)
+);
+
