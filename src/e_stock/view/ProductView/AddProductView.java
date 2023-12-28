@@ -170,6 +170,7 @@ public class AddProductView extends javax.swing.JFrame {
             imageContent = Files.readAllBytes(path);
             float productPriceUnit = Float.parseFloat(ProductPrice.getText());
             Product product = new Product(ProductName.getText(),productPriceUnit,imageContent);
+            productRepository.save(product);
             // Provide feedback
             JOptionPane.showMessageDialog(this, "Product added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
