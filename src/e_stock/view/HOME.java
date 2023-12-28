@@ -4,15 +4,16 @@
  */
 package e_stock.view;
 
-/**
- *
- * @author tahav
- */
+import e_stock.view.ProductView.AddProductView;
+import e_stock.view.ProductView.ProductView;
+import e_stock.view.clientView.ClientView;
+
+
 public class HOME extends javax.swing.JFrame {
 
-    /**
-     * Creates new form HOME
-     */
+    private ProductView productView;
+    private ClientView clientView;
+
     public HOME() {
         initComponents();
         setResizable(false);
@@ -29,18 +30,78 @@ public class HOME extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        Clientsbtn = new javax.swing.JButton();
+        Fournisseurbtn = new javax.swing.JButton();
+        Productsbtn = new javax.swing.JButton();
+        Usersbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 165, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        Clientsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ClientsIcon.png"))); // NOI18N
+        Clientsbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClientsbtnActionPerformed(evt);
+            }
+        });
+
+        Fournisseurbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/FournisseurIcon.png"))); // NOI18N
+
+        Productsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ProductsIcon.png"))); // NOI18N
+        Productsbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProductsbtnActionPerformed(evt);
+            }
+        });
+
+        Usersbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/UsersIcon.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1179, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(Productsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 501, Short.MAX_VALUE)
+                        .addComponent(Fournisseurbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(181, 181, 181))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(388, 388, 388)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Usersbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(Clientsbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 712, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(Clientsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Productsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Fournisseurbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(111, 111, 111)
+                .addComponent(Usersbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -56,6 +117,22 @@ public class HOME extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ClientsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientsbtnActionPerformed
+          if (clientView == null) {
+            clientView = new ClientView();
+        }
+        this.setVisible(false);
+        clientView.setVisible(true);      // TODO add your handling code here:
+    }//GEN-LAST:event_ClientsbtnActionPerformed
+
+    private void ProductsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductsbtnActionPerformed
+        if (productView == null) {
+            productView = new ProductView();
+        }
+        this.setVisible(false);
+        productView.setVisible(true);
+    }//GEN-LAST:event_ProductsbtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -94,6 +171,11 @@ public class HOME extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Clientsbtn;
+    private javax.swing.JButton Fournisseurbtn;
+    private javax.swing.JButton Productsbtn;
+    private javax.swing.JButton Usersbtn;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
