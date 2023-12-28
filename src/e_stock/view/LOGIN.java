@@ -57,7 +57,7 @@ public class LOGIN extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel1.setText("E-STOCK");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/coverstock.jpg"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/coverstock.jpg"))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 153));

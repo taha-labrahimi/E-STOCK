@@ -102,7 +102,7 @@
         <Component class="javax.swing.JButton" name="Clientsbtn">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMAGES/ClientsIcon.png"/>
+              <Image iconType="3" name="/resources/images/ClientsIcon.png"/>
             </Property>
           </Properties>
           <Events>
@@ -112,14 +112,14 @@
         <Component class="javax.swing.JButton" name="Fournisseurbtn">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMAGES/FournisseurIcon.png"/>
+              <Image iconType="3" name="/resources/images/FournisseurIcon.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Productsbtn">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMAGES/ProductsIcon.png"/>
+              <Image iconType="3" name="/resources/images/ProductsIcon.png"/>
             </Property>
           </Properties>
           <Events>
@@ -129,7 +129,7 @@
         <Component class="javax.swing.JButton" name="Usersbtn">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMAGES/UsersIcon.png"/>
+              <Image iconType="3" name="/resources/images/UsersIcon.png"/>
             </Property>
           </Properties>
         </Component>

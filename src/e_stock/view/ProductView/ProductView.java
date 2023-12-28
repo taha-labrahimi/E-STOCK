@@ -84,7 +84,7 @@ public class ProductView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tableproducts);
 
-        addProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsadd30.png"))); // NOI18N
+        addProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsadd30.png"))); // NOI18N
         addProduct.setBorder(null);
         addProduct.setContentAreaFilled(false);
         addProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -94,7 +94,7 @@ public class ProductView extends javax.swing.JFrame {
             }
         });
 
-        modifyProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsedit30.png"))); // NOI18N
+        modifyProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsedit30.png"))); // NOI18N
         modifyProduct.setBorder(null);
         modifyProduct.setContentAreaFilled(false);
         modifyProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -104,7 +104,7 @@ public class ProductView extends javax.swing.JFrame {
             }
         });
 
-        deleteProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsdelete30.png"))); // NOI18N
+        deleteProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsdelete30.png"))); // NOI18N
         deleteProduct.setBorder(null);
         deleteProduct.setContentAreaFilled(false);
         deleteProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -124,7 +124,7 @@ public class ProductView extends javax.swing.JFrame {
             }
         });
 
-        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconssearch.png"))); // NOI18N
+        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconssearch.png"))); // NOI18N
         searchbtn.setToolTipText("");
         searchbtn.setBorder(null);
         searchbtn.setBorderPainted(false);
@@ -136,7 +136,7 @@ public class ProductView extends javax.swing.JFrame {
             }
         });
 
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsprint30.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsprint30.png"))); // NOI18N
         printbtn.setBorder(null);
         printbtn.setContentAreaFilled(false);
         printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

@@ -88,7 +88,7 @@ public class ClientView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tableclient);
 
-        addclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsadd30.png"))); // NOI18N
+        addclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsadd30.png"))); // NOI18N
         addclient.setBorder(null);
         addclient.setContentAreaFilled(false);
         addclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -98,7 +98,7 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
-        modifyclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsedit30.png"))); // NOI18N
+        modifyclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsedit30.png"))); // NOI18N
         modifyclient.setBorder(null);
         modifyclient.setContentAreaFilled(false);
         modifyclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -108,7 +108,7 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
-        deleteclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsdelete30.png"))); // NOI18N
+        deleteclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsdelete30.png"))); // NOI18N
         deleteclient.setBorder(null);
         deleteclient.setContentAreaFilled(false);
         deleteclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -128,7 +128,7 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
-        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconssearch.png"))); // NOI18N
+        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconssearch.png"))); // NOI18N
         searchbtn.setToolTipText("");
         searchbtn.setBorder(null);
         searchbtn.setBorderPainted(false);
@@ -140,7 +140,7 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/iconsprint30.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsprint30.png"))); // NOI18N
         printbtn.setBorder(null);
         printbtn.setContentAreaFilled(false);
         printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -168,7 +168,7 @@ public class ClientView extends javax.swing.JFrame {
                     .addComponent(modifyclient)
                     .addComponent(deleteclient)
                     .addComponent(printbtn))
-                .addGap(0, 35, Short.MAX_VALUE))
+                .addGap(0, 5, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(484, 484, 484)
                 .addComponent(jLabel1)
