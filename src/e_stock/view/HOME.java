@@ -51,23 +51,23 @@ public class HOME extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        Clientsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ClientsIcon.png"))); // NOI18N
+        Clientsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ClientsIcon.png"))); // NOI18N
         Clientsbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClientsbtnActionPerformed(evt);
             }
         });
 
-        Fournisseurbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/FournisseurIcon.png"))); // NOI18N
+        Fournisseurbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/FournisseurIcon.png"))); // NOI18N
 
-        Productsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/ProductsIcon.png"))); // NOI18N
+        Productsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ProductsIcon.png"))); // NOI18N
         Productsbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProductsbtnActionPerformed(evt);
             }
         });
 
-        Usersbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGES/UsersIcon.png"))); // NOI18N
+        Usersbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/UsersIcon.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
