@@ -18,3 +18,10 @@ CREATE TABLE IF NOT EXISTS suppliers (
     phoneNumber VARCHAR(20)
 );
 
+
+CREATE TABLE IF NOT EXISTS products (
+    ProductCode int auto_increment PRIMARY KEY,
+    ProductName VARCHAR(100),
+    ProductUnitPrice float,
+    image BLOB
+);
