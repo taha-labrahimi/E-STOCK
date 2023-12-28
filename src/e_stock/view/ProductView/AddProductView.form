@@ -70,7 +70,7 @@
                           <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Component id="ImageChooser" min="-2" pref="543" max="-2" attributes="0"/>
+                          <Component id="ImageChooser" min="-2" pref="748" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -82,7 +82,7 @@
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="321" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="318" max="-2" attributes="0"/>
                           <Component id="addclientbtn" min="-2" pref="492" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -109,12 +109,12 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                          <Component id="ImageChooser" min="-2" pref="224" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                          <Component id="addclientbtn" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="ImageChooser" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="124" max="32767" attributes="0"/>
+                  <EmptySpace pref="36" max="32767" attributes="0"/>
+                  <Component id="addclientbtn" min="-2" pref="50" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
