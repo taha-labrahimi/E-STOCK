@@ -5,11 +5,14 @@ import e_stock.Model.Product;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -122,7 +125,7 @@ public class ModifyProductView extends javax.swing.JFrame {
 
         ProductCode.setEditable(false);
 
-        AddImageBtn.setText("MODIFY");
+        AddImageBtn.setText("Browse");
         AddImageBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddImageBtnActionPerformed(evt);
@@ -222,13 +225,35 @@ public class ModifyProductView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    public void resetForm() {
+    ProductCode.setText(""); // Clear product code field or set to default value
+    ProductName.setText(""); // Clear product name field
+    ProductPrice.setText(""); // Clear product price field
+    ImageLabel.setIcon(null); // Reset image label
+    imageContentStatic2 = null; // Reset the static image content
+}
     private void modifyProductbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyProductbtnActionPerformed
     try {
+        
+        ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
+        BufferedImage bufferedImage = new BufferedImage(
+            imageIconDeLabel.getIconWidth(),
+            imageIconDeLabel.getIconHeight(),
+            BufferedImage.TYPE_INT_RGB);
+            bufferedImage.createGraphics().drawImage(
+            imageIconDeLabel.getImage(),
+            0,
+            0,
+            null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", baos);
+        byte[] imageBytes = baos.toByteArray();
+        
+        
         int productCode = Integer.parseInt(ProductCode.getText()); 
         float productPriceUnit = Float.parseFloat(ProductPrice.getText());
         String productName = ProductName.getText();
-        Product product = new Product(productCode,productName,productPriceUnit,imageContentStatic2);
+        Product product = new Product(productCode,productName,productPriceUnit,imageBytes);
         productRepository.update(product);
         
         JOptionPane.showMessageDialog(this, "product modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -244,7 +269,7 @@ public class ModifyProductView extends javax.swing.JFrame {
         e.printStackTrace();
     }
     }//GEN-LAST:event_modifyProductbtnActionPerformed
-public static byte[] imageContentStatic2 = null;
+public static byte[] imageContentStatic2;
     private void AddImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddImageBtnActionPerformed
 
     JFileChooser fileChooser = new JFileChooser();
