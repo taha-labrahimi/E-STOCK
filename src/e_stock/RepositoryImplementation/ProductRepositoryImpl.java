@@ -91,6 +91,7 @@ public class ProductRepositoryImpl implements ProductRepository{
             pstmt.setString(1, product.getProductName());
             pstmt.setFloat(2, product.getProductUnitPrice());
             pstmt.setBytes(3, product.getImage());
+            pstmt.setInt(4, product.getProductCode());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
