@@ -8,6 +8,36 @@ CREATE TABLE IF NOT EXISTS clients (
     phoneNumber VARCHAR(20)
 );
 
+CREATE TABLE Orders (
+    orderId INT AUTO_INCREMENT PRIMARY KEY,
+    orderDate DATE,
+    clientCode INT,
+    FOREIGN KEY (clientcode) REFERENCES Clients(clientcode)
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    ProductCode int auto_increment PRIMARY KEY,
+    ProductName VARCHAR(100),
+    ProductUnitPrice float,
+    image BLOB
+);
+
+CREATE TABLE Stock (
+    productCode INT,
+    quantityInStock INT,
+    PRIMARY KEY (productCode),
+    FOREIGN KEY (productCode) REFERENCES Products(productCode)
+);
+
+CREATE TABLE OrderLines (
+    orderId INT,
+    productCode INT,
+    quantityOrdered INT,
+    PRIMARY KEY (orderId, productCode),
+    FOREIGN KEY (orderId) REFERENCES Orders(orderId),
+    FOREIGN KEY (productCode) REFERENCES Products(productCode)
+);
+
 CREATE TABLE IF NOT EXISTS suppliers (
     supplierCode int auto_increment PRIMARY KEY,
     firstName VARCHAR(100),
@@ -18,12 +48,29 @@ CREATE TABLE IF NOT EXISTS suppliers (
     phoneNumber VARCHAR(20)
 );
 
+CREATE TABLE Deliveries (
+    deliveryId INT AUTO_INCREMENT PRIMARY KEY,
+    deliveryDate DATE,
+    supplierCode INT,
+    FOREIGN KEY (supplierCode) REFERENCES Suppliers(supplierCode)
+);
 
-CREATE TABLE IF NOT EXISTS products (
-    ProductCode int auto_increment PRIMARY KEY,
-    ProductName VARCHAR(100),
-    ProductUnitPrice float,
-    image BLOB
+CREATE TABLE DeliveryLines (
+    deliveryId INT,
+    productCode INT,
+    quantity_delivered INT,
+    PRIMARY KEY (deliveryId, productCode),
+    FOREIGN KEY (deliveryId) REFERENCES Deliveries(deliveryId),
+    FOREIGN KEY (productCode) REFERENCES Products(productCode)
+);
+
+CREATE TABLE DistributionSites (
+    distributionName VARCHAR(100) PRIMARY KEY,
+    phoneNumber VARCHAR(20),
+    streetAddress VARCHAR(255),
+    city VARCHAR(100),
+    buildingNumber VARCHAR(50),
+    apartmentNumber VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Users (
