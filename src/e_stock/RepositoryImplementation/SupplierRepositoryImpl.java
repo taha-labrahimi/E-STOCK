@@ -96,7 +96,7 @@ public class SupplierRepositoryImpl implements SupplierRepository{
 
     @Override
     public void update(Supplier supplier) {
-        String sql = "UPDATE suppliers SET firstName = ?, lastName = ?, address = ?, city = ?, country = ?, phoneNumber = ? WHERE clientCode = ?";
+        String sql = "UPDATE suppliers SET firstName = ?, lastName = ?, address = ?, city = ?, country = ?, phoneNumber = ? WHERE supplierCode = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
@@ -117,7 +117,7 @@ public class SupplierRepositoryImpl implements SupplierRepository{
     }
 
     public void delete(int supplierCode) {
-        String sql = "DELETE FROM supplier WHERE supplierCode = ?";
+        String sql = "DELETE FROM suppliers WHERE supplierCode = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
