@@ -271,6 +271,8 @@ public class ProductView extends javax.swing.JFrame {
             if (modifyProductView == null) {
                 modifyProductView = new ModifyProductView();
                 
+            }else{
+            modifyProductView.resetForm();
             }
             
             modifyProductView.setProductcode(tableproducts.getValueAt(selectedRowIndex, 0).toString());
