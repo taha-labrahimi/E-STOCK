@@ -125,6 +125,7 @@ public class DetailsSupplierView extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel4.setText("Adresse :");
 
+        FirstName.setEditable(false);
         FirstName.setPreferredSize(new java.awt.Dimension(64, 26));
         FirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,15 +133,19 @@ public class DetailsSupplierView extends javax.swing.JFrame {
             }
         });
 
+        LastName.setEditable(false);
         LastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LastNameActionPerformed(evt);
             }
         });
 
+        Adresse.setEditable(false);
+
         jLabel5.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel5.setText(" City :");
 
+        City.setEditable(false);
         City.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CityActionPerformed(evt);
@@ -154,6 +159,10 @@ public class DetailsSupplierView extends javax.swing.JFrame {
                 jTextField5ActionPerformed(evt);
             }
         });
+
+        Country.setEditable(false);
+
+        Phone.setEditable(false);
 
         jLabel6.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel6.setText("Phone Number :");
