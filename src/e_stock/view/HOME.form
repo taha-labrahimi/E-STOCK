@@ -115,6 +115,9 @@
               <Image iconType="3" name="/resources/images/FournisseurIcon.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FournisseurbtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Productsbtn">
           <Properties>
