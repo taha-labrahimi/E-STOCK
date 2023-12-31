@@ -2,9 +2,11 @@ package e_stock.RepositoryImplementation;
 
 import java.sql.*;
 import e_stock.Model.Order;
+import e_stock.Model.OrderLine;
 import e_stock.Repository.OrderRepository;
 import e_stock.database.DatabaseConnector;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +63,38 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return orders;
     }
+   public List<Order> findAllWithOrderLines() throws ClassNotFoundException {
+    List<Order> orders = new ArrayList<>();
+    String sql = "SELECT o.*, ol.productCode, ol.quantityOrdered, p.productUnitPrice " +
+                 "FROM Orders o " +
+                 "LEFT JOIN OrderLines ol ON o.orderId = ol.orderId " +
+                 "LEFT JOIN Products p ON ol.productCode = p.productCode";
+    try (Connection conn = dbConnector.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+        HashMap<Integer, Order> orderMap = new HashMap<>();
+
+        while (rs.next()) {
+            int orderId = rs.getInt("orderId");
+            Order order = orderMap.getOrDefault(orderId, new Order(orderId, rs.getDate("orderDate"), rs.getInt("clientCode")));
+            orderMap.putIfAbsent(orderId, order);
+
+            int productCode = rs.getInt("productCode");
+            if (!rs.wasNull()) {
+                double price = rs.getDouble("productUnitPrice");
+                int quantity = rs.getInt("quantityOrdered");
+                OrderLine orderLine = new OrderLine(orderId, productCode, quantity, price);
+                order.addOrderLine(orderLine);
+            }
+        }
+
+        orders.addAll(orderMap.values());
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return orders;
+}
 
     @Override
     public void save(Order order) {

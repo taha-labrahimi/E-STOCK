@@ -1,9 +1,11 @@
 package e_stock.RepositoryImplementation;
+import e_stock.Model.Order;
 import java.sql.*;
 import e_stock.Model.OrderLine;
 import e_stock.Repository.OrderLineRepository;
 import e_stock.database.DatabaseConnector;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +65,7 @@ public class OrderLineRepositoryImpl implements OrderLineRepository{
          }
         return orderLines;
     }
-
+    
     @Override
     public void save(OrderLine orderLine) {
         String sql = "INSERT INTO OrderLines (orderId, productCode, quantityOrdered) VALUES (?, ?, ?)";

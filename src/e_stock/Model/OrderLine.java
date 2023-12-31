@@ -1,20 +1,27 @@
 package e_stock.Model;
+
 public class OrderLine {
     private int orderId;
     private int productCode;
     private int quantityOrdered;
+    private double price; // Added price attribute
 
-    public OrderLine() {
-    }
-
-    public OrderLine( int orderId,int productCode, int quantityOrdered) {
+    // Constructor without price - can be used if price is not known at object creation
+    public OrderLine(int orderId, int productCode, int quantityOrdered) {
         this.orderId = orderId;
         this.productCode = productCode;
         this.quantityOrdered = quantityOrdered;
     }
 
+    // Constructor with price
+    public OrderLine(int orderId, int productCode, int quantityOrdered, double price) {
+        this.orderId = orderId;
+        this.productCode = productCode;
+        this.quantityOrdered = quantityOrdered;
+        this.price = price;
+    }
 
-
+    // Getters and Setters
     public int getOrderId() {
         return orderId;
     }
@@ -39,13 +46,26 @@ public class OrderLine {
         this.quantityOrdered = quantityOrdered;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    // Additional method to get the total price for this order line
+    public double getTotalPrice() {
+        return this.quantityOrdered * this.price;
+    }
+
     @Override
     public String toString() {
         return "OrderLine{" +
-                ", orderId=" + orderId +
+                "orderId=" + orderId +
                 ", productCode=" + productCode +
                 ", quantityOrdered=" + quantityOrdered +
+                ", price=" + price +
                 '}';
     }
 }
-

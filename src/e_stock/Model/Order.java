@@ -1,19 +1,33 @@
 package e_stock.Model;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Order {
     private int orderId;
     private Date orderDate;
     private int clientCode;
+    private List<OrderLine> orderLines;
 
-   
-    public Order() {
+   public Order(int orderId, Date orderDate) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.orderLines = new ArrayList<>();
+        
+    }
+    public void addOrderLine(OrderLine orderLine) {
+        this.orderLines.add(orderLine);
     }
 
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+    
     public Order(int orderId, Date orderDate, int clientCode) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.clientCode = clientCode;
+         this.orderLines = new ArrayList<>();
     }
 
     
