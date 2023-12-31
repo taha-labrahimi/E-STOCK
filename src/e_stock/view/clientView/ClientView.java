@@ -119,7 +119,7 @@ public class ClientView extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
-        jLabel1.setText("Orders");
+        jLabel1.setText("Clients");
 
         searchtextfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         searchtextfield.addActionListener(new java.awt.event.ActionListener() {

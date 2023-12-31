@@ -5,10 +5,16 @@ import e_stock.Model.OrderLine;
 import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import e_stock.view.ProductView.ProductView;
+import e_stock.view.clientView.ClientView;
+import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class OrderView extends javax.swing.JFrame {
+    ProductView productView;
+    ClientView clientView;
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
     public OrderView() {
@@ -20,43 +26,36 @@ public class OrderView extends javax.swing.JFrame {
         orderLineRepositoryImpl = new OrderLineRepositoryImpl(dbConnector);
         loadOrdersAndPopulateTable();
     }
-   protected void loadOrdersAndPopulateTable() {
+protected void loadOrdersAndPopulateTable() {
     try {
         List<Order> orders = orderRepositoryImpl.findAllWithOrderLines();
         DefaultTableModel tableModel = (DefaultTableModel) tableorder.getModel();
-        String[] columnNames = {"Order ID", "Order Date", "Client Code", "Product Codes", "Total Items", "Total Amount"};
+        String[] columnNames = {"Order ID", "Order Date", "Client Code", "Product Code", "Total Items", "Total Amount"};
         tableModel.setColumnIdentifiers(columnNames);
         tableModel.setRowCount(0);
 
         for (Order order : orders) {
-            StringBuilder productCodes = new StringBuilder();
-            int totalItems = 0;
-            double totalAmount = 0.0;
-
             for (OrderLine line : order.getOrderLines()) {
-                if (productCodes.length() > 0) {
-                    productCodes.append(", ");
-                }
-                productCodes.append(line.getProductCode());
+                int totalItems = line.getQuantityOrdered();
+                double totalAmount = line.getTotalPrice(); // Assuming you have a method to calculate the total price of a line
 
-                totalItems += line.getQuantityOrdered();
-                totalAmount += line.getTotalPrice(); // Assuming you have a method to calculate the total price of a line
+                Object[] row = new Object[]{
+                    order.getOrderId(),
+                    order.getOrderDate(),
+                    order.getClientCode(),
+                    line.getProductCode(),
+                    totalItems,
+                    totalAmount
+                };
+                tableModel.addRow(row);
             }
-
-            Object[] row = new Object[]{
-                order.getOrderId(),
-                order.getOrderDate(),
-                order.getClientCode(),
-                productCodes.toString(),
-                totalItems,
-                totalAmount
-            };
-            tableModel.addRow(row);
         }
     } catch (Exception e) {
         e.printStackTrace();
     }
 }
+
+
 
 
 
@@ -112,6 +111,11 @@ public class OrderView extends javax.swing.JFrame {
 
             }
         ));
+        tableorder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableorderMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableorder);
 
         addorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsadd30.png"))); // NOI18N
@@ -244,6 +248,32 @@ public class OrderView extends javax.swing.JFrame {
     private void searchtextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchtextfieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchtextfieldActionPerformed
+
+    private void tableorderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableorderMouseClicked
+        if (evt.getClickCount() == 1) { 
+        JTable target = (JTable)evt.getSource();
+        int row = target.getSelectedRow(); 
+        int column = target.getSelectedColumn(); 
+        if (column == 3) {
+            int productCode = (Integer)target.getModel().getValueAt(row, column);
+            if(productView == null) {
+                productView = new ProductView();
+            }
+            this.setVisible(false);
+            productView.setSearchtextfield(productCode);
+            productView.setVisible(true);
+        }
+        if(column==2)
+        {
+            int clientCode = (Integer)target.getModel().getValueAt(row, column);
+            if(clientView == null) {
+                clientView = new ClientView();
+            }
+            this.setVisible(false);
+            clientView.setVisible(true);
+        }
+    }
+    }//GEN-LAST:event_tableorderMouseClicked
 
     /**
      * @param args the command line arguments
