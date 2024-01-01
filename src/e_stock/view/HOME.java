@@ -7,12 +7,14 @@ package e_stock.view;
 import e_stock.view.ProductView.AddProductView;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
+import e_stock.view.supplierView.SupplierView;
 
 
 public class HOME extends javax.swing.JFrame {
 
     private ProductView productView;
     private ClientView clientView;
+    private SupplierView supplierView;
 
     public HOME() {
         initComponents();
@@ -59,6 +61,11 @@ public class HOME extends javax.swing.JFrame {
         });
 
         Fournisseurbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/FournisseurIcon.png"))); // NOI18N
+        Fournisseurbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FournisseurbtnActionPerformed(evt);
+            }
+        });
 
         Productsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ProductsIcon.png"))); // NOI18N
         Productsbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +140,14 @@ public class HOME extends javax.swing.JFrame {
         this.setVisible(false);
         productView.setVisible(true);
     }//GEN-LAST:event_ProductsbtnActionPerformed
+
+    private void FournisseurbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FournisseurbtnActionPerformed
+        if (supplierView == null) {
+            supplierView = new SupplierView();
+        }
+        this.setVisible(false);
+        supplierView.setVisible(true);
+    }//GEN-LAST:event_FournisseurbtnActionPerformed
 
     /**
      * @param args the command line arguments

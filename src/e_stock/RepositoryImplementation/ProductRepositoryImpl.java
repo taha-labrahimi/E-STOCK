@@ -29,6 +29,7 @@ public class ProductRepositoryImpl implements ProductRepository{
             Product product = new Product(
                 rs.getInt("productCode"),
                 rs.getString("productName"),
+                rs.getInt("QteStock"),
                 rs.getFloat("productUnitPrice"),
                 rs.getBytes("image")
             );
@@ -54,6 +55,7 @@ public class ProductRepositoryImpl implements ProductRepository{
                 products.add(new Product(
                     rs.getInt("productCode"),
                 rs.getString("productName"),
+                rs.getInt("QteStock"),
                 rs.getFloat("productUnitPrice"),
                 rs.getBytes("image")
                 ));
@@ -68,12 +70,13 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public void save(Product product) {
-        String sql = "INSERT INTO products (ProductName, ProductUnitPrice, image) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO products (ProductName, ProductUnitPrice, image,QteStock) VALUES (?, ?, ?,?)";
         try (Connection conn = dbConnector.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, product.getProductName());
             pstmt.setFloat(2, product.getProductUnitPrice());
             pstmt.setBytes(3, product.getImage());
+            pstmt.setInt(4, product.getQteStock());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(); 
@@ -84,14 +87,15 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public void update(Product product) {
-        String sql = "UPDATE products SET ProductName = ?, ProductUnitPrice = ?, image = ? WHERE ProductCode = ?";
+        String sql = "UPDATE products SET ProductName = ?, ProductUnitPrice = ?, image = ? ,QteStock = ? WHERE ProductCode = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setString(1, product.getProductName());
             pstmt.setFloat(2, product.getProductUnitPrice());
             pstmt.setBytes(3, product.getImage());
-            pstmt.setInt(4, product.getProductCode());
+            pstmt.setInt(4, product.getQteStock());
+            pstmt.setInt(5, product.getProductCode());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

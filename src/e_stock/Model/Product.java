@@ -5,15 +5,26 @@ public class Product {
     private String productName;
     private float productUnitPrice;
     private byte[] image;
+    private Integer QteStock;
+
+    public void setQteStock(Integer QteStock) {
+        this.QteStock = QteStock;
+    }
+
+    public Integer getQteStock() {
+        return QteStock;
+    }
     
-    public Product(Integer productCode, String productName, float productUnitPrice, byte[] image) {
+    public Product(Integer productCode, String productName, int QteStock,float productUnitPrice, byte[] image) {
         this.productCode = productCode;
         this.productName = productName;
+        this.QteStock = QteStock;
         this.productUnitPrice = productUnitPrice;
         this.image = image;
     }
-    public Product(String productName, float productUnitPrice, byte[] image) {
+    public Product(String productName, int QteStock, float productUnitPrice, byte[] image) {
         this.productName = productName;
+        this.QteStock = QteStock;
         this.productUnitPrice = productUnitPrice;
         this.image = image;
     }

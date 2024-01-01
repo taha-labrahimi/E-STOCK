@@ -41,6 +41,15 @@ public class AddProductView extends javax.swing.JFrame {
         this.ProductName.setText(name);
     }
 
+    public JTextField getQteTextField() {
+        return QteTextField;
+    }
+
+    public void setQteTextField(String QteTextField) {
+        this.QteTextField.setText(QteTextField);
+    }
+    
+    
     public JTextField getPrice() {
         return ProductPrice;
     }
@@ -68,6 +77,8 @@ public class AddProductView extends javax.swing.JFrame {
         AddImageBtn = new javax.swing.JButton();
         ImageLabel = new javax.swing.JLabel();
         exitbtn = new javax.swing.JButton();
+        jlabel1 = new javax.swing.JLabel();
+        QteTextField = new javax.swing.JTextField();
 
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel1.setText("CLIENTS");
@@ -113,6 +124,11 @@ public class AddProductView extends javax.swing.JFrame {
             }
         });
 
+        jlabel1.setFont(new java.awt.Font("Verdana Pro Semibold", 1, 14)); // NOI18N
+        jlabel1.setText("Qte en Stock :");
+
+        QteTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -137,16 +153,18 @@ public class AddProductView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(ProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                     .addComponent(AddImageBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 426, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jlabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(124, 124, 124))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(432, 432, 432))))
+                        .addGap(24, 24, 24)
+                        .addComponent(jlabel1))
+                    .addComponent(jlabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(124, 124, 124))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,7 +190,12 @@ public class AddProductView extends javax.swing.JFrame {
                             .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
-                        .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                 .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
@@ -198,7 +221,8 @@ public class AddProductView extends javax.swing.JFrame {
             
             
             float productPriceUnit = Float.parseFloat(ProductPrice.getText());
-            Product product = new Product(ProductName.getText(),productPriceUnit,imageContentStatic);
+            int qte = Integer.parseInt(QteTextField.getText());
+            Product product = new Product(ProductName.getText(),qte,productPriceUnit,imageContentStatic);
             productRepository.save(product);
             // Provide feedback
             JOptionPane.showMessageDialog(this, "Product added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -295,6 +319,7 @@ public static byte[] imageContentStatic = null;
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextField ProductName;
     private javax.swing.JTextField ProductPrice;
+    private javax.swing.JTextField QteTextField;
     private javax.swing.JLabel aaa;
     private javax.swing.JButton addclientbtn;
     private javax.swing.JButton exitbtn;
@@ -303,5 +328,6 @@ public static byte[] imageContentStatic = null;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel jlabel;
+    private javax.swing.JLabel jlabel1;
     // End of variables declaration//GEN-END:variables
 }

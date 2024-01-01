@@ -44,7 +44,7 @@ public class ProductView extends javax.swing.JFrame {
     protected void loadProductAndPopulateTable() {
         List<Product> products = productRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
-        String[] columnNames = {"Product Code", "Product Name", "Product Unit Price", "Image"};
+        String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Image"};
         tableModel.setColumnIdentifiers(columnNames);
         tableproducts.setRowHeight(60);
         tableModel.setRowCount(0); // Clear the table before loading new data
@@ -66,11 +66,12 @@ public class ProductView extends javax.swing.JFrame {
             tableModel.addRow(new Object[]{
                 product.getProductCode(),
                 product.getProductName(),
+                product.getQteStock(),
                 product.getProductUnitPrice(),
                 image
             });
         }
-        tableproducts.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
+        tableproducts.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
         
         
     }
@@ -277,8 +278,9 @@ public class ProductView extends javax.swing.JFrame {
             
             modifyProductView.setProductcode(tableproducts.getValueAt(selectedRowIndex, 0).toString());
             modifyProductView.setProductname(tableproducts.getValueAt(selectedRowIndex, 1).toString());
-            modifyProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 2).toString());
-            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 3);
+            modifyProductView.setQteTextField(tableproducts.getValueAt(selectedRowIndex, 2).toString());
+            modifyProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 3).toString());
+            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 4);
             modifyProductView.setImage(imageicon);
             this.setVisible(false);
             modifyProductView.setVisible(true);
@@ -323,12 +325,13 @@ public class ProductView extends javax.swing.JFrame {
                 image = new ImageIcon(scaledImg);
             }
                 DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
-                String[] columnNames = {"Product Code", "Product Name", "Product Unit Price", "Image"};
+                String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Image"};
                 tableModel.setColumnIdentifiers(columnNames);
                 tableModel.setRowCount(0);
                 tableModel.addRow(new Object[]{
                     String.valueOf(product.getProductCode()),
                     product.getProductName(),
+                    product.getQteStock(),
                     product.getProductUnitPrice(),
                     image
                 });
@@ -344,19 +347,19 @@ public class ProductView extends javax.swing.JFrame {
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
         printTable();
     }//GEN-LAST:event_printbtnActionPerformed
-
+    
     private void detailsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsbtnActionPerformed
         int selectedRowIndex = tableproducts.getSelectedRow();
         if (selectedRowIndex != -1) {
             if (detailsProductView == null) {
                 detailsProductView = new DetailsProductView();
-                
             }
             
             detailsProductView.setProductcode(tableproducts.getValueAt(selectedRowIndex, 0).toString());
             detailsProductView.setProductname(tableproducts.getValueAt(selectedRowIndex, 1).toString());
-            detailsProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 2).toString());
-            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 3);
+            detailsProductView.setQteTextField(tableproducts.getValueAt(selectedRowIndex, 2).toString());
+            detailsProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 3).toString());
+            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 4);
             detailsProductView.setImage(imageicon);
             this.setVisible(false);
             detailsProductView.setVisible(true);
