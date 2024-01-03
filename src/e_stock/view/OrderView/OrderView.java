@@ -17,6 +17,7 @@ public class OrderView extends javax.swing.JFrame {
     ClientView clientView;
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
+    AddOrderView addOrderView;
     public OrderView() {
         initComponents();
         setResizable(false);
@@ -234,7 +235,11 @@ protected void loadOrdersAndPopulateTable() {
     }//GEN-LAST:event_printbtnActionPerformed
 
     private void addorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addorderActionPerformed
-        
+        if (addOrderView == null) {
+            addOrderView = new AddOrderView();
+        }
+        this.setVisible(false);
+        addOrderView.setVisible(true);
     }//GEN-LAST:event_addorderActionPerformed
 
     private void modifyorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyorderActionPerformed
