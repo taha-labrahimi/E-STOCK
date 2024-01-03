@@ -96,21 +96,36 @@ public class OrderRepositoryImpl implements OrderRepository {
     return orders;
 }
 
-    @Override
-    public void save(Order order) {
-        String sql = "INSERT INTO Orders (orderDate, clientCode) VALUES (?, ?)";
-        try (Connection conn = dbConnector.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
-            pstmt.setInt(2, order.getClientCode());
-            pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace(); 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(OrderRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+public int save(Order order) {
+    String sql = "INSERT INTO Orders (orderDate, clientCode) VALUES (?, ?)";
+    int orderId = 0;
+
+    try (Connection conn = dbConnector.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        
+        pstmt.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
+        pstmt.setInt(2, order.getClientCode());
+        pstmt.executeUpdate();
+
+        // Retrieve the generated key (order ID)
+        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                orderId = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Creating order failed, no ID obtained.");
+            }
         }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(OrderRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
     }
+
+    return orderId;
+}
+
+
+
 
     @Override
     public void update(Order order) {

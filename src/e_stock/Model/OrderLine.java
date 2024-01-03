@@ -21,6 +21,9 @@ public class OrderLine {
         this.price = price;
     }
 
+    public OrderLine() {
+    }
+
     // Getters and Setters
     public int getOrderId() {
         return orderId;

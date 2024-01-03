@@ -1,19 +1,26 @@
 package e_stock.view.OrderView;
 
 import e_stock.Model.Client;
+import e_stock.Model.Order;
+import e_stock.Model.OrderLine;
 import e_stock.Model.Product;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
+import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
+import e_stock.RepositoryImplementation.OrderRepositoryImpl;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class AddOrderView extends javax.swing.JFrame {
     private ClientRepositoryImpl clientRepositoryImpl;
     private ProductRepositoryImpl productRepositoryImpl;
     private DefaultTableModel tableModel;
+    OrderRepositoryImpl orderRepositoryImpl;
+    OrderLineRepositoryImpl orderLineRepositoryImpl;
 
     public AddOrderView() {
         initComponents();
@@ -22,6 +29,8 @@ public class AddOrderView extends javax.swing.JFrame {
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepositoryImpl = new ClientRepositoryImpl(dbConnector);
         productRepositoryImpl = new ProductRepositoryImpl(dbConnector);
+        orderLineRepositoryImpl = new OrderLineRepositoryImpl(dbConnector);
+        orderRepositoryImpl = new OrderRepositoryImpl(dbConnector);
         populateClientComboBox();
         populateProductComboBox();
 
@@ -163,9 +172,67 @@ public class AddOrderView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private int getClientCodeByName(String clientName) {
+    List<Client> clients = clientRepositoryImpl.findAll();
+    for (Client client : clients) {
+        String fullName = client.getFirstName() + " " + client.getLastName();
+        if (fullName.equals(clientName)) {
+            return client.getClientCode();
+        }
+    }
+    return -1;
+}
+
+    
+private int getProductCodeByName(String productName) {
+    List<Product> products = productRepositoryImpl.findAll();
+    for (Product product : products) {
+        if (product.getProductName().equals(productName)) {
+            return product.getProductCode();
+        }
+    }
+    return -1;
+}
+private int createNewOrder(int clientCode) {
+    Order newOrder = new Order();
+    newOrder.setClientCode(clientCode);
+    newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); // Set current date as order date
+
+    // Save and get generated order ID
+    int orderId = orderRepositoryImpl.save(newOrder);
+    newOrder.setOrderId(orderId); // Set the retrieved order ID back to the Order object
+
+    System.out.println(newOrder.getOrderId()); // This should now print the correct ID
+    return orderId;
+}
+
+private void addOrderLine(int orderId, int productCode, int quantity) {
+    OrderLine orderLine = new OrderLine();
+    orderLine.setOrderId(orderId);
+    orderLine.setProductCode(productCode);
+    orderLine.setQuantityOrdered(quantity);
+    orderLineRepositoryImpl.save(orderLine);
+}
 
     private void addorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addorderbtnActionPerformed
-            
+         try {
+        String selectedClientName = clientcombobox.getSelectedItem().toString();
+        int clientCode = getClientCodeByName(selectedClientName);
+
+        String selectedProductName = productcombobox.getSelectedItem().toString();
+        int productCode = getProductCodeByName(selectedProductName);
+
+        int quantity = (Integer) jSpinner1.getValue();
+
+        int orderId = createNewOrder(clientCode);
+        addOrderLine(orderId, productCode, quantity);
+
+        // Display a confirmation message or refresh the view as needed
+        JOptionPane.showMessageDialog(this, "Order added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error adding order: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_addorderbtnActionPerformed
 
     private void clientcomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientcomboboxActionPerformed
