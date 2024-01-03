@@ -126,4 +126,70 @@ public class ClientRepositoryImpl implements ClientRepository {
             Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public List<Client> findByFirstName(String firstName) {
+        List<Client> clients = new ArrayList<>();
+        String sql = "SELECT * FROM clients WHERE firstName = ?";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, firstName);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                clients.add(new Client(
+                    rs.getInt("clientCode"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("country"),
+                    rs.getString("phoneNumber")
+                ));
+            
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return clients;
+    }
+
+    @Override
+    public List<Client> findByLastName(String lastName) {
+        List<Client> clients = new ArrayList<>();
+        String sql = "SELECT * FROM clients WHERE lastName = ?";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, lastName);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                clients.add(new Client(
+                    rs.getInt("clientCode"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("country"),
+                    rs.getString("phoneNumber")
+                ));
+            
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return clients;
+    }
 }

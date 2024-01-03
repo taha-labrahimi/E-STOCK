@@ -43,7 +43,7 @@ public class SupplierRepositoryImpl implements SupplierRepository{
     } catch (SQLException ex) {
         ex.printStackTrace();
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(SupplierRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
     }
     return null;
     }
@@ -71,7 +71,7 @@ public class SupplierRepositoryImpl implements SupplierRepository{
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupplierRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return suppliers;
     }
@@ -90,7 +90,7 @@ public class SupplierRepositoryImpl implements SupplierRepository{
         } catch (SQLException ex) {
             ex.printStackTrace(); 
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupplierRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -126,8 +126,78 @@ public class SupplierRepositoryImpl implements SupplierRepository{
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupplierRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
+
+    @Override
+    public List<Supplier> findByFirstName(String firstName) {
+        List<Supplier> suppliers = new ArrayList<>();
+        String sql = "SELECT * FROM suppliers WHERE firstName = ?";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, firstName);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                suppliers.add(new Supplier(
+                    rs.getInt("supplierCode"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("country"),
+                    rs.getString("phoneNumber")
+                ));
+            
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(SupplierRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return suppliers;
+    }
+      @Override
+    public List<Supplier> findByLastName(String lastName) {
+        List<Supplier> suppliers = new ArrayList<>();
+        String sql = "SELECT * FROM suppliers WHERE lastName = ?";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, lastName);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                suppliers.add(new Supplier(
+                    rs.getInt("supplierCode"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("country"),
+                    rs.getString("phoneNumber")
+                ));
+            
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(SupplierRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return suppliers;
+    }
+
+
+
+
+    
 
 }

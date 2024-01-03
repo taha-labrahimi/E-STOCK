@@ -15,6 +15,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -281,19 +282,23 @@ public class SupplierView extends javax.swing.JFrame {
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
         // TODO add your handling code here:
-        if (searchfield.getText().trim().isEmpty()) {
-            loadSuupliersAndPopulateTable();
-            return;
-        }
+    String searchText = searchfield.getText().trim();
 
-        try {
-            int supplierCode = Integer.parseInt(searchfield.getText().trim());
+    if (searchText.isEmpty()) {
+        loadSuupliersAndPopulateTable();
+        return;
+    }
+
+    DefaultTableModel tableModel = (DefaultTableModel) tablesupplier.getModel();
+    String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+    tableModel.setColumnIdentifiers(columnNames);
+    tableModel.setRowCount(0);
+
+    try {
+        if (searchText.matches("\\d+")) { // If input is a number, consider it as ID
+            int supplierCode = Integer.parseInt(searchText);
             Supplier supplier = supplierRepository.findById(supplierCode);
             if (supplier != null) {
-                DefaultTableModel tableModel = (DefaultTableModel) tablesupplier.getModel();
-                String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
-                tableModel.setColumnIdentifiers(columnNames);
-                tableModel.setRowCount(0);
                 tableModel.addRow(new Object[]{
                     String.valueOf(supplier.getSupplierCode()),
                     supplier.getFirstName(),
@@ -306,9 +311,32 @@ public class SupplierView extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Supplier not found", "Search", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid supplier code", "Search Error", JOptionPane.ERROR_MESSAGE);
+        } else { // If input is not a number, consider it as Name or Surname
+            List<Supplier> suppliersByFirstName = supplierRepository.findByFirstName(searchText);
+            List<Supplier> suppliersByLastName = supplierRepository.findByLastName(searchText);
+            List<Supplier> combinedList = new ArrayList<>();
+            combinedList.addAll(suppliersByFirstName);
+           combinedList.addAll(suppliersByLastName);
+
+            if (!combinedList.isEmpty()) {
+                for (Supplier supplier : combinedList) {
+                    tableModel.addRow(new Object[]{
+                        String.valueOf(supplier.getSupplierCode()),
+                        supplier.getFirstName(),
+                        supplier.getLastName(),
+                        supplier.getAddress(),
+                        supplier.getCity(),
+                        supplier.getCountry(),
+                        supplier.getPhoneNumber()
+                    });
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Supplier not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid supplier code", "Search Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
