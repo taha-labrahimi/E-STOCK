@@ -10,6 +10,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -259,19 +260,23 @@ public class ClientView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteclientActionPerformed
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        if (searchtextfield.getText().trim().isEmpty()) {
-            loadClientsAndPopulateTable();
-            return;
-        }
+       String searchText = searchtextfield.getText().trim();
 
-        try {
-            int clientCode = Integer.parseInt(searchtextfield.getText().trim());
+    if (searchText.isEmpty()) {
+        loadClientsAndPopulateTable();
+        return;
+    }
+
+    DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
+    String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+    tableModel.setColumnIdentifiers(columnNames);
+    tableModel.setRowCount(0);
+
+    try {
+        if (searchText.matches("\\d+")) { // If input is a number, consider it as ID
+            int clientCode= Integer.parseInt(searchText);
             Client client = clientRepository.findById(clientCode);
             if (client != null) {
-                DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-                String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
-                tableModel.setColumnIdentifiers(columnNames);
-                tableModel.setRowCount(0);
                 tableModel.addRow(new Object[]{
                     String.valueOf(client.getClientCode()),
                     client.getFirstName(),
@@ -284,9 +289,32 @@ public class ClientView extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
+        } else { // If input is not a number, consider it as Name or Surname
+            List<Client> suppliersByFirstName = clientRepository.findByFirstName(searchText);
+            List<Client> suppliersByLastName = clientRepository.findByLastName(searchText);
+            List<Client> combinedList = new ArrayList<>();
+            combinedList.addAll(suppliersByFirstName);
+           combinedList.addAll(suppliersByLastName);
+
+            if (!combinedList.isEmpty()) {
+                for (Client client : combinedList) {
+                    tableModel.addRow(new Object[]{
+                        String.valueOf(client.getClientCode()),
+                        client.getFirstName(),
+                        client.getLastName(),
+                        client.getAddress(),
+                        client.getCity(),
+                        client.getCountry(),
+                        client.getPhoneNumber()
+                    });
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
