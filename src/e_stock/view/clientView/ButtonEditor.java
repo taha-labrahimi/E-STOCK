@@ -14,6 +14,7 @@ public class ButtonEditor extends DefaultCellEditor {
     private JTable table;
     private ClientRepositoryImpl clientRepository;
     private ModifyClientView modifyClientView;
+    private DetailsClientView detailsClientView;
     private ClientView clientView;
 
     public ButtonEditor(Icon icon, ClientRepositoryImpl clientRepository, ModifyClientView modifyClientView, ClientView clientView) {
@@ -46,6 +47,9 @@ public class ButtonEditor extends DefaultCellEditor {
             } else if (table.getColumnName(table.getEditingColumn()).equals("Delete")) {
                 performDeleteAction(modelRow);
             }
+            else if (table.getColumnName(table.getEditingColumn()).equals("View")) {
+                performViewAction(modelRow);
+            }
         }
         isPushed = false;
         return "";
@@ -70,21 +74,21 @@ public class ButtonEditor extends DefaultCellEditor {
         modifyClientView.setVisible(true);
     }
 
-   private void performDeleteAction(int row) {
-    if (row >= 0 && row < table.getModel().getRowCount()) {
-        int clientCode = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-        if (!clientRepository.hasClientOrders(clientCode)) {
-            clientRepository.delete(clientCode);
-            JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            clientView.loadClientsAndPopulateTable();
+    private void performDeleteAction(int row) {
+        if (row >= 0) { // Ensure the row index is valid
+            int modelRow = table.convertRowIndexToModel(row);
+            int clientCode = Integer.parseInt(table.getModel().getValueAt(modelRow, 0).toString());
+            if (!clientRepository.hasClientOrders(clientCode)) {
+                clientRepository.delete(clientCode);
+                JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(clientView, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+            }
+            SwingUtilities.invokeLater(() -> clientView.loadClientsAndPopulateTable()); // Safely update the table model
         } else {
-            JOptionPane.showMessageDialog(clientView, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(clientView, "No row selected to delete.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(clientView, "Invalid row selected.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
-
 
     @Override
     public boolean stopCellEditing() {
@@ -95,5 +99,23 @@ public class ButtonEditor extends DefaultCellEditor {
     @Override
     protected void fireEditingStopped() {
         super.fireEditingStopped();
+    }
+
+    private void performViewAction(int modelRow) {
+        if(detailsClientView ==null){
+            detailsClientView =new DetailsClientView();
+        }
+         // Fetch client data from the row and set it to the modifyClientView
+       
+        detailsClientView.setFirstnam(table.getValueAt(modelRow, 1).toString());
+        detailsClientView.setLastname(table.getValueAt(modelRow, 2).toString());
+        detailsClientView.setAdresse(table.getValueAt(modelRow, 3).toString());
+        detailsClientView.setCity(table.getValueAt(modelRow, 4).toString());
+        detailsClientView.setCountry(table.getValueAt(modelRow, 5).toString());
+        detailsClientView.setPhonenumber(table.getValueAt(modelRow, 6).toString());
+
+        // Assuming ClientView.this refers to the current instance of your frame
+        clientView.setVisible(false);
+        detailsClientView.setVisible(true);
     }
 }

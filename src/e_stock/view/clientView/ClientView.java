@@ -13,6 +13,7 @@ import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,6 +28,7 @@ public class ClientView extends javax.swing.JFrame {
     private ClientRepositoryImpl clientRepository;
     private AddClientView addClientView;
     private ModifyClientView modifyClientView;
+    private DetailsClientView detailsClientView;
 
     public ClientView() {
     initComponents();
@@ -38,22 +40,27 @@ public class ClientView extends javax.swing.JFrame {
 
     Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
     Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+    Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
 
     // Assuming the column indices for "Edit" and "Delete" are correct
     TableColumnModel columnModel = tableclient.getColumnModel();
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellRenderer(new ButtonRenderer(editIcon));
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellEditor(
-        new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
-
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer(deleteIcon));
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(deleteIcon, clientRepository, modifyClientView, this));
+    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(7).setCellEditor(new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+    
+    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(8).setCellEditor(new ButtonEditor(deleteIcon, clientRepository, modifyClientView, this));
+    
+    columnModel.getColumn(9).setCellRenderer(new ButtonRenderer(ViewIcon));
+    columnModel.getColumn(9).setCellEditor(new ButtonEditor(ViewIcon, clientRepository, modifyClientView, this));
 
     // Set the preferred width for the "Edit" and "Delete" columns
     int buttonWidth = new JButton(editIcon).getPreferredSize().width;
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setPreferredWidth(40);
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setMaxWidth(40);
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setPreferredWidth(50);
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setMaxWidth(50);
+    columnModel.getColumn(7).setPreferredWidth(40);
+    columnModel.getColumn(7).setMaxWidth(40);
+    columnModel.getColumn(8).setPreferredWidth(50);
+    columnModel.getColumn(8).setMaxWidth(50);
+    columnModel.getColumn(9).setPreferredWidth(40);
+    columnModel.getColumn(9).setMaxWidth(40);
 
     tableclient.setRowHeight(40);  // Adjust row height if necessary
 }
@@ -63,7 +70,7 @@ public class ClientView extends javax.swing.JFrame {
     List<Client> clients = clientRepository.findAll();
     DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
     String[] columnNames = {
-        "Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete"
+        "Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete","View"
     };
     tableModel.setColumnIdentifiers(columnNames);
     tableModel.setRowCount(0); // Clear the table
@@ -77,27 +84,34 @@ public class ClientView extends javax.swing.JFrame {
             client.getCity(),
             client.getCountry(),
             client.getPhoneNumber(),
-            "Edit", // Instead of null, you can put placeholders or just leave it as is
-            "Delete" // Same here
+            "Edit", 
+            "Delete",
+            "View"
         });
     }
 
-    // Set up button renderers and editors
     Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
     Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
-    TableColumnModel columnModel = tableclient.getColumnModel();
-    
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellRenderer(new ButtonRenderer(editIcon));
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellEditor(new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+    Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
 
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer(deleteIcon));
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(deleteIcon, clientRepository, modifyClientView, this));
+    TableColumnModel columnModel = tableclient.getColumnModel();
+    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(7).setCellEditor(new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+    
+    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(8).setCellEditor(new ButtonEditor(deleteIcon, clientRepository, modifyClientView, this));
+    
+    columnModel.getColumn(9).setCellRenderer(new ButtonRenderer(ViewIcon));
+    columnModel.getColumn(9).setCellEditor(new ButtonEditor(ViewIcon, clientRepository, modifyClientView, this));
+    
     int buttonWidth = new JButton(editIcon).getPreferredSize().width;
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setPreferredWidth(40);
-    columnModel.getColumn(columnModel.getColumnCount() - 2).setMaxWidth(40);
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setPreferredWidth(50);
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setMaxWidth(50);
-    tableclient.setRowHeight(40); // Adjust if necessary
+    columnModel.getColumn(7).setPreferredWidth(40);
+    columnModel.getColumn(7).setMaxWidth(40);
+    columnModel.getColumn(8).setPreferredWidth(50);
+    columnModel.getColumn(8).setMaxWidth(50);
+    columnModel.getColumn(9).setPreferredWidth(40);
+    columnModel.getColumn(9).setMaxWidth(40);
+    tableclient.setRowHeight(40); 
 }
 
 
@@ -114,6 +128,7 @@ public class ClientView extends javax.swing.JFrame {
         searchtextfield = new javax.swing.JTextField();
         searchbtn = new javax.swing.JButton();
         printbtn = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -176,6 +191,13 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("view");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -183,19 +205,23 @@ public class ClientView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addclient)
                             .addComponent(printbtn)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(491, 491, 491)
+                        .addGap(488, 488, 488)
                         .addComponent(jLabel1)))
                 .addGap(0, 5, Short.MAX_VALUE))
         );
@@ -205,9 +231,10 @@ public class ClientView extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(searchbtn)
-                    .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchbtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(searchtextfield, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -307,6 +334,25 @@ public class ClientView extends javax.swing.JFrame {
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
         printTable();
     }//GEN-LAST:event_printbtnActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(detailsClientView ==null){
+            detailsClientView =new DetailsClientView();
+        }
+         // Fetch client data from the row and set it to the modifyClientView
+       
+        detailsClientView.setFirstnam(tableclient.getValueAt(tableclient.getSelectedRow(), 1).toString());
+        detailsClientView.setLastname(tableclient.getValueAt(tableclient.getSelectedRow(), 2).toString());
+        detailsClientView.setAdresse(tableclient.getValueAt(tableclient.getSelectedRow(), 3).toString());
+        detailsClientView.setCity(tableclient.getValueAt(tableclient.getSelectedRow(), 4).toString());
+        detailsClientView.setCountry(tableclient.getValueAt(tableclient.getSelectedRow(), 5).toString());
+        detailsClientView.setPhonenumber(tableclient.getValueAt(tableclient.getSelectedRow(), 6).toString());
+
+        // Assuming ClientView.this refers to the current instance of your frame
+        this.setVisible(false);
+        detailsClientView.setVisible(true);
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
     private void printTable() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Print Data");
@@ -382,6 +428,7 @@ public class ClientView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addclient;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
