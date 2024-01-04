@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ButtonRenderer extends JPanel implements TableCellRenderer {
+
     JButton editButton;
     JButton deleteButton;
 
@@ -27,34 +28,35 @@ public class ButtonRenderer extends JPanel implements TableCellRenderer {
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
-
-        // Add a mouse listener to change the button's background on click
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        button.setForeground(new Color(33, 37, 41)); // Dark grey color
         button.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                button.setBackground(Color.GRAY); // Color when button is pressed
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                button.setBackground(UIManager.getColor("Button.background")); // Default color when released
-            }
-
-            @Override
             public void mouseEntered(MouseEvent e) {
-                button.setContentAreaFilled(false);
+                button.setContentAreaFilled(true);
+                button.setBackground(new Color(230, 230, 230)); // Light grey on hover
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 button.setContentAreaFilled(false);
             }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                button.setBackground(new Color(200, 200, 200)); // Slightly darker on click
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button.setBackground(new Color(230, 230, 230)); // Back to light grey
+            }
         });
     }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus, int row, int column) {
+            boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
             editButton.setForeground(table.getSelectionForeground());
             editButton.setBackground(table.getSelectionBackground());
