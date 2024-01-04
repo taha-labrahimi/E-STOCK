@@ -77,6 +77,7 @@ public class ButtonEditor extends DefaultCellEditor {
             if (!clientRepository.hasClientOrders(deletedclientcode)) {
                 clientRepository.delete(deletedclientcode);
                 JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                clientView.loadClientsAndPopulateTable();
             } else {
                 JOptionPane.showMessageDialog(null, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
 
