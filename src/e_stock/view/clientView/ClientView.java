@@ -12,9 +12,14 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 public class ClientView extends javax.swing.JFrame {
 
@@ -29,16 +34,20 @@ public class ClientView extends javax.swing.JFrame {
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepository = new ClientRepositoryImpl(dbConnector);
         loadClientsAndPopulateTable();
+        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+        tableclient.getColumn("Actions").setCellRenderer(new ButtonRenderer(editIcon, deleteIcon));
+        tableclient.getColumn("Actions").setCellEditor(new ButtonEditor(editIcon, deleteIcon));
 
+        tableclient.setRowHeight(40);
     }
 
     protected void loadClientsAndPopulateTable() {
         List<Client> clients = clientRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-        String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+        String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Actions"}; // Added "Actions"
         tableModel.setColumnIdentifiers(columnNames);
-
-        tableModel.setRowCount(0); // Clear the table before loading new data
+        tableModel.setRowCount(0); // Clear the table
 
         for (Client client : clients) {
             tableModel.addRow(new Object[]{
@@ -48,7 +57,8 @@ public class ClientView extends javax.swing.JFrame {
                 client.getAddress(),
                 client.getCity(),
                 client.getCountry(),
-                client.getPhoneNumber()
+                client.getPhoneNumber(),
+                "Edit/Delete"
             });
         }
     }
