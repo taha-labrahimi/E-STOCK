@@ -14,7 +14,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
         setBorderPainted(false);
         setContentAreaFilled(false);
         setFont(new Font("Segoe UI", Font.BOLD, 12));
-        setForeground(new Color(33, 37, 41)); // Dark grey color
+        setForeground(new Color(33, 37, 41)); 
     }
 
     @Override
