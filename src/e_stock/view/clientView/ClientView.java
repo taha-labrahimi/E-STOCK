@@ -46,7 +46,7 @@ public class ClientView extends javax.swing.JFrame {
         new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
 
     columnModel.getColumn(columnModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer(deleteIcon));
-    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(deleteIcon, clientRepository, modifyClientView, this));
 
     // Set the preferred width for the "Edit" and "Delete" columns
     int buttonWidth = new JButton(editIcon).getPreferredSize().width;
@@ -60,28 +60,46 @@ public class ClientView extends javax.swing.JFrame {
 
 
     protected void loadClientsAndPopulateTable() {
-        List<Client> clients = clientRepository.findAll();
-        DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-        String[] columnNames = {
-            "Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete"
-        };
-        tableModel.setColumnIdentifiers(columnNames);
-        tableModel.setRowCount(0); // Clear the table
+    List<Client> clients = clientRepository.findAll();
+    DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
+    String[] columnNames = {
+        "Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete"
+    };
+    tableModel.setColumnIdentifiers(columnNames);
+    tableModel.setRowCount(0); // Clear the table
 
-        for (Client client : clients) {
-            tableModel.addRow(new Object[]{
-                client.getClientCode(),
-                client.getFirstName(),
-                client.getLastName(),
-                client.getAddress(),
-                client.getCity(),
-                client.getCountry(),
-                client.getPhoneNumber(),
-                null,
-                null
-            });
-        }
+    for (Client client : clients) {
+        tableModel.addRow(new Object[]{
+            client.getClientCode(),
+            client.getFirstName(),
+            client.getLastName(),
+            client.getAddress(),
+            client.getCity(),
+            client.getCountry(),
+            client.getPhoneNumber(),
+            "Edit", // Instead of null, you can put placeholders or just leave it as is
+            "Delete" // Same here
+        });
     }
+
+    // Set up button renderers and editors
+    Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+    Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+    TableColumnModel columnModel = tableclient.getColumnModel();
+    
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellEditor(new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(deleteIcon, clientRepository, modifyClientView, this));
+    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setPreferredWidth(40);
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setMaxWidth(40);
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setPreferredWidth(50);
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setMaxWidth(50);
+    tableclient.setRowHeight(40); // Adjust if necessary
+}
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
