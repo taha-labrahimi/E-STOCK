@@ -8,14 +8,15 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class ButtonEditor extends DefaultCellEditor {
+
     private JButton button;
     private boolean isPushed;
     private JTable table;
-    private ClientRepositoryImpl clientRepository;  
-    private ModifyClientView modifyClientView;    
-    private ClientView clientView ;
+    private ClientRepositoryImpl clientRepository;
+    private ModifyClientView modifyClientView;
+    private ClientView clientView;
 
-    public ButtonEditor(Icon icon, ClientRepositoryImpl clientRepository, ModifyClientView modifyClientView,ClientView clientView ) {
+    public ButtonEditor(Icon icon, ClientRepositoryImpl clientRepository, ModifyClientView modifyClientView, ClientView clientView) {
         super(new JCheckBox());
         this.clientRepository = clientRepository;
         this.modifyClientView = modifyClientView;
@@ -51,10 +52,10 @@ public class ButtonEditor extends DefaultCellEditor {
     }
 
     private void performEditAction(int row) {
-        if (modifyClientView == null ) {
+        if (modifyClientView == null) {
             modifyClientView = new ModifyClientView();
         }
-        
+
         // Fetch client data from the row and set it to the modifyClientView
         modifyClientView.setClientcode(table.getValueAt(row, 0).toString());
         modifyClientView.setFirstname(table.getValueAt(row, 1).toString());
@@ -73,12 +74,15 @@ public class ButtonEditor extends DefaultCellEditor {
         int selectedRowIndex = table.getSelectedRow();
         if (selectedRowIndex != -1) {
             int deletedclientcode = Integer.parseInt(table.getValueAt(selectedRowIndex, 0).toString());
-            clientRepository.delete(deletedclientcode);
-            JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (!clientRepository.hasClientOrders(deletedclientcode)) {
+                clientRepository.delete(deletedclientcode);
+                JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+
+            }
 
             clientView.loadClientsAndPopulateTable();
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

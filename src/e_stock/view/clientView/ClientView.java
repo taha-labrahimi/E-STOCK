@@ -92,8 +92,6 @@ public class ClientView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableclient = new javax.swing.JTable();
         addclient = new javax.swing.JButton();
-        modifyclient = new javax.swing.JButton();
-        deleteclient = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         searchtextfield = new javax.swing.JTextField();
         searchbtn = new javax.swing.JButton();
@@ -125,26 +123,6 @@ public class ClientView extends javax.swing.JFrame {
         addclient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addclientActionPerformed(evt);
-            }
-        });
-
-        modifyclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsedit30.png"))); // NOI18N
-        modifyclient.setBorder(null);
-        modifyclient.setContentAreaFilled(false);
-        modifyclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        modifyclient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modifyclientActionPerformed(evt);
-            }
-        });
-
-        deleteclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsdelete30.png"))); // NOI18N
-        deleteclient.setBorder(null);
-        deleteclient.setContentAreaFilled(false);
-        deleteclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        deleteclient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteclientActionPerformed(evt);
             }
         });
 
@@ -197,8 +175,6 @@ public class ClientView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addclient)
-                            .addComponent(modifyclient)
-                            .addComponent(deleteclient)
                             .addComponent(printbtn)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(491, 491, 491)
@@ -221,11 +197,7 @@ public class ClientView extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
                         .addComponent(addclient)
-                        .addGap(39, 39, 39)
-                        .addComponent(modifyclient)
-                        .addGap(45, 45, 45)
-                        .addComponent(deleteclient)
-                        .addGap(35, 35, 35)
+                        .addGap(179, 179, 179)
                         .addComponent(printbtn)))
                 .addGap(39, 39, 39))
         );
@@ -255,19 +227,6 @@ public class ClientView extends javax.swing.JFrame {
         this.setVisible(false);
         addClientView.setVisible(true);
     }//GEN-LAST:event_addclientActionPerformed
-
-    private void deleteclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteclientActionPerformed
-        int selectedRowIndex = tableclient.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            int deletedclientcode = Integer.parseInt(tableclient.getValueAt(selectedRowIndex, 0).toString());
-            clientRepository.delete(deletedclientcode);
-            JOptionPane.showMessageDialog(this, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            this.loadClientsAndPopulateTable();
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_deleteclientActionPerformed
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
         String searchText = searchtextfield.getText().trim();
@@ -330,26 +289,6 @@ public class ClientView extends javax.swing.JFrame {
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
         printTable();
     }//GEN-LAST:event_printbtnActionPerformed
-
-    private void modifyclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyclientActionPerformed
-        int selectedRowIndex = tableclient.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            if (modifyClientView == null) {
-                modifyClientView = new ModifyClientView();
-            }
-            modifyClientView.setClientcode(tableclient.getValueAt(selectedRowIndex, 0).toString());
-            modifyClientView.setFirstname(tableclient.getValueAt(selectedRowIndex, 1).toString());
-            modifyClientView.setLastname(tableclient.getValueAt(selectedRowIndex, 2).toString());
-            modifyClientView.setAdresse(tableclient.getValueAt(selectedRowIndex, 3).toString());
-            modifyClientView.setCity(tableclient.getValueAt(selectedRowIndex, 4).toString());
-            modifyClientView.setCountry(tableclient.getValueAt(selectedRowIndex, 5).toString());
-            modifyClientView.setPhonenumber(tableclient.getValueAt(selectedRowIndex, 6).toString());
-            this.setVisible(false);
-            modifyClientView.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_modifyclientActionPerformed
     private void printTable() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Print Data");
@@ -424,12 +363,10 @@ public class ClientView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addclient;
-    private javax.swing.JButton deleteclient;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton modifyclient;
     private javax.swing.JButton printbtn;
     private javax.swing.JButton searchbtn;
     private javax.swing.JTextField searchtextfield;
