@@ -4,16 +4,14 @@ public class OrderLine {
     private int orderId;
     private int productCode;
     private int quantityOrdered;
-    private double price; // Added price attribute
+    private double price; 
 
-    // Constructor without price - can be used if price is not known at object creation
     public OrderLine(int orderId, int productCode, int quantityOrdered) {
         this.orderId = orderId;
         this.productCode = productCode;
         this.quantityOrdered = quantityOrdered;
     }
 
-    // Constructor with price
     public OrderLine(int orderId, int productCode, int quantityOrdered, double price) {
         this.orderId = orderId;
         this.productCode = productCode;

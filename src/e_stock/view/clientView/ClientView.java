@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,24 +29,42 @@ public class ClientView extends javax.swing.JFrame {
     private ModifyClientView modifyClientView;
 
     public ClientView() {
-        initComponents();
-        setResizable(false);
-        setLocationRelativeTo(null);
-        DatabaseConnector dbConnector = new DatabaseConnector();
-        clientRepository = new ClientRepositoryImpl(dbConnector);
-        loadClientsAndPopulateTable();
-        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
-        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
-        tableclient.getColumn("Actions").setCellRenderer(new ButtonRenderer(editIcon, deleteIcon));
-        tableclient.getColumn("Actions").setCellEditor(new ButtonEditor(editIcon, deleteIcon));
+    initComponents();
+    setResizable(false);
+    setLocationRelativeTo(null);
+    DatabaseConnector dbConnector = new DatabaseConnector();
+    clientRepository = new ClientRepositoryImpl(dbConnector);
+    loadClientsAndPopulateTable();
 
-        tableclient.setRowHeight(40);
-    }
+    Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+    Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+
+    // Assuming the column indices for "Edit" and "Delete" are correct
+    TableColumnModel columnModel = tableclient.getColumnModel();
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setCellEditor(
+        new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setCellEditor(new ButtonEditor(editIcon, clientRepository, modifyClientView, this));
+
+    // Set the preferred width for the "Edit" and "Delete" columns
+    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setPreferredWidth(40);
+    columnModel.getColumn(columnModel.getColumnCount() - 2).setMaxWidth(40);
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setPreferredWidth(50);
+    columnModel.getColumn(columnModel.getColumnCount() - 1).setMaxWidth(50);
+
+    tableclient.setRowHeight(40);  // Adjust row height if necessary
+}
+
 
     protected void loadClientsAndPopulateTable() {
         List<Client> clients = clientRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-        String[] columnNames = {"Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Actions"}; // Added "Actions"
+        String[] columnNames = {
+            "Client Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete"
+        };
         tableModel.setColumnIdentifiers(columnNames);
         tableModel.setRowCount(0); // Clear the table
 
@@ -58,7 +77,8 @@ public class ClientView extends javax.swing.JFrame {
                 client.getCity(),
                 client.getCountry(),
                 client.getPhoneNumber(),
-                "Edit/Delete"
+                null,
+                null
             });
         }
     }
@@ -236,6 +256,81 @@ public class ClientView extends javax.swing.JFrame {
         addClientView.setVisible(true);
     }//GEN-LAST:event_addclientActionPerformed
 
+    private void deleteclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteclientActionPerformed
+        int selectedRowIndex = tableclient.getSelectedRow();
+        if (selectedRowIndex != -1) {
+            int deletedclientcode = Integer.parseInt(tableclient.getValueAt(selectedRowIndex, 0).toString());
+            clientRepository.delete(deletedclientcode);
+            JOptionPane.showMessageDialog(this, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            this.loadClientsAndPopulateTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteclientActionPerformed
+
+    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
+        String searchText = searchtextfield.getText().trim();
+
+        if (searchText.isEmpty()) {
+            loadClientsAndPopulateTable();
+            return;
+        }
+
+        DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
+        String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+        tableModel.setColumnIdentifiers(columnNames);
+        tableModel.setRowCount(0);
+
+        try {
+            if (searchText.matches("\\d+")) { // If input is a number, consider it as ID
+                int clientCode = Integer.parseInt(searchText);
+                Client client = clientRepository.findById(clientCode);
+                if (client != null) {
+                    tableModel.addRow(new Object[]{
+                        String.valueOf(client.getClientCode()),
+                        client.getFirstName(),
+                        client.getLastName(),
+                        client.getAddress(),
+                        client.getCity(),
+                        client.getCountry(),
+                        client.getPhoneNumber()
+                    });
+                } else {
+                    JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else { // If input is not a number, consider it as Name or Surname
+                List<Client> suppliersByFirstName = clientRepository.findByFirstName(searchText);
+                List<Client> suppliersByLastName = clientRepository.findByLastName(searchText);
+                List<Client> combinedList = new ArrayList<>();
+                combinedList.addAll(suppliersByFirstName);
+                combinedList.addAll(suppliersByLastName);
+
+                if (!combinedList.isEmpty()) {
+                    for (Client client : combinedList) {
+                        tableModel.addRow(new Object[]{
+                            String.valueOf(client.getClientCode()),
+                            client.getFirstName(),
+                            client.getLastName(),
+                            client.getAddress(),
+                            client.getCity(),
+                            client.getCountry(),
+                            client.getPhoneNumber()
+                        });
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_searchbtnActionPerformed
+
+    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
+        printTable();
+    }//GEN-LAST:event_printbtnActionPerformed
+
     private void modifyclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyclientActionPerformed
         int selectedRowIndex = tableclient.getSelectedRow();
         if (selectedRowIndex != -1) {
@@ -255,81 +350,6 @@ public class ClientView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_modifyclientActionPerformed
-
-    private void deleteclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteclientActionPerformed
-        int selectedRowIndex = tableclient.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            int deletedclientcode = Integer.parseInt(tableclient.getValueAt(selectedRowIndex, 0).toString());
-            clientRepository.delete(deletedclientcode);
-            JOptionPane.showMessageDialog(this, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            this.loadClientsAndPopulateTable();
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_deleteclientActionPerformed
-
-    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-       String searchText = searchtextfield.getText().trim();
-
-    if (searchText.isEmpty()) {
-        loadClientsAndPopulateTable();
-        return;
-    }
-
-    DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
-    String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
-    tableModel.setColumnIdentifiers(columnNames);
-    tableModel.setRowCount(0);
-
-    try {
-        if (searchText.matches("\\d+")) { // If input is a number, consider it as ID
-            int clientCode= Integer.parseInt(searchText);
-            Client client = clientRepository.findById(clientCode);
-            if (client != null) {
-                tableModel.addRow(new Object[]{
-                    String.valueOf(client.getClientCode()),
-                    client.getFirstName(),
-                    client.getLastName(),
-                    client.getAddress(),
-                    client.getCity(),
-                    client.getCountry(),
-                    client.getPhoneNumber()
-                });
-            } else {
-                JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else { // If input is not a number, consider it as Name or Surname
-            List<Client> suppliersByFirstName = clientRepository.findByFirstName(searchText);
-            List<Client> suppliersByLastName = clientRepository.findByLastName(searchText);
-            List<Client> combinedList = new ArrayList<>();
-            combinedList.addAll(suppliersByFirstName);
-           combinedList.addAll(suppliersByLastName);
-
-            if (!combinedList.isEmpty()) {
-                for (Client client : combinedList) {
-                    tableModel.addRow(new Object[]{
-                        String.valueOf(client.getClientCode()),
-                        client.getFirstName(),
-                        client.getLastName(),
-                        client.getAddress(),
-                        client.getCity(),
-                        client.getCountry(),
-                        client.getPhoneNumber()
-                    });
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Client not found", "Search", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Please enter a valid client code", "Search Error", JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_searchbtnActionPerformed
-
-    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
-        printTable();
-    }//GEN-LAST:event_printbtnActionPerformed
     private void printTable() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Print Data");
