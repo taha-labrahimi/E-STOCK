@@ -4,24 +4,32 @@
  */
 package e_stock.view;
 
+import e_stock.Model.User;
 import e_stock.view.ProductView.AddProductView;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
 import e_stock.view.supplierView.SupplierView;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class HOME extends javax.swing.JFrame {
-
+    
+    private User user;
     private ProductView productView;
     private ClientView clientView;
     private SupplierView supplierView;
+    private UserProfil userProfil;
 
     public HOME() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
     }
-
+     public void setLoggedInUser(User user) {
+        this.user = user;
+        // You can update the UI elements with user information if needed
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,6 +41,9 @@ public class HOME extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        userimage = new javax.swing.JLabel();
+        Profilbtn = new javax.swing.JButton();
+        pwdchangebtn = new javax.swing.JButton();
         Clientsbtn = new javax.swing.JButton();
         Fournisseurbtn = new javax.swing.JButton();
         Productsbtn = new javax.swing.JButton();
@@ -42,15 +53,43 @@ public class HOME extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(102, 102, 102));
 
+        userimage.setBackground(new java.awt.Color(255, 255, 255));
+
+        Profilbtn.setText("Profil");
+        Profilbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProfilbtnActionPerformed(evt);
+            }
+        });
+
+        pwdchangebtn.setText("Change pwd");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 165, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pwdchangebtn, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                            .addComponent(Profilbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59)
+                .addComponent(Profilbtn)
+                .addGap(33, 33, 33)
+                .addComponent(pwdchangebtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Clientsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ClientsIcon.png"))); // NOI18N
@@ -149,6 +188,22 @@ public class HOME extends javax.swing.JFrame {
         supplierView.setVisible(true);
     }//GEN-LAST:event_FournisseurbtnActionPerformed
 
+    private void ProfilbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfilbtnActionPerformed
+        // TODO add your handling code here:
+        if (user != null) {
+            // Display the user profile view with JTable
+            if (userProfil == null) {
+                userProfil = new UserProfil();
+            }
+           this.setVisible(false);
+            userProfil.displayUserData(user);
+            userProfil.setVisible(true);
+        } else {
+            // User not logged in, handle accordingly
+            JOptionPane.showMessageDialog(this, "User not logged in!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_ProfilbtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -189,8 +244,11 @@ public class HOME extends javax.swing.JFrame {
     private javax.swing.JButton Clientsbtn;
     private javax.swing.JButton Fournisseurbtn;
     private javax.swing.JButton Productsbtn;
+    private javax.swing.JButton Profilbtn;
     private javax.swing.JButton Usersbtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton pwdchangebtn;
+    private javax.swing.JLabel userimage;
     // End of variables declaration//GEN-END:variables
 }

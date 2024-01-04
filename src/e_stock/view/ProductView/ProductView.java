@@ -341,7 +341,7 @@ public class ProductView extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid Product code", "Search Error", JOptionPane.ERROR_MESSAGE);
         }
-        tableproducts.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
+        tableproducts.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed

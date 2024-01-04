@@ -179,6 +179,7 @@ public class LOGIN extends javax.swing.JFrame {
             // Login success
             JOptionPane.showMessageDialog(this, "Login successful!");
             this.setVisible(false);
+             home.setLoggedInUser(user);
             home.setVisible(true);
         } else {
             // Login failed
