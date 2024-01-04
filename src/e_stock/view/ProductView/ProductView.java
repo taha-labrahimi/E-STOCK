@@ -1,6 +1,5 @@
 package e_stock.view.ProductView;
 
-import e_stock.view.ProductView.AddProductView;
 import e_stock.Model.Product;
 import e_stock.Model.ImageRenderer;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
@@ -21,6 +20,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -302,6 +302,11 @@ public class ProductView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteProductActionPerformed
 
+    public void setSearchtextfield(int productcode) {
+        this.searchtextfield.setText(String.valueOf(productcode));
+        searchbtn.doClick();
+    }
+    
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
         if (searchtextfield.getText().trim().isEmpty()) {
             loadProductAndPopulateTable();
