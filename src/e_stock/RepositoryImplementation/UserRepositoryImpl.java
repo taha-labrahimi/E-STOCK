@@ -34,6 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("userType"),
+                        rs.getString("image"),
                         rs.getString("email"),
                         rs.getString("firstName"),
                         rs.getString("lastName")

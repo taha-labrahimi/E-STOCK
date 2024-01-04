@@ -5,16 +5,18 @@ public class User {
     private String username;
     private String password; 
     private String userType;
+    private String picture; 
     private String email; 
     private String firstName;
     private String lastName;
 
     // Constructor
-    public User(int userID, String username, String password, String userType, String email, String firstName, String lastName) {
+    public User(int userID, String username, String password, String userType,String picture, String email, String firstName, String lastName) {
         this.userID = userID;
         this.username = username;
         this.password = password;
         this.userType = userType;
+        this.picture=picture;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -78,6 +80,10 @@ public class User {
         this.lastName = lastName;
     }
 
+     public Object[] getUserData() {
+        return new Object[]{userID,username,userType,email,firstName,lastName 
+        };
+    }
     @Override
     public String toString() {
         return "User{" +
