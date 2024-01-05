@@ -7,6 +7,7 @@ package e_stock.view;
 import e_stock.Model.User;
 import e_stock.RepositoryImplementation.UserRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -348,20 +349,24 @@ public class UserProfil extends javax.swing.JFrame {
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         try {
-        
+    
         ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
-        BufferedImage bufferedImage = new BufferedImage(
-            imageIconDeLabel.getIconWidth(),
-            imageIconDeLabel.getIconHeight(),
-            BufferedImage.TYPE_INT_RGB);
-            bufferedImage.createGraphics().drawImage(
-            imageIconDeLabel.getImage(),
-            0,
-            0,
-            null);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "png", baos);
-        byte[] imageBytes = baos.toByteArray();
+        byte[] imageBytes = null;
+
+        // Vérifiez si imageIconDeLabel n'est pas null avant de traiter l'image
+        if (imageIconDeLabel != null) {
+            BufferedImage bufferedImage = new BufferedImage(
+                imageIconDeLabel.getIconWidth(),
+                imageIconDeLabel.getIconHeight(),
+                BufferedImage.TYPE_INT_RGB);
+            Graphics g = bufferedImage.createGraphics();
+            g.drawImage(imageIconDeLabel.getImage(), 0, 0, null);
+            g.dispose();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            imageBytes = baos.toByteArray();
+        }
         
         
         
