@@ -278,7 +278,6 @@
         <Component class="javax.swing.JButton" name="Edit">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit"/>
-            <Property name="actionCommand" type="java.lang.String" value="Edit"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EditActionPerformed"/>
@@ -287,7 +286,6 @@
         <Component class="javax.swing.JButton" name="Save">
           <Properties>
             <Property name="text" type="java.lang.String" value="Save"/>
-            <Property name="actionCommand" type="java.lang.String" value="Save"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>

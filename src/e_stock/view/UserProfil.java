@@ -41,6 +41,8 @@ public class UserProfil extends javax.swing.JFrame {
     }
     public void displayUserData(User user) {
         // Code to update the JTable with user information
+        
+        userID.setText(""+user.getUserID());
         username.setText(user.getUsername());
         Password.setText(user.getPassword());
         usertype.setText(user.getUserType());
@@ -164,7 +166,6 @@ public class UserProfil extends javax.swing.JFrame {
         lastname.setEditable(false);
 
         Edit.setText("Edit");
-        Edit.setActionCommand("Edit");
         Edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditActionPerformed(evt);
@@ -172,7 +173,6 @@ public class UserProfil extends javax.swing.JFrame {
         });
 
         Save.setText("Save");
-        Save.setActionCommand("Save");
         Save.setEnabled(false);
         Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -365,7 +365,7 @@ public class UserProfil extends javax.swing.JFrame {
         
         
         
-        User user = new User(username.getText(),Password.getText(),usertype.getText(),imageBytes,email.getText(),firstname.getName(),lastname.getText());
+        User user = new User(Integer.parseInt(userID.getText()),username.getText(),Password.getText(),usertype.getText(),imageBytes,email.getText(),firstname.getName(),lastname.getText());
         userRepository.update(user);
         
         JOptionPane.showMessageDialog(this, "User modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);

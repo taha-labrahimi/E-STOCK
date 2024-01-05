@@ -187,7 +187,7 @@ public class LOGIN extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Login successful!");
             this.setVisible(false);
              home.setLoggedInUser(user);
-            home.setVisible(true);
+             home.setVisible(true);
         } else {
             // Login failed
             JOptionPane.showMessageDialog(this, "Login failed. Please check your username and password.", "Login Error", JOptionPane.ERROR_MESSAGE);
