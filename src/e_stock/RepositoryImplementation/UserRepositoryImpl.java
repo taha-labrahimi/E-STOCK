@@ -30,6 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             if (rs.next()) {
                 user = new User(
+                        rs.getInt("userID"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("userType"),

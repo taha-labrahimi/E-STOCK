@@ -11,7 +11,16 @@ public class User {
     private String lastName;
 
     // Constructor
-    
+    public User(int userID,String username, String password, String userType,byte[] image, String email, String firstName, String lastName) {
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+        this.image=image;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
     public User(String username, String password, String userType,byte[] image, String email, String firstName, String lastName) {
         this.username = username;
         this.password = password;
