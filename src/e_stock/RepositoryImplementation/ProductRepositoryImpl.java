@@ -31,7 +31,8 @@ public class ProductRepositoryImpl implements ProductRepository{
                 rs.getString("productName"),
                 rs.getInt("QteStock"),
                 rs.getFloat("productUnitPrice"),
-                rs.getBytes("image")
+                rs.getBytes("image"),
+                rs.getInt("supplierCode")
             );
             return product;
         }
@@ -57,7 +58,8 @@ public class ProductRepositoryImpl implements ProductRepository{
                 rs.getString("productName"),
                 rs.getInt("QteStock"),
                 rs.getFloat("productUnitPrice"),
-                rs.getBytes("image")
+                rs.getBytes("image"),
+                rs.getInt("supplierCode")
                 ));
             }
         } catch (SQLException ex) {
@@ -70,13 +72,14 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public void save(Product product) {
-        String sql = "INSERT INTO products (ProductName, ProductUnitPrice, image,QteStock) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO products (ProductName, ProductUnitPrice, image,QteStock,supplierCode) VALUES (?, ?, ?,?,?)";
         try (Connection conn = dbConnector.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, product.getProductName());
             pstmt.setFloat(2, product.getProductUnitPrice());
             pstmt.setBytes(3, product.getImage());
             pstmt.setInt(4, product.getQteStock());
+            pstmt.setInt(5, product.getSupplierCode());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(); 
@@ -87,7 +90,7 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public void update(Product product) {
-        String sql = "UPDATE products SET ProductName = ?, ProductUnitPrice = ?, image = ? ,QteStock = ? WHERE ProductCode = ?";
+        String sql = "UPDATE products SET ProductName = ?, ProductUnitPrice = ?, image = ? ,QteStock = ?,supplierCode=? WHERE ProductCode = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
@@ -95,7 +98,9 @@ public class ProductRepositoryImpl implements ProductRepository{
             pstmt.setFloat(2, product.getProductUnitPrice());
             pstmt.setBytes(3, product.getImage());
             pstmt.setInt(4, product.getQteStock());
-            pstmt.setInt(5, product.getProductCode());
+            pstmt.setInt(5, product.getSupplierCode());
+            pstmt.setInt(6, product.getProductCode());
+
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -117,5 +122,24 @@ public class ProductRepositoryImpl implements ProductRepository{
             Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public boolean hassupplier(int supplierCode) {
+        String sql = "SELECT COUNT(*) FROM products WHERE supplierCode = ?";
+        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, supplierCode);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            // Optionally handle the exception more gracefully
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
 }
 

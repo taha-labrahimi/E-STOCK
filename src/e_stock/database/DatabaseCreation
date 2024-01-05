@@ -19,7 +19,10 @@ CREATE TABLE IF NOT EXISTS products (
     ProductCode int auto_increment PRIMARY KEY,
     ProductName VARCHAR(100),
     ProductUnitPrice float,
-    image BLOB
+    image BLOB,
+    QteStock int,
+    supplierCode int,
+    FOREIGN KEY (supplierCode) REFERENCES suppliers(supplierCode) on delete cascade on update cascade
 );
 
 CREATE TABLE Stock (
@@ -83,3 +86,4 @@ CREATE TABLE IF NOT EXISTS Users (
     firstName VARCHAR(100),
     lastName VARCHAR(100)
 );
+

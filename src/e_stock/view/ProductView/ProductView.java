@@ -2,8 +2,12 @@ package e_stock.view.ProductView;
 
 import e_stock.Model.Product;
 import e_stock.Model.ImageRenderer;
+import e_stock.Model.Supplier;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
+import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import e_stock.view.ProductView.ButtonEditor;
+import e_stock.view.ProductView.ButtonRenderer;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -18,15 +22,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 public class ProductView extends javax.swing.JFrame {
 
     private ProductRepositoryImpl productRepository;
+    private SupplierRepositoryImpl supplierRepository;
     private AddProductView addProductView;
     private ModifyProductView modifyProductView;
     private DetailsProductView detailsProductView;
@@ -38,18 +46,46 @@ public class ProductView extends javax.swing.JFrame {
         // Initialize the database connection and repository
         DatabaseConnector dbConnector = new DatabaseConnector();
         productRepository = new ProductRepositoryImpl(dbConnector);
+        supplierRepository = new SupplierRepositoryImpl(dbConnector);
         loadProductAndPopulateTable();
+        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
+
+    // Assuming the column indices for "Edit" and "Delete" are correct
+    TableColumnModel columnModel = tableproducts.getColumnModel();
+    columnModel.getColumn(6).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this));
+    
+    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this));
+    
+    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(ViewIcon));
+    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this));
+
+    // Set the preferred width for the "Edit" and "Delete" columns
+    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+    columnModel.getColumn(6).setPreferredWidth(40);
+    columnModel.getColumn(6).setMaxWidth(40);
+    columnModel.getColumn(7).setPreferredWidth(50);
+    columnModel.getColumn(7).setMaxWidth(50);
+    columnModel.getColumn(8).setPreferredWidth(40);
+    columnModel.getColumn(8).setMaxWidth(40);
+
+    tableproducts.setRowHeight(40);  // Adjust row height if necessary
     }
 
     protected void loadProductAndPopulateTable() {
         List<Product> products = productRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
-        String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Image"};
+        String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
         tableModel.setColumnIdentifiers(columnNames);
         tableproducts.setRowHeight(60);
         tableModel.setRowCount(0); // Clear the table before loading new data
 
         for (Product product : products) {
+            Supplier supplier = supplierRepository.findById(product.getSupplierCode());
+            String supplierName = (supplier != null) ? supplier.getFirstName() + " " + supplier.getLastName() : "Unknown Supplier";
             byte[] imageBytes = product.getImage();
             ImageIcon image = null;
         if (imageBytes != null) {
@@ -68,10 +104,37 @@ public class ProductView extends javax.swing.JFrame {
                 product.getProductName(),
                 product.getQteStock(),
                 product.getProductUnitPrice(),
-                image
+                supplierName,
+                image,
+                "Edit", 
+                "Delete",
+                "View"
             });
         }
-        tableproducts.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+        tableproducts.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());
+        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
+
+    // Assuming the column indices for "Edit" and "Delete" are correct
+    TableColumnModel columnModel = tableproducts.getColumnModel();
+    columnModel.getColumn(6).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this));
+    
+    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this));
+    
+    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(ViewIcon));
+    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this));
+
+    // Set the preferred width for the "Edit" and "Delete" columns
+    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+    columnModel.getColumn(6).setPreferredWidth(40);
+    columnModel.getColumn(6).setMaxWidth(40);
+    columnModel.getColumn(7).setPreferredWidth(50);
+    columnModel.getColumn(7).setMaxWidth(50);
+    columnModel.getColumn(8).setPreferredWidth(40);
+    columnModel.getColumn(8).setMaxWidth(40);
         
         
     }
@@ -317,6 +380,8 @@ public class ProductView extends javax.swing.JFrame {
             int productCode = Integer.parseInt(searchtextfield.getText().trim());
             Product product = productRepository.findById(productCode);
             if (product != null) {
+            Supplier supplier = supplierRepository.findById(product.getSupplierCode());
+            String supplierName = (supplier != null) ? supplier.getFirstName() + " " + supplier.getLastName() : "Unknown Supplier";
             byte[] imageBytes = product.getImage();
             ImageIcon image = null;
             if (imageBytes != null) {
@@ -330,7 +395,7 @@ public class ProductView extends javax.swing.JFrame {
                 image = new ImageIcon(scaledImg);
             }
                 DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
-                String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Image"};
+                String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
                 tableModel.setColumnIdentifiers(columnNames);
                 tableModel.setRowCount(0);
                 tableModel.addRow(new Object[]{
@@ -338,7 +403,11 @@ public class ProductView extends javax.swing.JFrame {
                     product.getProductName(),
                     product.getQteStock(),
                     product.getProductUnitPrice(),
-                    image
+                    supplierName,
+                    image,
+                    "Edit", 
+                    "Delete",
+                    "View"
                 });
             } else {
                 JOptionPane.showMessageDialog(this, "Product not found", "Search", JOptionPane.INFORMATION_MESSAGE);
@@ -346,7 +415,32 @@ public class ProductView extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid Product code", "Search Error", JOptionPane.ERROR_MESSAGE);
         }
-        tableproducts.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
+
+    // Assuming the column indices for "Edit" and "Delete" are correct
+    TableColumnModel columnModel = tableproducts.getColumnModel();
+    columnModel.getColumn(6).setCellRenderer(new ButtonRenderer(editIcon));
+    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this));
+    
+    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(deleteIcon));
+    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this));
+    
+    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(ViewIcon));
+    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this));
+
+    // Set the preferred width for the "Edit" and "Delete" columns
+    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+    columnModel.getColumn(6).setPreferredWidth(40);
+    columnModel.getColumn(6).setMaxWidth(40);
+    columnModel.getColumn(7).setPreferredWidth(50);
+    columnModel.getColumn(7).setMaxWidth(50);
+    columnModel.getColumn(8).setPreferredWidth(40);
+    columnModel.getColumn(8).setMaxWidth(40);
+
+    tableproducts.setRowHeight(40);  // Adjust row height if necessary
+        tableproducts.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
@@ -364,7 +458,8 @@ public class ProductView extends javax.swing.JFrame {
             detailsProductView.setProductname(tableproducts.getValueAt(selectedRowIndex, 1).toString());
             detailsProductView.setQteTextField(tableproducts.getValueAt(selectedRowIndex, 2).toString());
             detailsProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 3).toString());
-            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 4);
+            detailsProductView.setSupplierName(tableproducts.getValueAt(selectedRowIndex, 4).toString());
+            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 5);
             detailsProductView.setImage(imageicon);
             this.setVisible(false);
             detailsProductView.setVisible(true);
