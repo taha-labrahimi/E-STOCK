@@ -5,18 +5,18 @@ public class User {
     private String username;
     private String password; 
     private String userType;
-    private String picture; 
+    private byte[] image; 
     private String email; 
     private String firstName;
     private String lastName;
 
     // Constructor
-    public User(int userID, String username, String password, String userType,String picture, String email, String firstName, String lastName) {
-        this.userID = userID;
+    
+    public User(String username, String password, String userType,byte[] image, String email, String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.userType = userType;
-        this.picture=picture;
+        this.image=image;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,7 +55,13 @@ public class User {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+    public byte[] getImage() {
+        return image;
+    }
 
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
     public String getEmail() {
         return email;
     }

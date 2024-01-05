@@ -6,6 +6,15 @@ public class Product {
     private float productUnitPrice;
     private byte[] image;
     private Integer QteStock;
+    private Integer supplierCode;
+
+    public void setSupplierCode(Integer supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public Integer getSupplierCode() {
+        return supplierCode;
+    }
 
     public void setQteStock(Integer QteStock) {
         this.QteStock = QteStock;
@@ -15,21 +24,25 @@ public class Product {
         return QteStock;
     }
     
-    public Product(Integer productCode, String productName, int QteStock,float productUnitPrice, byte[] image) {
+    public Product(Integer productCode, String productName, int QteStock,float productUnitPrice, byte[] image,int supplier) {
         this.productCode = productCode;
         this.productName = productName;
         this.QteStock = QteStock;
         this.productUnitPrice = productUnitPrice;
         this.image = image;
+        this.supplierCode=supplier;
     }
-    public Product(String productName, int QteStock, float productUnitPrice, byte[] image) {
+    public Product(String productName, int QteStock, float productUnitPrice, byte[] image,int supplier) {
         this.productName = productName;
         this.QteStock = QteStock;
         this.productUnitPrice = productUnitPrice;
         this.image = image;
+        this.supplierCode=supplier;
     }
     
     // Getters et Setters
+
+    
     public int getProductCode() {
         return productCode;
     }

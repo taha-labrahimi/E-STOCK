@@ -195,7 +195,6 @@ public class HOME extends javax.swing.JFrame {
             if (userProfil == null) {
                 userProfil = new UserProfil();
             }
-           this.setVisible(false);
             userProfil.displayUserData(user);
             userProfil.setVisible(true);
         } else {

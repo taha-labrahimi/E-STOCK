@@ -30,11 +30,10 @@ public class UserRepositoryImpl implements UserRepository {
 
             if (rs.next()) {
                 user = new User(
-                        rs.getInt("userID"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("userType"),
-                        rs.getString("image"),
+                        rs.getBytes("image"),
                         rs.getString("email"),
                         rs.getString("firstName"),
                         rs.getString("lastName")
@@ -46,6 +45,26 @@ public class UserRepositoryImpl implements UserRepository {
             Logger.getLogger(UserRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return user;
+    }
+    public void update(User user) {
+        String sql = "UPDATE users SET username = ?, password = ? ,userType = ?,image=?,email=?,firstName=?,lastName=? WHERE userID = ?";
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getUserType());
+            pstmt.setBytes(4, user.getImage());
+            pstmt.setString(5, user.getEmail());
+            pstmt.setString(6, user.getFirstName());
+            pstmt.setString(7, user.getLastName());
+            pstmt.setInt(8, user.getUserID());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 
