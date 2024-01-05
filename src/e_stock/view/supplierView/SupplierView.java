@@ -8,6 +8,7 @@ import e_stock.Model.Supplier;
 import e_stock.Repository.SupplierRepository;
 import e_stock.database.DatabaseConnector;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
+import e_stock.view.HOME;
 import e_stock.view.supplierView.AddSupplierView;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,9 +18,13 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 /**
  *
  * @author douae
@@ -30,7 +35,7 @@ public class SupplierView extends javax.swing.JFrame {
     private AddSupplierView addSupplierView;
     private ModifySupplierView modifySupplierView;
      private DetailsSupplierView detailsSupplierView;
-
+private HOME homeView;
     /**
      * Creates new form SupplierView
      */
@@ -46,7 +51,7 @@ public class SupplierView extends javax.swing.JFrame {
      protected void loadSuupliersAndPopulateTable() {
         List<Supplier> suppliers = supplierRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tablesupplier.getModel();
-        String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
+        String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number" ,"Edit", "Delete", "View"};
         tableModel.setColumnIdentifiers(columnNames);
 
         tableModel.setRowCount(0); // Clear the table before loading new data
@@ -59,9 +64,37 @@ public class SupplierView extends javax.swing.JFrame {
                 supplier.getAddress(),
                 supplier.getCity(),
                 supplier.getCountry(),
-                supplier.getPhoneNumber()
+                supplier.getPhoneNumber(),
+                "Edit",
+                "Delete",
+                "View"
             });
         }
+         setUpTableButtons();
+    }
+     private void setUpTableButtons() {
+        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
+
+        TableColumnModel columnModel = tablesupplier.getColumnModel();
+        columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(editIcon));
+        columnModel.getColumn(7).setCellEditor(new ButtonEditor(editIcon, supplierRepository, modifySupplierView, this));
+
+        columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(deleteIcon));
+        columnModel.getColumn(8).setCellEditor(new ButtonEditor(deleteIcon, supplierRepository, modifySupplierView, this));
+
+        columnModel.getColumn(9).setCellRenderer(new ButtonRenderer(ViewIcon));
+        columnModel.getColumn(9).setCellEditor(new ButtonEditor(ViewIcon, supplierRepository, modifySupplierView, this));
+
+        int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+        columnModel.getColumn(7).setPreferredWidth(40);
+        columnModel.getColumn(7).setMaxWidth(40);
+        columnModel.getColumn(8).setPreferredWidth(50);
+        columnModel.getColumn(8).setMaxWidth(50);
+        columnModel.getColumn(9).setPreferredWidth(40);
+        columnModel.getColumn(9).setMaxWidth(40);
+        tablesupplier.setRowHeight(40);
     }
 
     /**
@@ -84,6 +117,7 @@ public class SupplierView extends javax.swing.JFrame {
         searchbtn = new javax.swing.JButton();
         printbtn = new javax.swing.JButton();
         detailsbtn = new javax.swing.JButton();
+        backbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -149,10 +183,16 @@ public class SupplierView extends javax.swing.JFrame {
         });
 
         detailsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/detailsicon.png"))); // NOI18N
-        detailsbtn.setActionCommand("");
         detailsbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 detailsbtnActionPerformed(evt);
+            }
+        });
+
+        backbtn.setText("Back");
+        backbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backbtnActionPerformed(evt);
             }
         });
 
@@ -179,7 +219,9 @@ public class SupplierView extends javax.swing.JFrame {
                                     .addComponent(detailsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(522, 522, 522)
+                        .addGap(41, 41, 41)
+                        .addComponent(backbtn)
+                        .addGap(409, 409, 409)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -206,7 +248,11 @@ public class SupplierView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(detailsbtn))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(backbtn)))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -366,6 +412,15 @@ public class SupplierView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_detailsbtnActionPerformed
 
+    private void backbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbtnActionPerformed
+        // TODO add your handling code here:
+           if (homeView == null) {
+            homeView = new HOME();
+        }
+        this.setVisible(false);
+        homeView.setVisible(true);
+    }//GEN-LAST:event_backbtnActionPerformed
+
     private void printTable() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Print Data");
@@ -438,6 +493,7 @@ public class SupplierView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddSupplier;
+    private javax.swing.JButton backbtn;
     private javax.swing.JButton deletesupplier;
     private javax.swing.JButton detailsbtn;
     private javax.swing.JLabel jLabel1;
