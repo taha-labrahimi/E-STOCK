@@ -54,7 +54,7 @@ public class ProductRepositoryImpl implements ProductRepository{
             
             while (rs.next()) {
                 products.add(new Product(
-                    rs.getInt("productCode"),
+                rs.getInt("productCode"),
                 rs.getString("productName"),
                 rs.getInt("QteStock"),
                 rs.getFloat("productUnitPrice"),
