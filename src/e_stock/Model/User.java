@@ -9,7 +9,7 @@ public class User {
     private String email; 
     private String firstName;
     private String lastName;
-    
+
     // Constructor
     public User(int userID,String username, String password, String userType,byte[] image, String email, String firstName, String lastName) {
         this.userID = userID;
@@ -21,7 +21,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    // Constructor 2
     public User(String username, String password, String userType,byte[] image, String email, String firstName, String lastName) {
         this.username = username;
         this.password = password;
