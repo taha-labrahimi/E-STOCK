@@ -2,6 +2,7 @@ package e_stock.view.OrderView;
 
 import e_stock.view.clientView.*;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
+import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
 import e_stock.view.clientView.ClientView;
 import e_stock.view.clientView.ModifyClientView;
@@ -16,13 +17,15 @@ public class ButtonEditor extends DefaultCellEditor {
     private boolean isPushed;
     private JTable table;
     private OrderRepositoryImpl orderRepositoryImpl;
+    private OrderLineRepositoryImpl orderLineRepositoryImpl;
     private ModifyOrderView modifyOrderView;
     private DetailsClientView detailsClientView;
     private OrderView orderView;
 
-    public ButtonEditor(Icon icon, OrderRepositoryImpl orderRepositoryImpl, ModifyOrderView modifyOrderView, OrderView orderView) {
+    public ButtonEditor(Icon icon, OrderRepositoryImpl orderRepositoryImpl, OrderLineRepositoryImpl orderLineRepositoryImpl, ModifyOrderView modifyOrderView, OrderView orderView) {
         super(new JCheckBox());
         this.orderRepositoryImpl = orderRepositoryImpl;
+        this.orderLineRepositoryImpl = orderLineRepositoryImpl;
         this.modifyOrderView = modifyOrderView;
         this.orderView = orderView;
         this.button = new JButton(icon);
@@ -49,8 +52,7 @@ public class ButtonEditor extends DefaultCellEditor {
                 performEditAction(modelRow);
             } else if (table.getColumnName(table.getEditingColumn()).equals("Delete")) {
                 performDeleteAction(modelRow);
-            }
-            else if (table.getColumnName(table.getEditingColumn()).equals("View")) {
+            } else if (table.getColumnName(table.getEditingColumn()).equals("View")) {
                 performViewAction(modelRow);
             }
         }
@@ -77,19 +79,16 @@ public class ButtonEditor extends DefaultCellEditor {
     }
 
     private void performDeleteAction(int row) {
-//        if (row >= 0) { // Ensure the row index is valid
-//            int modelRow = table.convertRowIndexToModel(row);
-//            int clientCode = Integer.parseInt(table.getModel().getValueAt(modelRow, 0).toString());
-//            if (!clientRepository.hasClientOrders(clientCode)) {
-//                clientRepository.delete(clientCode);
-//                JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-//            } else {
-//                JOptionPane.showMessageDialog(clientView, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//           // SwingUtilities.invokeLater(() -> clientView.loadClientsAndPopulateTable()); // Safely update the table model
-//        } else {
-//            JOptionPane.showMessageDialog(clientView, "No row selected to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+        if (row >= 0) { // Ensure the row index is valid
+            int modelRow = table.convertRowIndexToModel(row);
+            int OrderId = Integer.parseInt(table.getModel().getValueAt(modelRow, 0).toString());
+            orderLineRepositoryImpl.delete(OrderId);
+            orderRepositoryImpl.delete(OrderId);
+            JOptionPane.showMessageDialog(orderView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(() -> orderView.loadOrdersAndPopulateTable());
+        } else {
+            JOptionPane.showMessageDialog(orderView, "No row selected to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
@@ -119,6 +118,5 @@ public class ButtonEditor extends DefaultCellEditor {
 //        // Assuming ClientView.this refers to the current instance of your frame
 //        clientView.setVisible(false);
 //        detailsClientView.setVisible(true);
-   }
+    }
 }
-

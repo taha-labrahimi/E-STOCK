@@ -11,12 +11,10 @@ import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -86,13 +84,13 @@ public class OrderView extends javax.swing.JFrame {
 
         TableColumnModel columnModel = tableorder.getColumnModel();
         columnModel.getColumn(6).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(editIcon));
-        columnModel.getColumn(6).setCellEditor(new e_stock.view.OrderView.ButtonEditor(editIcon, orderRepositoryImpl, modifyOrderView, this));
+        columnModel.getColumn(6).setCellEditor(new e_stock.view.OrderView.ButtonEditor(editIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this));
 
         columnModel.getColumn(7).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(deleteIcon));
-        columnModel.getColumn(7).setCellEditor(new e_stock.view.OrderView.ButtonEditor(deleteIcon, orderRepositoryImpl, modifyOrderView, this));
+        columnModel.getColumn(7).setCellEditor(new e_stock.view.OrderView.ButtonEditor(deleteIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this));
 
         columnModel.getColumn(8).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(ViewIcon));
-        columnModel.getColumn(8).setCellEditor(new e_stock.view.OrderView.ButtonEditor(ViewIcon, orderRepositoryImpl, modifyOrderView, this));
+        columnModel.getColumn(8).setCellEditor(new e_stock.view.OrderView.ButtonEditor(ViewIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this));
 
         int buttonWidth = new JButton(editIcon).getPreferredSize().width;
         columnModel.getColumn(6).setPreferredWidth(40);

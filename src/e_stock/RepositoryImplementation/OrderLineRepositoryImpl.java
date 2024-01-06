@@ -100,14 +100,12 @@ public class OrderLineRepositoryImpl implements OrderLineRepository{
          }
     }
 
-    @Override
-    public void delete(int orderId, int productCode) {
-        String sql = "DELETE FROM OrderLines WHERE orderId = ? AND productCode = ?";
+    public void delete(int orderId) {
+        String sql = "DELETE FROM OrderLines WHERE orderId = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, orderId);
-            pstmt.setInt(2, productCode);
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

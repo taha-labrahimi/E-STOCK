@@ -8,5 +8,5 @@ public interface OrderLineRepository {
     List<OrderLine> findAll();
     void save(OrderLine orderLine);
     void update(OrderLine orderLine);
-    void delete(int orderId, int productCode);
+    void delete(int orderId);
 }
