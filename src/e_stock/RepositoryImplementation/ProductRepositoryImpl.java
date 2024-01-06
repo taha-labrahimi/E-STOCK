@@ -69,6 +69,24 @@ public class ProductRepositoryImpl implements ProductRepository{
         return products;
     }
 
+    public int getquantity(int productCode) {
+        String sql = "SELECT QteStock FROM OrderLines ord,products p WHERE p.ProductCode=ord.productCode and productCode = ?";
+        int quantity = 0;
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             pstmt.setInt(1, productCode);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+            quantity = rs.getInt("QteStock"); 
+        }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+             Logger.getLogger(OrderLineRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return quantity;
+    }
     @Override
     public void save(Product product) {
         String sql = "INSERT INTO products (ProductName, ProductUnitPrice, image,QteStock,supplierCode) VALUES (?, ?, ?,?,?)";
@@ -99,6 +117,22 @@ public class ProductRepositoryImpl implements ProductRepository{
             pstmt.setInt(4, product.getQteStock());
             pstmt.setInt(5, product.getSupplierCode());
             pstmt.setInt(6, product.getProductCode());
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void updateqte(int codeProd,int qte) {
+        String sql = "UPDATE products SET QteStock = QteStock-? WHERE ProductCode = ?";
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, qte);
+            pstmt.setInt(2, codeProd);
+
 
             pstmt.executeUpdate();
         } catch (SQLException ex) {
