@@ -8,6 +8,11 @@ import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import e_stock.view.LOGIN;
 import java.awt.Image;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,7 +20,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -23,7 +32,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 public class ModifyProductView extends javax.swing.JFrame {
 
@@ -34,15 +46,65 @@ public class ModifyProductView extends javax.swing.JFrame {
     private LOGIN loginView;
     public ModifyProductView() {
         initComponents();
+        NumberFormatter formatterfloat = createNumberFormatterFloat();
+        NumberFormatter formatterint= createNumberFormatterInt();
+        ProductPrice.setFormatterFactory(new DefaultFormatterFactory(formatterfloat));
+        QteTextField.setFormatterFactory(new DefaultFormatterFactory(formatterint));
+        for (MouseWheelListener listener : ProductPrice.getMouseWheelListeners()) {
+        ProductPrice.removeMouseWheelListener(listener);
+        }
+        ProductPrice.addFocusListener(new FocusAdapter() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            SwingUtilities.invokeLater(() -> {
+                ProductPrice.setCaretPosition(ProductPrice.getText().length());
+            });
+        }
+    });
+
+        QteTextField.addFocusListener(new FocusAdapter() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            SwingUtilities.invokeLater(() -> {
+                QteTextField.setCaretPosition(QteTextField.getText().length());
+            });
+        }
+    });
+
         productView = new ProductView();
         setResizable(false);
         setLocationRelativeTo(null);
+        
         DatabaseConnector dbConnector = new DatabaseConnector();
         productRepository = new ProductRepositoryImpl(dbConnector);
         productRepository = new ProductRepositoryImpl(dbConnector);
         supplierRepository= new SupplierRepositoryImpl(dbConnector);
         populateProductComboBox();
     }
+    private NumberFormatter createNumberFormatterFloat() {
+    NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH); // Utilise le point comme séparateur décimal
+    format.setMinimumFractionDigits(1); // Définir le nombre minimum de chiffres après la virgule
+    format.setMaximumFractionDigits(2); // Définir le nombre maximum de chiffres après la virgule
+    
+    NumberFormatter formatter = new NumberFormatter(format);
+    formatter.setValueClass(Float.class); // Utilisez Float.class pour les nombres avec des décimales
+    formatter.setMinimum(0.0f); // Valeur minimale
+    formatter.setMaximum(Float.MAX_VALUE); // Valeur maximale
+    formatter.setAllowsInvalid(false); // N'autorise pas les entrées invalides
+    formatter.setCommitsOnValidEdit(true); // Valide automatiquement les changements
+    formatter.setOverwriteMode(true);
+    return formatter;
+}
+    private NumberFormatter createNumberFormatterInt() {
+    NumberFormat format = NumberFormat.getInstance();
+    NumberFormatter formatter = new NumberFormatter(format);
+    formatter.setValueClass(Integer.class); // Utilisez Float.class si vous attendez des valeurs décimales
+    formatter.setMinimum(0);
+    formatter.setMaximum(Integer.MAX_VALUE);
+    formatter.setAllowsInvalid(false);
+    formatter.setCommitsOnValidEdit(true);
+    return formatter;
+}
     private void populateProductComboBox() {
         List<Supplier> suppliers = supplierRepository.findAll();
 
@@ -94,7 +156,8 @@ public class ModifyProductView extends javax.swing.JFrame {
     }
 
     public void setPrice(String price) {
-        this.ProductPrice.setText(price);
+        float priceValue = Float.parseFloat(price);
+        ProductPrice.setValue(priceValue);
     }
     
     public JLabel getImage() {
@@ -130,17 +193,17 @@ public class ModifyProductView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         ProductName = new javax.swing.JTextField();
         aaa = new javax.swing.JLabel();
-        ProductPrice = new javax.swing.JTextField();
         jlabel = new javax.swing.JLabel();
         modifyProductbtn = new javax.swing.JButton();
         AddImageBtn = new javax.swing.JButton();
         ImageLabel = new javax.swing.JLabel();
         jlabel1 = new javax.swing.JLabel();
-        QteTextField = new javax.swing.JTextField();
         exitbtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         ProductCode = new javax.swing.JTextField();
         SupplierCombo = new javax.swing.JComboBox<>();
+        ProductPrice = new javax.swing.JFormattedTextField();
+        QteTextField = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         deconnecte = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -170,8 +233,6 @@ public class ModifyProductView extends javax.swing.JFrame {
         aaa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ADDIMAGE.png"))); // NOI18N
         aaa.setText("Image : ");
 
-        ProductPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
         jlabel.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
         jlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/price.png"))); // NOI18N
         jlabel.setText("Price :");
@@ -199,8 +260,6 @@ public class ModifyProductView extends javax.swing.JFrame {
         jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/quantity.png"))); // NOI18N
         jlabel1.setText("Qte en Stock :");
 
-        QteTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
         exitbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/annuler.png"))); // NOI18N
         exitbtn.setContentAreaFilled(false);
         exitbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -214,8 +273,6 @@ public class ModifyProductView extends javax.swing.JFrame {
         jLabel2.setText(" MODIFY PRODUCT");
 
         ProductCode.setEditable(false);
-
-        SupplierCombo.setSelectedIndex(-1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -240,15 +297,15 @@ public class ModifyProductView extends javax.swing.JFrame {
                                     .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(126, 126, 126)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(39, 39, 39)
+                                        .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jlabel1)
-                                        .addGap(46, 46, 46)
-                                        .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(235, 235, 235)
                         .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -274,23 +331,28 @@ public class ModifyProductView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SupplierCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlabel)
-                    .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aaa)
-                    .addComponent(jlabel1)
-                    .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(modifyProductbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlabel)
+                            .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(aaa)
+                            .addComponent(jlabel1)
+                            .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(modifyProductbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 179, 65));
@@ -391,25 +453,30 @@ public class ModifyProductView extends javax.swing.JFrame {
     private void modifyProductbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyProductbtnActionPerformed
     try {
         
-        ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
-        BufferedImage bufferedImage = new BufferedImage(
-            imageIconDeLabel.getIconWidth(),
-            imageIconDeLabel.getIconHeight(),
-            BufferedImage.TYPE_INT_RGB);
+        byte[] imageBytes = null;
+
+        if (ImageLabel.getIcon() != null) {
+            ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
+            BufferedImage bufferedImage = new BufferedImage(
+                imageIconDeLabel.getIconWidth(),
+                imageIconDeLabel.getIconHeight(),
+                BufferedImage.TYPE_INT_RGB);
             bufferedImage.createGraphics().drawImage(
-            imageIconDeLabel.getImage(),
-            0,
-            0,
-            null);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "png", baos);
-        byte[] imageBytes = baos.toByteArray();
+                imageIconDeLabel.getImage(),
+                0,
+                0,
+                null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            imageBytes = baos.toByteArray();
+        }
         
         
-        int productCode = Integer.parseInt(ProductCode.getText()); 
-        float productPriceUnit = Float.parseFloat(ProductPrice.getText());
+        int productCode = Integer.parseInt(ProductCode.getText());
+        
+        float productPriceUnit = ((Number)ProductPrice.getValue()).floatValue();
         String productName = ProductName.getText();
-        int qte = Integer.parseInt(QteTextField.getText());
+        int qte = ((Number)QteTextField.getValue()).intValue();
         String selectedSupplierName = SupplierCombo.getSelectedItem().toString();
         int supplierCode = getSupplierCodeByName(selectedSupplierName);
         Product product = new Product(productCode,productName,qte,productPriceUnit,imageBytes,supplierCode);
@@ -527,8 +594,8 @@ public static byte[] imageContentStatic = null;
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextField ProductCode;
     private javax.swing.JTextField ProductName;
-    private javax.swing.JTextField ProductPrice;
-    private javax.swing.JTextField QteTextField;
+    private javax.swing.JFormattedTextField ProductPrice;
+    private javax.swing.JFormattedTextField QteTextField;
     private javax.swing.JComboBox<String> SupplierCombo;
     private javax.swing.JLabel UserLabel;
     private javax.swing.JLabel aaa;

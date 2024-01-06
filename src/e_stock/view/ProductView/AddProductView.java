@@ -9,13 +9,18 @@ import e_stock.view.LOGIN;
 import java.awt.Image;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -24,6 +29,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 public class AddProductView extends javax.swing.JFrame {
 
@@ -34,6 +41,13 @@ public class AddProductView extends javax.swing.JFrame {
 
     public AddProductView() {
         initComponents();
+        NumberFormatter formatterfloat = createNumberFormatterFloat();
+        NumberFormatter formatterint= createNumberFormatterInt();
+        ProductPrice.setFormatterFactory(new DefaultFormatterFactory(formatterfloat));
+        QteTextField.setFormatterFactory(new DefaultFormatterFactory(formatterint));
+        for (MouseWheelListener listener : ProductPrice.getMouseWheelListeners()) {
+        ProductPrice.removeMouseWheelListener(listener);
+        }
         productView = new ProductView();
         setResizable(false);
         setLocationRelativeTo(null);
@@ -41,8 +55,32 @@ public class AddProductView extends javax.swing.JFrame {
         productRepository = new ProductRepositoryImpl(dbConnector);
         supplierRepository= new SupplierRepositoryImpl(dbConnector);
         populateProductComboBox();
+        
     }
+    private NumberFormatter createNumberFormatterFloat() {
+    NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH); // Utilise le point comme séparateur décimal
+    format.setMinimumFractionDigits(1); // Définir le nombre minimum de chiffres après la virgule
+    format.setMaximumFractionDigits(2); // Définir le nombre maximum de chiffres après la virgule
     
+    NumberFormatter formatter = new NumberFormatter(format);
+    formatter.setValueClass(Float.class); // Utilisez Float.class pour les nombres avec des décimales
+    formatter.setMinimum(0.0f); // Valeur minimale
+    formatter.setMaximum(Float.MAX_VALUE); // Valeur maximale
+    formatter.setAllowsInvalid(false); // N'autorise pas les entrées invalides
+    formatter.setCommitsOnValidEdit(true); // Valide automatiquement les changements
+    formatter.setOverwriteMode(true);
+    return formatter;
+}
+    private NumberFormatter createNumberFormatterInt() {
+    NumberFormat format = NumberFormat.getInstance();
+    NumberFormatter formatter = new NumberFormatter(format);
+    formatter.setValueClass(Integer.class); // Utilisez Float.class si vous attendez des valeurs décimales
+    formatter.setMinimum(0);
+    formatter.setMaximum(Integer.MAX_VALUE);
+    formatter.setAllowsInvalid(false);
+    formatter.setCommitsOnValidEdit(true);
+    return formatter;
+}
     private void populateProductComboBox() {
         List<Supplier> suppliers = supplierRepository.findAll();
 
@@ -99,16 +137,16 @@ public class AddProductView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         ProductName = new javax.swing.JTextField();
         aaa = new javax.swing.JLabel();
-        ProductPrice = new javax.swing.JTextField();
         jlabel = new javax.swing.JLabel();
         addclientbtn = new javax.swing.JButton();
         AddImageBtn = new javax.swing.JButton();
         ImageLabel = new javax.swing.JLabel();
         jlabel1 = new javax.swing.JLabel();
-        QteTextField = new javax.swing.JTextField();
         exitbtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         SupplierCombo = new javax.swing.JComboBox<>();
+        ProductPrice = new javax.swing.JFormattedTextField();
+        QteTextField = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         deconnecte = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -137,8 +175,6 @@ public class AddProductView extends javax.swing.JFrame {
         aaa.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
         aaa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ADDIMAGE.png"))); // NOI18N
         aaa.setText("Image : ");
-
-        ProductPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jlabel.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
         jlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/price.png"))); // NOI18N
@@ -169,8 +205,6 @@ public class AddProductView extends javax.swing.JFrame {
         jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/quantity.png"))); // NOI18N
         jlabel1.setText("Qte en Stock :");
 
-        QteTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
         exitbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/annuler.png"))); // NOI18N
         exitbtn.setBorderPainted(false);
         exitbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -188,42 +222,41 @@ public class AddProductView extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(aaa, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(aaa, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(85, 85, 85)
-                                .addComponent(exitbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(AddImageBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                                    .addComponent(ProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                                    .addComponent(SupplierCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(126, 126, 126)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jlabel1)
-                                        .addGap(46, 46, 46)
-                                        .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85)
+                        .addComponent(exitbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(AddImageBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                            .addComponent(ProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                            .addComponent(SupplierCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(126, 126, 126)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(47, 47, 47)
+                                .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jlabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(313, 313, 313))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(235, 235, 235)
+                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,16 +269,16 @@ public class AddProductView extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlabel)
-                    .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                    .addComponent(jLabel3)
+                    .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(aaa)
                     .addComponent(jlabel1)
-                    .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -317,7 +350,7 @@ public class AddProductView extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(207, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -353,8 +386,8 @@ public class AddProductView extends javax.swing.JFrame {
             String selectedClientName = SupplierCombo.getSelectedItem().toString();
             int supplierCode = getSupplierCodeByName(selectedClientName);
             
-            float productPriceUnit = Float.parseFloat(ProductPrice.getText());
-            int qte = Integer.parseInt(QteTextField.getText());
+            float productPriceUnit = ((Number)ProductPrice.getValue()).floatValue();
+            int qte = ((Number)QteTextField.getValue()).intValue();
             Product product = new Product(ProductName.getText(),qte,productPriceUnit,imageContentStatic2,supplierCode);
             productRepository.save(product);
             // Provide feedback
@@ -463,8 +496,8 @@ public static byte[] imageContentStatic2 = null;
     private javax.swing.JButton AddImageBtn;
     private javax.swing.JLabel ImageLabel;
     private javax.swing.JTextField ProductName;
-    private javax.swing.JTextField ProductPrice;
-    private javax.swing.JTextField QteTextField;
+    private javax.swing.JFormattedTextField ProductPrice;
+    private javax.swing.JFormattedTextField QteTextField;
     private javax.swing.JComboBox<String> SupplierCombo;
     private javax.swing.JLabel UserLabel;
     private javax.swing.JLabel aaa;
