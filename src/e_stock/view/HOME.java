@@ -28,7 +28,7 @@ public class HOME extends javax.swing.JFrame {
     }
      public void setLoggedInUser(User user) {
         this.user = user;
-        // You can update the UI elements with user information if needed
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.

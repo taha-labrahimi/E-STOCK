@@ -3,15 +3,16 @@ package e_stock.view.OrderView;
 import e_stock.Model.Client;
 import e_stock.Model.Order;
 import e_stock.Model.OrderLine;
+import e_stock.Model.Product;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
+import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -21,6 +22,7 @@ public class OrderView extends javax.swing.JFrame {
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
     ClientRepositoryImpl clientRepositoryImpl;
+    ProductRepositoryImpl productRepositoryImpl;
     AddOrderView addOrderView;
     public OrderView() {
         initComponents();
@@ -30,29 +32,33 @@ public class OrderView extends javax.swing.JFrame {
         orderRepositoryImpl = new OrderRepositoryImpl(dbConnector);
         orderLineRepositoryImpl = new OrderLineRepositoryImpl(dbConnector);
         clientRepositoryImpl = new ClientRepositoryImpl(dbConnector);
+        productRepositoryImpl = new ProductRepositoryImpl(dbConnector);
         loadOrdersAndPopulateTable();
     }
 protected void loadOrdersAndPopulateTable() {
     try {
         List<Order> orders = orderRepositoryImpl.findAllWithOrderLines();
         DefaultTableModel tableModel = (DefaultTableModel) tableorder.getModel();
-        String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Code", "Total Items", "Total Amount"};
+        String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name", "Total Items", "Total Amount"};
         tableModel.setColumnIdentifiers(columnNames);
         tableModel.setRowCount(0);
 
         for (Order order : orders) {
             Client client = clientRepositoryImpl.findById(order.getClientCode());
             String clientName = (client != null) ? client.getFirstName() + " " + client.getLastName() : "Unknown Client";
-
+            
             for (OrderLine line : order.getOrderLines()) {
+                Product product = productRepositoryImpl.findById(line.getProductCode());
+                String productName = (product != null) ? product.getProductName() : "Unknown Product";
+
                 int totalItems = line.getQuantityOrdered();
-                double totalAmount = line.getTotalPrice(); // Ensure you have implemented getTotalPrice() method
+                double totalAmount = line.getTotalPrice(); 
 
                 Object[] row = new Object[]{
                     order.getOrderId(),
                     order.getOrderDate(),
-                    clientName, // Replaced client code with client name
-                    line.getProductCode(),
+                    clientName,
+                    productName, 
                     totalItems,
                     totalAmount
                 };
@@ -264,28 +270,7 @@ protected void loadOrdersAndPopulateTable() {
     }//GEN-LAST:event_searchtextfieldActionPerformed
 
     private void tableorderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableorderMouseClicked
-        if (evt.getClickCount() == 1) {
-            JTable target = (JTable) evt.getSource();
-            int row = target.getSelectedRow();
-            int column = target.getSelectedColumn();
-            if (column == 3) {
-                int productCode = (Integer) target.getModel().getValueAt(row, column);
-                if (productView == null) {
-                    productView = new ProductView();
-                }
-                this.setVisible(false);
-                productView.setSearchtextfield(productCode);
-                productView.setVisible(true);
-            }
-//            if (column == 2) {
-//                int clientCode = (Integer) target.getModel().getValueAt(row, column);
-//                if (clientView == null) {
-//                    clientView = new ClientView();
-//                }
-//                this.setVisible(false);
-//                clientView.setVisible(true);
-//            }
-        }
+    
     }//GEN-LAST:event_tableorderMouseClicked
 
     /**
