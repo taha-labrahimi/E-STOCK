@@ -2,13 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package e_stock.view;
 
+package e_stock.view;
+import java.sql.*;
 import e_stock.Model.User;
+import e_stock.database.DatabaseConnector;
 import e_stock.view.ProductView.AddProductView;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
 import e_stock.view.supplierView.SupplierView;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.awt.*;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,16 +27,48 @@ public class HOME extends javax.swing.JFrame {
     private ClientView clientView;
     private SupplierView supplierView;
     private UserProfil userProfil;
-
+    DatabaseConnector dbConnector = new DatabaseConnector();
     public HOME() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
     }
-     public void setLoggedInUser(User user) {
-        this.user = user;
+   public void setLoggedInUser(User user) {
+    this.user = user;
+    welcomeLabel.setText("Hello, " + user.getUsername());
+    String sql = "SELECT image FROM users WHERE userID = ?";
+
+    try (Connection conn = dbConnector.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
         
+        pstmt.setInt(1, user.getUserID()); // utilisez l'ID de l'utilisateur
+        ResultSet rs = pstmt.executeQuery();
+
+        ImageIcon imageIcon;
+        if (rs.next() && rs.getBlob("image") != null) {
+            Blob blob = rs.getBlob("image");
+            InputStream inputStream = blob.getBinaryStream();
+            BufferedImage userImage = ImageIO.read(inputStream);
+            imageIcon = new ImageIcon(userImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
+        } else {
+            // Utiliser une image intégrée comme image par défaut
+            try {
+                BufferedImage defaultImage = ImageIO.read(getClass().getResource("/resources/images/anonyme.png"));
+                imageIcon = new ImageIcon(defaultImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return; // Arrêter l'exécution si l'image par défaut ne peut pas être chargée
+            }
+        }
+
+        userimage.setIcon(imageIcon);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,7 +82,7 @@ public class HOME extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         userimage = new javax.swing.JLabel();
         Profilbtn = new javax.swing.JButton();
-        pwdchangebtn = new javax.swing.JButton();
+        welcomeLabel = new javax.swing.JLabel();
         Clientsbtn = new javax.swing.JButton();
         Fournisseurbtn = new javax.swing.JButton();
         Productsbtn = new javax.swing.JButton();
@@ -62,33 +101,32 @@ public class HOME extends javax.swing.JFrame {
             }
         });
 
-        pwdchangebtn.setText("Change pwd");
+        welcomeLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pwdchangebtn, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-                            .addComponent(Profilbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(Profilbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
+                .addGap(57, 57, 57)
+                .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
                 .addComponent(Profilbtn)
-                .addGap(33, 33, 33)
-                .addComponent(pwdchangebtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -248,7 +286,7 @@ public class HOME extends javax.swing.JFrame {
     private javax.swing.JButton Usersbtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JButton pwdchangebtn;
     private javax.swing.JLabel userimage;
+    private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables
 }
