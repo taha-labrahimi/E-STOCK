@@ -35,7 +35,7 @@ public class SupplierView extends javax.swing.JFrame {
     private AddSupplierView addSupplierView;
     private ModifySupplierView modifySupplierView;
      private DetailsSupplierView detailsSupplierView;
-private HOME homeView;
+    private HOME homeView;
     /**
      * Creates new form SupplierView
      */
