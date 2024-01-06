@@ -4,6 +4,7 @@ import e_stock.view.clientView.ClientView;
 import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -250,8 +251,10 @@ public class ModifyClientView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void modifyclientbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyclientbtnActionPerformed
-    try {
-        int clientCode = Integer.parseInt(clientcode.getText());
+    String phoneNumber = phonenumber.getText();
+        try {
+        if (phoneNumber.matches("\\d{10}")) {
+            int clientCode = Integer.parseInt(clientcode.getText());
         Client client = new Client(clientCode, firstname.getText(), lastname.getText(), adresse.getText(), city.getText(), country.getText(), phonenumber.getText());
         clientRepository.update(client);
         JOptionPane.showMessageDialog(this, "Client modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -260,6 +263,12 @@ public class ModifyClientView extends javax.swing.JFrame {
             clientView.setVisible(true);
         }
         this.setVisible(false);
+        phonenumber.setBackground(Color.WHITE);
+        }
+        else {
+        JOptionPane.showMessageDialog(this, "please add a valid number Exp : \"06 XX XX XX XX\"", "validation Error", JOptionPane.ERROR_MESSAGE);
+        phonenumber.setBackground(Color.PINK);
+    }
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Client code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
     } catch (Exception e) {
