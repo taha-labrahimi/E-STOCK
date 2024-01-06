@@ -50,7 +50,10 @@ public class ProductView extends javax.swing.JFrame {
         productRepository = new ProductRepositoryImpl(dbConnector);
         supplierRepository = new SupplierRepositoryImpl(dbConnector);
         loadProductAndPopulateTable();
-        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+         setUpTableButtons();
+    }
+    private void setUpTableButtons() {
+    Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
         Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
         Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
 
@@ -74,15 +77,14 @@ public class ProductView extends javax.swing.JFrame {
     columnModel.getColumn(8).setPreferredWidth(40);
     columnModel.getColumn(8).setMaxWidth(40);
 
-    tableproducts.setRowHeight(40);  // Adjust row height if necessary
+    tableproducts.setRowHeight(90);
     }
-
     protected void loadProductAndPopulateTable() {
         List<Product> products = productRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
         String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
         tableModel.setColumnIdentifiers(columnNames);
-        tableproducts.setRowHeight(60);
+        tableproducts.setRowHeight(90);
         tableModel.setRowCount(0); // Clear the table before loading new data
 
         for (Product product : products) {
@@ -114,29 +116,7 @@ public class ProductView extends javax.swing.JFrame {
             });
         }
         tableproducts.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());
-        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
-        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
-        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
-
-    // Assuming the column indices for "Edit" and "Delete" are correct
-    TableColumnModel columnModel = tableproducts.getColumnModel();
-    columnModel.getColumn(6).setCellRenderer(new ButtonRenderer(editIcon));
-    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this));
-    
-    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(deleteIcon));
-    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this));
-    
-    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(ViewIcon));
-    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this));
-
-    // Set the preferred width for the "Edit" and "Delete" columns
-    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
-    columnModel.getColumn(6).setPreferredWidth(40);
-    columnModel.getColumn(6).setMaxWidth(40);
-    columnModel.getColumn(7).setPreferredWidth(50);
-    columnModel.getColumn(7).setMaxWidth(50);
-    columnModel.getColumn(8).setPreferredWidth(40);
-    columnModel.getColumn(8).setMaxWidth(40);
+        setUpTableButtons();
         
         
     }
@@ -151,13 +131,10 @@ public class ProductView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableproducts = new javax.swing.JTable();
         addProduct = new javax.swing.JButton();
-        modifyProduct = new javax.swing.JButton();
-        deleteProduct = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         searchtextfield = new javax.swing.JTextField();
         searchbtn = new javax.swing.JButton();
         printbtn = new javax.swing.JButton();
-        detailsbtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         Back = new javax.swing.JButton();
 
@@ -190,26 +167,6 @@ public class ProductView extends javax.swing.JFrame {
             }
         });
 
-        modifyProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsedit30.png"))); // NOI18N
-        modifyProduct.setBorder(null);
-        modifyProduct.setContentAreaFilled(false);
-        modifyProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        modifyProduct.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modifyProductActionPerformed(evt);
-            }
-        });
-
-        deleteProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsdelete30.png"))); // NOI18N
-        deleteProduct.setBorder(null);
-        deleteProduct.setContentAreaFilled(false);
-        deleteProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        deleteProduct.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteProductActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel1.setText("PRODUCTS");
 
@@ -217,6 +174,11 @@ public class ProductView extends javax.swing.JFrame {
         searchtextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchtextfieldActionPerformed(evt);
+            }
+        });
+        searchtextfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchtextfieldKeyReleased(evt);
             }
         });
 
@@ -239,16 +201,6 @@ public class ProductView extends javax.swing.JFrame {
         printbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printbtnActionPerformed(evt);
-            }
-        });
-
-        detailsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/detailsicon.png"))); // NOI18N
-        detailsbtn.setBorder(null);
-        detailsbtn.setContentAreaFilled(false);
-        detailsbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        detailsbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                detailsbtnActionPerformed(evt);
             }
         });
 
@@ -282,14 +234,7 @@ public class ProductView extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 914, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(73, 73, 73)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addProduct)
-                            .addComponent(modifyProduct)
-                            .addComponent(deleteProduct)
-                            .addComponent(printbtn)
-                            .addComponent(detailsbtn))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(111, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -301,6 +246,10 @@ public class ProductView extends javax.swing.JFrame {
                                 .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(addProduct)
+                                .addGap(36, 36, 36)
+                                .addComponent(printbtn)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(369, 369, 369))))
         );
@@ -317,24 +266,12 @@ public class ProductView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchtextfield, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchbtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(addProduct)
-                        .addGap(32, 32, 32)
-                        .addComponent(modifyProduct)
-                        .addGap(48, 48, 48)
-                        .addComponent(deleteProduct)
-                        .addGap(43, 43, 43)
-                        .addComponent(printbtn)
-                        .addGap(46, 46, 46)
-                        .addComponent(detailsbtn)
-                        .addContainerGap(179, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                        .addContainerGap())))
+                    .addComponent(searchbtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(addProduct, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(printbtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -364,76 +301,57 @@ public class ProductView extends javax.swing.JFrame {
         addProductView.setVisible(true);
     }//GEN-LAST:event_addProductActionPerformed
 
-    private void modifyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyProductActionPerformed
-        int selectedRowIndex = tableproducts.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            if (modifyProductView == null) {
-                modifyProductView = new ModifyProductView();
-                
-            }else{
-            modifyProductView.resetForm();
-            }
-            
-            modifyProductView.setProductcode(tableproducts.getValueAt(selectedRowIndex, 0).toString());
-            modifyProductView.setProductname(tableproducts.getValueAt(selectedRowIndex, 1).toString());
-            modifyProductView.setQteTextField(tableproducts.getValueAt(selectedRowIndex, 2).toString());
-            modifyProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 3).toString());
-            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 4);
-            modifyProductView.setImage(imageicon);
-            this.setVisible(false);
-            modifyProductView.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_modifyProductActionPerformed
-
-    private void deleteProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProductActionPerformed
-        int selectedRowIndex = tableproducts.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            int deletedproductcode = Integer.parseInt(tableproducts.getValueAt(selectedRowIndex, 0).toString());
-            productRepository.delete(deletedproductcode);
-            JOptionPane.showMessageDialog(this, "Product deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            this.loadProductAndPopulateTable();
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_deleteProductActionPerformed
-
     public void setSearchtextfield(int productcode) {
         this.searchtextfield.setText(String.valueOf(productcode));
         searchbtn.doClick();
     }
     
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        if (searchtextfield.getText().trim().isEmpty()) {
+        
+    }//GEN-LAST:event_searchbtnActionPerformed
+
+    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
+        printTable();
+    }//GEN-LAST:event_printbtnActionPerformed
+    
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        if (homeView == null) {
+            homeView = new HOME();
+        }
+        this.setVisible(false);
+        homeView.setVisible(true);
+    }//GEN-LAST:event_BackActionPerformed
+
+    private void searchtextfieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchtextfieldKeyReleased
+       String searchText = searchtextfield.getText().trim().toLowerCase();
+       if (searchtextfield.getText().trim().isEmpty()) {
             loadProductAndPopulateTable();
             return;
         }
+            
+        DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
+        String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
+        tableModel.setColumnIdentifiers(columnNames);
+        tableModel.setRowCount(0);
+        List<Product> allProducts = productRepository.findAll();
 
-        try {
-            int productCode = Integer.parseInt(searchtextfield.getText().trim());
-            Product product = productRepository.findById(productCode);
-            if (product != null) {
+        for (Product product : allProducts) {
+        if (product.getProductName().toLowerCase().startsWith(searchText)) {
             Supplier supplier = supplierRepository.findById(product.getSupplierCode());
             String supplierName = (supplier != null) ? supplier.getFirstName() + " " + supplier.getLastName() : "Unknown Supplier";
             byte[] imageBytes = product.getImage();
             ImageIcon image = null;
             if (imageBytes != null) {
                 BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductView.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                Image scaledImg = img.getScaledInstance(90, 110, Image.SCALE_SMOOTH);
-                image = new ImageIcon(scaledImg);
+            try {
+                img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+            } catch (IOException ex) {
+                Logger.getLogger(ProductView.class.getName()).log(Level.SEVERE, null, ex);
             }
-                DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
-                String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
-                tableModel.setColumnIdentifiers(columnNames);
-                tableModel.setRowCount(0);
-                tableModel.addRow(new Object[]{
+            Image scaledImg = img.getScaledInstance(90, 110, Image.SCALE_SMOOTH);
+            image = new ImageIcon(scaledImg);
+            }
+            tableModel.addRow(new Object[]{
                     String.valueOf(product.getProductCode()),
                     product.getProductName(),
                     product.getQteStock(),
@@ -444,72 +362,16 @@ public class ProductView extends javax.swing.JFrame {
                     "Delete",
                     "View"
                 });
-            } else {
-                JOptionPane.showMessageDialog(this, "Product not found", "Search", JOptionPane.INFORMATION_MESSAGE);
+
+
+
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid Product code", "Search Error", JOptionPane.ERROR_MESSAGE);
-        }
-        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
-        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
-        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
+        } 
+        setUpTableButtons();
 
-    // Assuming the column indices for "Edit" and "Delete" are correct
-    TableColumnModel columnModel = tableproducts.getColumnModel();
-    columnModel.getColumn(6).setCellRenderer(new ButtonRenderer(editIcon));
-    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this));
-    
-    columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(deleteIcon));
-    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this));
-    
-    columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(ViewIcon));
-    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this));
-
-    // Set the preferred width for the "Edit" and "Delete" columns
-    int buttonWidth = new JButton(editIcon).getPreferredSize().width;
-    columnModel.getColumn(6).setPreferredWidth(40);
-    columnModel.getColumn(6).setMaxWidth(40);
-    columnModel.getColumn(7).setPreferredWidth(50);
-    columnModel.getColumn(7).setMaxWidth(50);
-    columnModel.getColumn(8).setPreferredWidth(40);
-    columnModel.getColumn(8).setMaxWidth(40);
-
-    tableproducts.setRowHeight(40);  // Adjust row height if necessary
+        tableproducts.setRowHeight(70);
         tableproducts.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());
-    }//GEN-LAST:event_searchbtnActionPerformed
-
-    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
-        printTable();
-    }//GEN-LAST:event_printbtnActionPerformed
-    
-    private void detailsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsbtnActionPerformed
-        int selectedRowIndex = tableproducts.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            if (detailsProductView == null) {
-                detailsProductView = new DetailsProductView();
-            }
-            
-            detailsProductView.setProductcode(tableproducts.getValueAt(selectedRowIndex, 0).toString());
-            detailsProductView.setProductname(tableproducts.getValueAt(selectedRowIndex, 1).toString());
-            detailsProductView.setQteTextField(tableproducts.getValueAt(selectedRowIndex, 2).toString());
-            detailsProductView.setPrice(tableproducts.getValueAt(selectedRowIndex, 3).toString());
-            detailsProductView.setSupplierName(tableproducts.getValueAt(selectedRowIndex, 4).toString());
-            ImageIcon imageicon = (ImageIcon) tableproducts.getValueAt(selectedRowIndex, 5);
-            detailsProductView.setImage(imageicon);
-            this.setVisible(false);
-            detailsProductView.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_detailsbtnActionPerformed
-
-    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        if (homeView == null) {
-            homeView = new HOME();
-        }
-        this.setVisible(false);
-        homeView.setVisible(true);
-    }//GEN-LAST:event_BackActionPerformed
+    }//GEN-LAST:event_searchtextfieldKeyReleased
     private void printTable() {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setJobName("Print Data");
@@ -588,14 +450,11 @@ public class ProductView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
     private javax.swing.JButton addProduct;
-    private javax.swing.JButton deleteProduct;
-    private javax.swing.JButton detailsbtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton modifyProduct;
     private javax.swing.JButton printbtn;
     private javax.swing.JButton searchbtn;
     private javax.swing.JTextField searchtextfield;
