@@ -7,6 +7,7 @@ package e_stock.view;
 import e_stock.Model.User;
 import e_stock.RepositoryImplementation.UserRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import static e_stock.view.UserProfil.userstatic;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -181,12 +182,12 @@ public class LOGIN extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword()); 
-        User user = userRepositoryImpl.login(username, password);
-        if (user != null) {
+        userstatic = userRepositoryImpl.login(username, password);
+        if (userstatic != null) {
             // Login success
             JOptionPane.showMessageDialog(this, "Login successful!");
             this.setVisible(false);
-             home.setLoggedInUser(user);
+             home.setLoggedInUser(userstatic);
              home.setVisible(true);
         } else {
             // Login failed
