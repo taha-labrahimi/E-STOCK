@@ -358,12 +358,9 @@ public static User userstatic;
     
         String emailPattern = "^(.+)@(.+)\\.(.+)$"; // Expression régulière pour valider l'email
     if (email.getText().matches(emailPattern)) {
-        // Si l'email est valide, exécutez la sauvegarde.
         try {
             ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
             byte[] imageBytes = null;
-
-            // Vérifiez si imageIconDeLabel n'est pas null avant de traiter l'image
             if (imageIconDeLabel != null) {
                 BufferedImage bufferedImage = new BufferedImage(
                     imageIconDeLabel.getIconWidth(),
@@ -399,7 +396,7 @@ public static User userstatic;
             this.lastname.setEditable(false);
             this.usertype.setEditable(false);
             this.Save.setEnabled(false);
-            this.Cancel.setEnabled(false);
+            this.Cancel.setEnabled(false);  
             email.setBackground(Color.WHITE);
 
         } catch (NumberFormatException e) {
@@ -411,7 +408,6 @@ public static User userstatic;
             e.printStackTrace();
         }
     } else {
-        // Si l'email n'est pas valide, affichez un message d'erreur et mettez le fond du champ en rose.
         JOptionPane.showMessageDialog(this, "L'adresse email n'est pas valide.", "Erreur de validation", JOptionPane.ERROR_MESSAGE);
         email.setBackground(Color.PINK);
     }

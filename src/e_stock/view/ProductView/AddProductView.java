@@ -384,7 +384,7 @@ public class AddProductView extends javax.swing.JFrame {
     try {
             // Create client and save
             String selectedClientName = SupplierCombo.getSelectedItem().toString();
-            int supplierCode = getSupplierCodeByName(selectedClientName);
+            int supplierCode = getSupplierCodeByName(selectedClientName);//
             
             float productPriceUnit = ((Number)ProductPrice.getValue()).floatValue();
             int qte = ((Number)QteTextField.getValue()).intValue();
