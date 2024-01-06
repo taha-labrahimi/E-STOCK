@@ -9,8 +9,6 @@ import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
-import e_stock.view.ProductView.ProductView;
-import e_stock.view.clientView.ClientView;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -20,8 +18,6 @@ import javax.swing.table.TableColumnModel;
 
 public class OrderView extends javax.swing.JFrame {
 
-    ProductView productView;
-    ClientView clientView;
     AddOrderView addOrderView;
     ModifyOrderView modifyOrderView;
     OrderRepositoryImpl orderRepositoryImpl;
