@@ -7,6 +7,7 @@ package e_stock.view;
 import e_stock.Model.User;
 import e_stock.RepositoryImplementation.UserRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,6 +40,7 @@ public class UserProfil extends javax.swing.JFrame {
     private HOME homeView;
     public UserProfil() {
         initComponents();
+        
         DatabaseConnector dbConnector = new DatabaseConnector();
         userRepository = new UserRepositoryImpl(dbConnector);
     }
@@ -350,46 +354,64 @@ public class UserProfil extends javax.swing.JFrame {
     }//GEN-LAST:event_EditActionPerformed
 public static User userstatic;
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-        try {
+
     
-        ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
-        byte[] imageBytes = null;
+        String emailPattern = "^(.+)@(.+)\\.(.+)$"; // Expression régulière pour valider l'email
+    if (email.getText().matches(emailPattern)) {
+        try {
+            ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
+            byte[] imageBytes = null;
+            if (imageIconDeLabel != null) {
+                BufferedImage bufferedImage = new BufferedImage(
+                    imageIconDeLabel.getIconWidth(),
+                    imageIconDeLabel.getIconHeight(),
+                    BufferedImage.TYPE_INT_RGB);
+                Graphics g = bufferedImage.createGraphics();
+                g.drawImage(imageIconDeLabel.getImage(), 0, 0, null);
+                g.dispose();
 
-        // Vérifiez si imageIconDeLabel n'est pas null avant de traiter l'image
-        if (imageIconDeLabel != null) {
-            BufferedImage bufferedImage = new BufferedImage(
-                imageIconDeLabel.getIconWidth(),
-                imageIconDeLabel.getIconHeight(),
-                BufferedImage.TYPE_INT_RGB);
-            Graphics g = bufferedImage.createGraphics();
-            g.drawImage(imageIconDeLabel.getImage(), 0, 0, null);
-            g.dispose();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(bufferedImage, "png", baos);
+                imageBytes = baos.toByteArray();
+            }
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            imageBytes = baos.toByteArray();
+            userstatic = new User(
+                Integer.parseInt(userID.getText()),
+                username.getText(),
+                Password.getText(),
+                usertype.getText(),
+                imageBytes,
+                email.getText(),
+                firstname.getText(),
+                lastname.getText()
+            );
+
+            userRepository.update(userstatic);
+            JOptionPane.showMessageDialog(this, "User modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            this.email.setEditable(false);
+            this.firstname.setEditable(false);
+            this.username.setEditable(false);
+            this.AddImageBtn.setEnabled(false);
+            this.lastname.setEditable(false);
+            this.usertype.setEditable(false);
+            this.Save.setEnabled(false);
+            this.Cancel.setEnabled(false);  
+            email.setBackground(Color.WHITE);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "User code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error processing the image.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating User: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-        
-        
-        
-        userstatic = new User(Integer.parseInt(userID.getText()),username.getText(),Password.getText(),usertype.getText(),imageBytes,email.getText(),firstname.getText(),lastname.getText());
-        userRepository.update(userstatic);
-        
-        JOptionPane.showMessageDialog(this, "User modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-        this.email.setEditable(false);
-        this.firstname.setEditable(false);
-        this.username.setEditable(false);
-        this.AddImageBtn.setEnabled(false);
-        this.lastname.setEditable(false);
-        this.usertype.setEditable(false);
-        this.Save.setEnabled(false);
-        this.Cancel.setEnabled(false);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "User code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error updating User: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
+    } else {
+        JOptionPane.showMessageDialog(this, "L'adresse email n'est pas valide.", "Erreur de validation", JOptionPane.ERROR_MESSAGE);
+        email.setBackground(Color.PINK);
     }
+        
     }//GEN-LAST:event_SaveActionPerformed
 public static byte[] imageContentStatic4 = null;
     private void AddImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddImageBtnActionPerformed
