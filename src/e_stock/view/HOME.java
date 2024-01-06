@@ -7,6 +7,7 @@ package e_stock.view;
 import java.sql.*;
 import e_stock.Model.User;
 import e_stock.database.DatabaseConnector;
+import e_stock.view.OrderView.OrderView;
 import e_stock.view.ProductView.AddProductView;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public class HOME extends javax.swing.JFrame {
     
     private User user;
+    private OrderView orderView;
     private ProductView productView;
     private ClientView clientView;
     private SupplierView supplierView;
@@ -152,6 +154,11 @@ public class HOME extends javax.swing.JFrame {
         });
 
         Usersbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/UsersIcon.png"))); // NOI18N
+        Usersbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UsersbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -163,15 +170,15 @@ public class HOME extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(103, 103, 103)
                         .addComponent(Productsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 501, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Fournisseurbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(181, 181, 181))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(388, 388, 388)
+                        .addGap(391, 391, 391)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Usersbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                             .addComponent(Clientsbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(485, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,6 +248,14 @@ public class HOME extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "User not logged in!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_ProfilbtnActionPerformed
+
+    private void UsersbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsersbtnActionPerformed
+        if (orderView == null) {
+            orderView = new OrderView();
+        }
+        this.setVisible(false);
+        orderView.setVisible(true);
+    }//GEN-LAST:event_UsersbtnActionPerformed
 
     /**
      * @param args the command line arguments

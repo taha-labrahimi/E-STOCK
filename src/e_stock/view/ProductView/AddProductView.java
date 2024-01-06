@@ -397,7 +397,7 @@ public class AddProductView extends javax.swing.JFrame {
             if (productView != null) {
                 productView.loadProductAndPopulateTable();
             }
-
+                                                        
             // Hide this view and show the client list
             this.setVisible(false);
             if (productView != null) {
