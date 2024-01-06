@@ -13,8 +13,12 @@ import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 public class OrderView extends javax.swing.JFrame {
 
@@ -43,7 +47,8 @@ public class OrderView extends javax.swing.JFrame {
         try {
             List<Order> orders = orderRepositoryImpl.findAllWithOrderLines();
             DefaultTableModel tableModel = (DefaultTableModel) tableorder.getModel();
-            String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name", "Total Items", "Total Amount"};
+            String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name", "Total Items", "Total Amount","Edit", "Delete", "View"
+            };
             tableModel.setColumnIdentifiers(columnNames);
             tableModel.setRowCount(0);
 
@@ -68,11 +73,37 @@ public class OrderView extends javax.swing.JFrame {
                     };
                     tableModel.addRow(row);
                 }
+                setUpTableButtons();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+        private void setUpTableButtons() {
+        Icon editIcon = new ImageIcon(getClass().getResource("/resources/images/icons20.png"));
+        Icon deleteIcon = new ImageIcon(getClass().getResource("/resources/images/iconsdelete20.png"));
+        Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
+
+        TableColumnModel columnModel = tableorder.getColumnModel();
+        columnModel.getColumn(6).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(editIcon));
+        columnModel.getColumn(6).setCellEditor(new e_stock.view.OrderView.ButtonEditor(editIcon, orderRepositoryImpl, modifyOrderView, this));
+
+        columnModel.getColumn(7).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(deleteIcon));
+        columnModel.getColumn(7).setCellEditor(new e_stock.view.OrderView.ButtonEditor(deleteIcon, orderRepositoryImpl, modifyOrderView, this));
+
+        columnModel.getColumn(8).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(ViewIcon));
+        columnModel.getColumn(8).setCellEditor(new e_stock.view.OrderView.ButtonEditor(ViewIcon, orderRepositoryImpl, modifyOrderView, this));
+
+        int buttonWidth = new JButton(editIcon).getPreferredSize().width;
+        columnModel.getColumn(6).setPreferredWidth(40);
+        columnModel.getColumn(6).setMaxWidth(40);
+        columnModel.getColumn(7).setPreferredWidth(50);
+        columnModel.getColumn(7).setMaxWidth(50);
+        columnModel.getColumn(8).setPreferredWidth(40);
+        columnModel.getColumn(8).setMaxWidth(40);
+        tableorder.setRowHeight(40);
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
