@@ -1,24 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package e_stock.view;
 
-import e_stock.Model.User;
 import e_stock.RepositoryImplementation.UserRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import static e_stock.view.UserProfil.userstatic;
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-/**
- *
- * @author tahav
- */
+
 public class LOGIN extends javax.swing.JFrame {
 
     private UserRepositoryImpl userRepositoryImpl;
@@ -31,7 +24,8 @@ public class LOGIN extends javax.swing.JFrame {
         DatabaseConnector dbConnector = new DatabaseConnector();
         userRepositoryImpl = new UserRepositoryImpl(dbConnector);
         home = new HOME();
-
+        ImageIcon img = new ImageIcon("/resources/images/login/warehouse.png");
+        setIconImage(img.getImage());
         setLocationRelativeTo(null);
 
     }
@@ -64,7 +58,7 @@ public class LOGIN extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(580, 150, 200, 60);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login/iconswarehouse50.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login/warehouse.png"))); // NOI18N
         getContentPane().add(jLabel3);
         jLabel3.setBounds(530, 150, 50, 50);
 
