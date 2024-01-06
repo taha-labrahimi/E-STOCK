@@ -129,13 +129,12 @@ public int save(Order order) {
 
     @Override
     public void update(Order order) {
-        String sql = "UPDATE Orders SET orderDate = ?, clientCode = ? WHERE orderId = ?";
+        String sql = "UPDATE Orders SET clientCode = ? WHERE orderId = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
-            pstmt.setInt(2, order.getClientCode());
-            pstmt.setInt(3, order.getOrderId());
+            pstmt.setInt(1, order.getClientCode());
+            pstmt.setInt(2, order.getOrderId());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
