@@ -111,10 +111,7 @@ public class SupplierView extends javax.swing.JFrame {
         tablesupplier = new javax.swing.JTable();
         AddSupplier = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        modifysupplier = new javax.swing.JButton();
-        deletesupplier = new javax.swing.JButton();
         searchfield = new javax.swing.JTextField();
-        searchbtn = new javax.swing.JButton();
         printbtn = new javax.swing.JButton();
         detailsbtn = new javax.swing.JButton();
         backbtn = new javax.swing.JButton();
@@ -148,30 +145,19 @@ public class SupplierView extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel1.setText("Suppliers");
 
-        modifysupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsedit30.png"))); // NOI18N
-        modifysupplier.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modifysupplierActionPerformed(evt);
+        searchfield.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                searchfieldMouseReleased(evt);
             }
         });
-
-        deletesupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsdelete30.png"))); // NOI18N
-        deletesupplier.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deletesupplierActionPerformed(evt);
-            }
-        });
-
         searchfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchfieldActionPerformed(evt);
             }
         });
-
-        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconssearch.png"))); // NOI18N
-        searchbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchbtnActionPerformed(evt);
+        searchfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchfieldKeyReleased(evt);
             }
         });
 
@@ -207,15 +193,10 @@ public class SupplierView extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(deletesupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(printbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(AddSupplier, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                                        .addComponent(modifysupplier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(AddSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(detailsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -226,8 +207,6 @@ public class SupplierView extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchfield, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(64, 64, 64)))
                 .addContainerGap())
@@ -239,13 +218,9 @@ public class SupplierView extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(218, 218, 218)
                         .addComponent(AddSupplier)
-                        .addGap(18, 18, 18)
-                        .addComponent(modifysupplier)
-                        .addGap(18, 18, 18)
-                        .addComponent(deletesupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGap(26, 26, 26)
                         .addComponent(printbtn)
-                        .addGap(18, 18, 18)
+                        .addGap(130, 130, 130)
                         .addComponent(detailsbtn))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,12 +229,9 @@ public class SupplierView extends javax.swing.JFrame {
                                 .addGap(28, 28, 28)
                                 .addComponent(backbtn)))
                         .addGap(3, 3, 3)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(searchfield, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(searchfield, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -287,104 +259,11 @@ public class SupplierView extends javax.swing.JFrame {
         addSupplierView.setVisible(true);
     }//GEN-LAST:event_AddSupplierActionPerformed
 
-    private void modifysupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifysupplierActionPerformed
-        // TODO add your handling code here:
-        int selectedRowIndex = tablesupplier.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            if (modifySupplierView == null) {
-                modifySupplierView = new ModifySupplierView();
-            }
-            modifySupplierView.setSuppliercode(tablesupplier.getValueAt(selectedRowIndex, 0).toString());
-            modifySupplierView.setFirstname(tablesupplier.getValueAt(selectedRowIndex, 1).toString());
-            modifySupplierView.setLastname(tablesupplier.getValueAt(selectedRowIndex, 2).toString());
-            modifySupplierView.setAdresse(tablesupplier.getValueAt(selectedRowIndex, 3).toString());
-            modifySupplierView.setCity(tablesupplier.getValueAt(selectedRowIndex, 4).toString());
-            modifySupplierView.setCountry(tablesupplier.getValueAt(selectedRowIndex, 5).toString());
-            modifySupplierView.setPhonenumber(tablesupplier.getValueAt(selectedRowIndex, 6).toString());
-            this.setVisible(false);
-            modifySupplierView.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_modifysupplierActionPerformed
-
-    private void deletesupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletesupplierActionPerformed
-        // TODO add your handling code here:
-        int selectedRowIndex = tablesupplier.getSelectedRow();
-        if (selectedRowIndex != -1) {
-            int deletesuppliercode = Integer.parseInt(tablesupplier.getValueAt(selectedRowIndex, 0).toString());
-            supplierRepository.delete(deletesuppliercode);
-            JOptionPane.showMessageDialog(this, "Supplier deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-            this.loadSuupliersAndPopulateTable();
-        } else {
-            JOptionPane.showMessageDialog(null, "You should select a row!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_deletesupplierActionPerformed
-
+    
     private void searchfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchfieldActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_searchfieldActionPerformed
-
-    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        // TODO add your handling code here:
-    String searchText = searchfield.getText().trim();
-
-    if (searchText.isEmpty()) {
-        loadSuupliersAndPopulateTable();
-        return;
-    }
-
-    DefaultTableModel tableModel = (DefaultTableModel) tablesupplier.getModel();
-    String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number"};
-    tableModel.setColumnIdentifiers(columnNames);
-    tableModel.setRowCount(0);
-
-    try {
-        if (searchText.matches("\\d+")) { // If input is a number, consider it as ID
-            int supplierCode = Integer.parseInt(searchText);
-            Supplier supplier = supplierRepository.findById(supplierCode);
-            if (supplier != null) {
-                tableModel.addRow(new Object[]{
-                    String.valueOf(supplier.getSupplierCode()),
-                    supplier.getFirstName(),
-                    supplier.getLastName(),
-                    supplier.getAddress(),
-                    supplier.getCity(),
-                    supplier.getCountry(),
-                    supplier.getPhoneNumber()
-                });
-            } else {
-                JOptionPane.showMessageDialog(this, "Supplier not found", "Search", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else { // If input is not a number, consider it as Name or Surname
-            List<Supplier> suppliersByFirstName = supplierRepository.findByFirstName(searchText);
-            List<Supplier> suppliersByLastName = supplierRepository.findByLastName(searchText);
-            List<Supplier> combinedList = new ArrayList<>();
-            combinedList.addAll(suppliersByFirstName);
-           combinedList.addAll(suppliersByLastName);
-
-            if (!combinedList.isEmpty()) {
-                for (Supplier supplier : combinedList) {
-                    tableModel.addRow(new Object[]{
-                        String.valueOf(supplier.getSupplierCode()),
-                        supplier.getFirstName(),
-                        supplier.getLastName(),
-                        supplier.getAddress(),
-                        supplier.getCity(),
-                        supplier.getCountry(),
-                        supplier.getPhoneNumber()
-                    });
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Supplier not found", "Search", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Please enter a valid supplier code", "Search Error", JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_searchbtnActionPerformed
-
+    
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
         // TODO add your handling code here:
         printTable();
@@ -420,6 +299,40 @@ public class SupplierView extends javax.swing.JFrame {
         this.setVisible(false);
         homeView.setVisible(true);
     }//GEN-LAST:event_backbtnActionPerformed
+
+    private void searchfieldMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchfieldMouseReleased
+
+    }//GEN-LAST:event_searchfieldMouseReleased
+
+    private void searchfieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchfieldKeyReleased
+        // TODO add your handling code here:
+         // TODO add your handling code here:                                 
+        String searchText = searchfield.getText().trim().toLowerCase();
+
+     DefaultTableModel tableModel = (DefaultTableModel) tablesupplier.getModel();
+    String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete", "View"};
+    tableModel.setColumnIdentifiers(columnNames);
+    tableModel.setRowCount(0);
+    List<Supplier> allSuppliers = supplierRepository.findAll();
+    
+    for (Supplier supplier : allSuppliers) {
+        // Modify this condition based on how you want to match the search text
+        if (supplier.getFirstName().toLowerCase().startsWith(searchText) || supplier.getLastName().toLowerCase().startsWith(searchText)) {
+            tableModel.addRow(new Object[]{
+                supplier.getSupplierCode(),
+                supplier.getFirstName(),
+                supplier.getLastName(),
+                supplier.getAddress(),
+                supplier.getCity(),
+                supplier.getCountry(),
+                supplier.getPhoneNumber(),
+                "Edit",
+                "Delete",
+                "View"
+            });
+        }
+    }
+    }//GEN-LAST:event_searchfieldKeyReleased
 
     private void printTable() {
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -494,14 +407,11 @@ public class SupplierView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddSupplier;
     private javax.swing.JButton backbtn;
-    private javax.swing.JButton deletesupplier;
     private javax.swing.JButton detailsbtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton modifysupplier;
     private javax.swing.JButton printbtn;
-    private javax.swing.JButton searchbtn;
     private javax.swing.JTextField searchfield;
     private javax.swing.JTable tablesupplier;
     // End of variables declaration//GEN-END:variables
