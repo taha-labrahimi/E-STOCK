@@ -13,17 +13,20 @@ import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
 public class OrderView extends javax.swing.JFrame {
+
     ProductView productView;
     ClientView clientView;
+    AddOrderView addOrderView;
+    ModifyOrderView modifyOrderView;
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
     ClientRepositoryImpl clientRepositoryImpl;
     ProductRepositoryImpl productRepositoryImpl;
-    AddOrderView addOrderView;
+
     public OrderView() {
         initComponents();
         setResizable(false);
@@ -35,45 +38,41 @@ public class OrderView extends javax.swing.JFrame {
         productRepositoryImpl = new ProductRepositoryImpl(dbConnector);
         loadOrdersAndPopulateTable();
     }
-protected void loadOrdersAndPopulateTable() {
-    try {
-        List<Order> orders = orderRepositoryImpl.findAllWithOrderLines();
-        DefaultTableModel tableModel = (DefaultTableModel) tableorder.getModel();
-        String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name", "Total Items", "Total Amount"};
-        tableModel.setColumnIdentifiers(columnNames);
-        tableModel.setRowCount(0);
 
-        for (Order order : orders) {
-            Client client = clientRepositoryImpl.findById(order.getClientCode());
-            String clientName = (client != null) ? client.getFirstName() + " " + client.getLastName() : "Unknown Client";
-            
-            for (OrderLine line : order.getOrderLines()) {
-                Product product = productRepositoryImpl.findById(line.getProductCode());
-                String productName = (product != null) ? product.getProductName() : "Unknown Product";
+    protected void loadOrdersAndPopulateTable() {
+        try {
+            List<Order> orders = orderRepositoryImpl.findAllWithOrderLines();
+            DefaultTableModel tableModel = (DefaultTableModel) tableorder.getModel();
+            String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name", "Total Items", "Total Amount"};
+            tableModel.setColumnIdentifiers(columnNames);
+            tableModel.setRowCount(0);
 
-                int totalItems = line.getQuantityOrdered();
-                double totalAmount = line.getTotalPrice(); 
+            for (Order order : orders) {
+                Client client = clientRepositoryImpl.findById(order.getClientCode());
+                String clientName = (client != null) ? client.getFirstName() + " " + client.getLastName() : "Unknown Client";
 
-                Object[] row = new Object[]{
-                    order.getOrderId(),
-                    order.getOrderDate(),
-                    clientName,
-                    productName, 
-                    totalItems,
-                    totalAmount
-                };
-                tableModel.addRow(row);
+                for (OrderLine line : order.getOrderLines()) {
+                    Product product = productRepositoryImpl.findById(line.getProductCode());
+                    String productName = (product != null) ? product.getProductName() : "Unknown Product";
+
+                    int totalItems = line.getQuantityOrdered();
+                    double totalAmount = line.getTotalPrice();
+
+                    Object[] row = new Object[]{
+                        order.getOrderId(),
+                        order.getOrderDate(),
+                        clientName,
+                        productName,
+                        totalItems,
+                        totalAmount
+                    };
+                    tableModel.addRow(row);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
-
-
-
-
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -258,7 +257,21 @@ protected void loadOrdersAndPopulateTable() {
     }//GEN-LAST:event_addorderActionPerformed
 
     private void modifyorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyorderActionPerformed
+        int selectedRow = tableorder.getSelectedRow();
+        if (modifyOrderView == null) {
+            modifyOrderView = new ModifyOrderView();
+        }
+        if (selectedRow != -1) {
+            DefaultTableModel model = (DefaultTableModel) tableorder.getModel();
+            modifyOrderView.setOrderid((int) model.getValueAt(selectedRow, 0));
+            String clientName = model.getValueAt(selectedRow, 2).toString(); // Assuming client name is in the 3rd column
+            String productName = model.getValueAt(selectedRow, 3).toString(); // Assuming product name is in the 4th column
+            int quantity = Integer.parseInt(model.getValueAt(selectedRow, 4).toString()); // Assuming quantity is in the 5th column
 
+            modifyOrderView.setSelectedOrderDetails(clientName, productName, quantity);
+            modifyOrderView.setVisible(true);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_modifyorderActionPerformed
 
     private void deleteorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteorderActionPerformed
@@ -270,43 +283,43 @@ protected void loadOrdersAndPopulateTable() {
     }//GEN-LAST:event_searchtextfieldActionPerformed
 
     private void tableorderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableorderMouseClicked
-    
+
     }//GEN-LAST:event_tableorderMouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-     */
-    try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-    } catch (ClassNotFoundException ex) {
-        java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-        java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-        java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-        java.util.logging.Logger.getLogger(OrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
+        //</editor-fold>
 
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            new OrderView().setVisible(true);
-        }
-    });
-}
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new OrderView().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addorder;
