@@ -11,6 +11,7 @@ import static e_stock.view.UserProfil.userstatic;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -19,20 +20,22 @@ import javax.swing.border.LineBorder;
  * @author tahav
  */
 public class LOGIN extends javax.swing.JFrame {
+
     private UserRepositoryImpl userRepositoryImpl;
-    private HOME  home;
+    private HOME home;
+
     public LOGIN() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null);
         this.setSize(1298, 709);
         DatabaseConnector dbConnector = new DatabaseConnector();
         userRepositoryImpl = new UserRepositoryImpl(dbConnector);
         home = new HOME();
+
+        setLocationRelativeTo(null);
+
     }
-    
-    
-  
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,14 +62,14 @@ public class LOGIN extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("E-STOCK");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(590, 230, 200, 60);
+        jLabel1.setBounds(580, 150, 200, 60);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login/iconswarehouse50.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(540, 230, 50, 50);
+        jLabel3.setBounds(530, 150, 50, 50);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new RoundedBorder(30));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         usernameField.setFont(new java.awt.Font("/resources/fonts/PoppinsBlack.otf", java.awt.Font.PLAIN, 18)
         );
@@ -112,7 +115,7 @@ public class LOGIN extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -147,11 +150,11 @@ public class LOGIN extends javax.swing.JFrame {
                         .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(430, 330, 460, 260);
+        jPanel1.setBounds(410, 330, 460, 260);
 
         bgimage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login/bgimage.jpeg"))); // NOI18N
         getContentPane().add(bgimage);
