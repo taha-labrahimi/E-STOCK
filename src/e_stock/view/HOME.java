@@ -4,6 +4,7 @@
  */
 
 package e_stock.view;
+import e_stock.Model.Supplier;
 import java.sql.*;
 import e_stock.Model.User;
 import e_stock.database.DatabaseConnector;
@@ -15,6 +16,8 @@ import e_stock.view.supplierView.SupplierView;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -26,6 +29,7 @@ public class HOME extends javax.swing.JFrame {
     private User user;
     private OrderView orderView;
     private ProductView productView;
+    private LOGIN login;
     private ClientView clientView;
     private SupplierView supplierView;
     private UserProfil userProfil;
@@ -35,6 +39,7 @@ public class HOME extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
     }
+   
    public void setLoggedInUser(User user) {
     this.user = user;
     welcomeLabel.setText("Hello, " + user.getUsername());
@@ -46,21 +51,14 @@ public class HOME extends javax.swing.JFrame {
         pstmt.setInt(1, user.getUserID()); // utilisez l'ID de l'utilisateur
         ResultSet rs = pstmt.executeQuery();
 
-        ImageIcon imageIcon;
+        ImageIcon imageIcon = null;
         if (rs.next() && rs.getBlob("image") != null) {
             Blob blob = rs.getBlob("image");
             InputStream inputStream = blob.getBinaryStream();
             BufferedImage userImage = ImageIO.read(inputStream);
             imageIcon = new ImageIcon(userImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
         } else {
-            // Utiliser une image intégrée comme image par défaut
-            try {
-                BufferedImage defaultImage = ImageIO.read(getClass().getResource("/resources/images/anonyme.png"));
-                imageIcon = new ImageIcon(defaultImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return; // Arrêter l'exécution si l'image par défaut ne peut pas être chargée
-            }
+            imageIcon = new ImageIcon(getClass().getResource("/resources/images/home/Admin Settings Male.png"));
         }
 
         userimage.setIcon(imageIcon);
@@ -85,80 +83,180 @@ public class HOME extends javax.swing.JFrame {
         userimage = new javax.swing.JLabel();
         Profilbtn = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
-        Clientsbtn = new javax.swing.JButton();
-        Fournisseurbtn = new javax.swing.JButton();
-        Productsbtn = new javax.swing.JButton();
-        Usersbtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        clientbtn = new javax.swing.JButton();
+        supplierbtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        clientbtn1 = new javax.swing.JButton();
+        supplierbtn1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(244, 172, 74));
 
         userimage.setBackground(new java.awt.Color(255, 255, 255));
+        userimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        userimage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/Admin Settings Male.png"))); // NOI18N
+        userimage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        userimage.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        Profilbtn.setText("Profil");
+        Profilbtn.setBackground(new java.awt.Color(244, 172, 74));
+        Profilbtn.setText("Profile");
+        Profilbtn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        Profilbtn.setContentAreaFilled(false);
+        Profilbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Profilbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProfilbtnMouseClicked(evt);
+            }
+        });
         Profilbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProfilbtnActionPerformed(evt);
             }
         });
 
-        welcomeLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        welcomeLabel.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jButton1.setBackground(new java.awt.Color(244, 172, 74));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/Disconnected.png"))); // NOI18N
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton1.setContentAreaFilled(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Profilbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(Profilbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))))
+                .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(72, 72, 72)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
+                .addGap(21, 21, 21)
+                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(Profilbtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(Profilbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(60, 60, 60))
         );
 
-        Clientsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ClientsIcon.png"))); // NOI18N
-        Clientsbtn.addActionListener(new java.awt.event.ActionListener() {
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Clients");
+
+        clientbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/clientsicon.png"))); // NOI18N
+        clientbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClientsbtnActionPerformed(evt);
+                clientbtnActionPerformed(evt);
             }
         });
 
-        Fournisseurbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/FournisseurIcon.png"))); // NOI18N
-        Fournisseurbtn.addActionListener(new java.awt.event.ActionListener() {
+        supplierbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/Suppliericon.png"))); // NOI18N
+        supplierbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FournisseurbtnActionPerformed(evt);
+                supplierbtnActionPerformed(evt);
             }
         });
 
-        Productsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ProductsIcon.png"))); // NOI18N
-        Productsbtn.addActionListener(new java.awt.event.ActionListener() {
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Suppliers");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Orders");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Products");
+
+        clientbtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/producticon.png"))); // NOI18N
+        clientbtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProductsbtnActionPerformed(evt);
+                clientbtn1ActionPerformed(evt);
             }
         });
 
-        Usersbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/UsersIcon.png"))); // NOI18N
-        Usersbtn.addActionListener(new java.awt.event.ActionListener() {
+        supplierbtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/ordericon.png"))); // NOI18N
+        supplierbtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsersbtnActionPerformed(evt);
+                supplierbtn1ActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(895, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(clientbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(supplierbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(clientbtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(supplierbtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(clientbtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(44, 44, 44)
+                .addComponent(supplierbtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(clientbtn1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(60, 60, 60)
+                .addComponent(supplierbtn1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGap(85, 85, 85))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -166,33 +264,13 @@ public class HOME extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(Productsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Fournisseurbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(181, 181, 181))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(391, 391, 391)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Usersbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                            .addComponent(Clientsbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(485, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(Clientsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Productsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Fournisseurbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(111, 111, 111)
-                .addComponent(Usersbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,30 +286,6 @@ public class HOME extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ClientsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientsbtnActionPerformed
-          if (clientView == null) {
-            clientView = new ClientView();
-        }
-        this.setVisible(false);
-        clientView.setVisible(true);      // TODO add your handling code here:
-    }//GEN-LAST:event_ClientsbtnActionPerformed
-
-    private void ProductsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductsbtnActionPerformed
-        if (productView == null) {
-            productView = new ProductView();
-        }
-        this.setVisible(false);
-        productView.setVisible(true);
-    }//GEN-LAST:event_ProductsbtnActionPerformed
-
-    private void FournisseurbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FournisseurbtnActionPerformed
-        if (supplierView == null) {
-            supplierView = new SupplierView();
-        }
-        this.setVisible(false);
-        supplierView.setVisible(true);
-    }//GEN-LAST:event_FournisseurbtnActionPerformed
 
     private void ProfilbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfilbtnActionPerformed
         // TODO add your handling code here:
@@ -249,13 +303,54 @@ public class HOME extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ProfilbtnActionPerformed
 
-    private void UsersbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsersbtnActionPerformed
-        if (orderView == null) {
-            orderView = new OrderView();
-        }
-        this.setVisible(false);
-        orderView.setVisible(true);
-    }//GEN-LAST:event_UsersbtnActionPerformed
+    private void ProfilbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfilbtnMouseClicked
+    }//GEN-LAST:event_ProfilbtnMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       if(login ==null)
+       {
+           login = new LOGIN();
+       }
+       this.setVisible(false);
+       
+       login.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void clientbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientbtnActionPerformed
+       if(clientView == null)
+       {
+           clientView =  new ClientView();
+       }
+       this.setVisible(false);
+       clientView.setVisible(true);
+    }//GEN-LAST:event_clientbtnActionPerformed
+
+    private void supplierbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierbtnActionPerformed
+       if(supplierView == null)
+       {
+           supplierView = new SupplierView();
+       }
+       this.setVisible(false);
+       supplierView.setVisible(true);
+    }//GEN-LAST:event_supplierbtnActionPerformed
+
+    private void clientbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientbtn1ActionPerformed
+         if( productView== null)
+       {
+           productView = new ProductView();
+       }
+       this.setVisible(false);
+       productView.setVisible(true);
+    }//GEN-LAST:event_clientbtn1ActionPerformed
+
+    private void supplierbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierbtn1ActionPerformed
+         if(orderView == null)
+       {
+           orderView = new OrderView();
+       }
+       this.setVisible(false);
+       orderView.setVisible(true);
+    }//GEN-LAST:event_supplierbtn1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,13 +389,19 @@ public class HOME extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Clientsbtn;
-    private javax.swing.JButton Fournisseurbtn;
-    private javax.swing.JButton Productsbtn;
     private javax.swing.JButton Profilbtn;
-    private javax.swing.JButton Usersbtn;
+    private javax.swing.JButton clientbtn;
+    private javax.swing.JButton clientbtn1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton supplierbtn;
+    private javax.swing.JButton supplierbtn1;
     private javax.swing.JLabel userimage;
     private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables

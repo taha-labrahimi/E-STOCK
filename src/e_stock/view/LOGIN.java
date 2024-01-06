@@ -56,7 +56,7 @@ public class LOGIN extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("E-STOCK");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(580, 150, 200, 60);
+        jLabel1.setBounds(580, 150, 210, 50);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login/warehouse.png"))); // NOI18N
         getContentPane().add(jLabel3);
