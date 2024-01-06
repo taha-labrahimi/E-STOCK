@@ -46,21 +46,22 @@ public class HOME extends javax.swing.JFrame {
         pstmt.setInt(1, user.getUserID()); // utilisez l'ID de l'utilisateur
         ResultSet rs = pstmt.executeQuery();
 
-        ImageIcon imageIcon;
+        ImageIcon imageIcon = null;
         if (rs.next() && rs.getBlob("image") != null) {
             Blob blob = rs.getBlob("image");
             InputStream inputStream = blob.getBinaryStream();
             BufferedImage userImage = ImageIO.read(inputStream);
             imageIcon = new ImageIcon(userImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
+            adminicon.setVisible(false);
         } else {
-            // Utiliser une image intégrée comme image par défaut
-            try {
-                BufferedImage defaultImage = ImageIO.read(getClass().getResource("/resources/images/anonyme.png"));
-                imageIcon = new ImageIcon(defaultImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return; // Arrêter l'exécution si l'image par défaut ne peut pas être chargée
-            }
+//            // Utiliser une image intégrée comme image par défaut
+//            try {
+//                BufferedImage defaultImage = ImageIO.read(getClass().getResource("/resources/images/home/Admin Settings Male.png"));
+//                imageIcon = new ImageIcon(defaultImage.getScaledInstance(userimage.getWidth(), userimage.getHeight(), Image.SCALE_SMOOTH));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return; // Arrêter l'exécution si l'image par défaut ne peut pas être chargée
+//            }
         }
 
         userimage.setIcon(imageIcon);
@@ -85,6 +86,7 @@ public class HOME extends javax.swing.JFrame {
         userimage = new javax.swing.JLabel();
         Profilbtn = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
+        adminicon = new javax.swing.JLabel();
         Clientsbtn = new javax.swing.JButton();
         Fournisseurbtn = new javax.swing.JButton();
         Productsbtn = new javax.swing.JButton();
@@ -92,9 +94,10 @@ public class HOME extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(244, 172, 74));
 
         userimage.setBackground(new java.awt.Color(255, 255, 255));
+        userimage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         Profilbtn.setText("Profil");
         Profilbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -105,31 +108,42 @@ public class HOME extends javax.swing.JFrame {
 
         welcomeLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
 
+        adminicon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/home/Admin Settings Male.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(Profilbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))))
+                        .addContainerGap()
+                        .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Profilbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 8, Short.MAX_VALUE)))))
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(adminicon)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
-                .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(21, 21, 21)
+                .addComponent(userimage, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(Profilbtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(adminicon)
+                .addGap(18, 18, 18)
+                .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(299, 299, 299))
         );
 
         Clientsbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ClientsIcon.png"))); // NOI18N
@@ -168,17 +182,17 @@ public class HOME extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                        .addGap(45, 45, 45)
                         .addComponent(Productsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Fournisseurbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(181, 181, 181))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(391, 391, 391)
+                        .addGap(333, 333, 333)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Usersbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                             .addComponent(Clientsbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(485, Short.MAX_VALUE))))
+                        .addContainerGap(526, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,6 +313,7 @@ public class HOME extends javax.swing.JFrame {
     private javax.swing.JButton Productsbtn;
     private javax.swing.JButton Profilbtn;
     private javax.swing.JButton Usersbtn;
+    private javax.swing.JLabel adminicon;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel userimage;
