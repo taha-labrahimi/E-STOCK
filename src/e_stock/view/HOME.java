@@ -196,6 +196,7 @@ public class HOME extends javax.swing.JFrame {
                 userProfil = new UserProfil();
             }
             userProfil.displayUserData(user);
+            this.setVisible(false);
             userProfil.setVisible(true);
         } else {
             // User not logged in, handle accordingly

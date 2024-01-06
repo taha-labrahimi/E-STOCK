@@ -346,7 +346,7 @@ public class UserProfil extends javax.swing.JFrame {
         this.Save.setEnabled(true);
         this.Cancel.setEnabled(true);
     }//GEN-LAST:event_EditActionPerformed
-
+private static User userstatic;
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         try {
     
@@ -370,8 +370,8 @@ public class UserProfil extends javax.swing.JFrame {
         
         
         
-        User user = new User(Integer.parseInt(userID.getText()),username.getText(),Password.getText(),usertype.getText(),imageBytes,email.getText(),firstname.getName(),lastname.getText());
-        userRepository.update(user);
+        userstatic = new User(Integer.parseInt(userID.getText()),username.getText(),Password.getText(),usertype.getText(),imageBytes,email.getText(),firstname.getText(),lastname.getText());
+        userRepository.update(userstatic);
         
         JOptionPane.showMessageDialog(this, "User modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
         this.email.setEditable(false);
@@ -429,6 +429,7 @@ public static byte[] imageContentStatic4 = null;
        if (homeView == null) {
             homeView = new HOME();
         }
+        homeView.setLoggedInUser(userstatic);
         this.setVisible(false);
         homeView.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
