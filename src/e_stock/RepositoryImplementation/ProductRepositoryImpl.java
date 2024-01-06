@@ -16,7 +16,6 @@ public class ProductRepositoryImpl implements ProductRepository{
     public ProductRepositoryImpl(DatabaseConnector dbConnector) {
         this.dbConnector = dbConnector;
     }
-    
     public Product findById(int productCode) {
     String sql = "SELECT * FROM products WHERE ProductCode = ?";
     try (Connection conn = dbConnector.getConnection();

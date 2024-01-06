@@ -240,9 +240,7 @@ public class ClientView extends javax.swing.JFrame {
     DefaultTableModel tableModel = (DefaultTableModel) tableclient.getModel();
     String[] columnNames = {"Supplier Code", "First Name", "Last Name", "Address", "City", "Country", "Phone Number", "Edit", "Delete", "View"};
     tableModel.setColumnIdentifiers(columnNames);
-    tableModel.setRowCount(0); // Clear the current table state
-
-    // Fetch the latest list of clients, if not already available.
+    tableModel.setRowCount(0);
     List<Client> allClients = clientRepository.findAll();
     
     for (Client client : allClients) {

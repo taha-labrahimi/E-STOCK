@@ -341,12 +341,14 @@ public class UserProfil extends javax.swing.JFrame {
         this.firstname.setEditable(true);
         this.username.setEditable(true);
         this.AddImageBtn.setEnabled(true);
+        this.Password.setEditable(true);
+
         this.lastname.setEditable(true);
         this.usertype.setEditable(true);
         this.Save.setEnabled(true);
         this.Cancel.setEnabled(true);
     }//GEN-LAST:event_EditActionPerformed
-private static User userstatic;
+public static User userstatic;
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         try {
     
@@ -416,10 +418,16 @@ public static byte[] imageContentStatic4 = null;
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         this.email.setEditable(false);
+        this.firstname.setText(userstatic.getFirstName());
         this.firstname.setEditable(false);
+        this.username.setText(userstatic.getUsername());
         this.username.setEditable(false);
+        this.email.setText(userstatic.getEmail());
         this.AddImageBtn.setEnabled(false);
+        this.Password.setText(userstatic.getPassword());
+        this.Password.setEditable(false);
         this.lastname.setEditable(false);
+        this.usertype.setText(userstatic.getUserType());
         this.usertype.setEditable(false);
         this.Save.setEnabled(false);
         this.Cancel.setEnabled(false);
