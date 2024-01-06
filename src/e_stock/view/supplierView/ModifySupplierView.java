@@ -7,6 +7,7 @@ package e_stock.view.supplierView;
 import e_stock.Model.Supplier;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -279,9 +280,10 @@ public class ModifySupplierView extends javax.swing.JFrame {
     }//GEN-LAST:event_suppliercodeActionPerformed
 
     private void modifysupplierbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifysupplierbtnActionPerformed
-        // TODO add your handling code here:
+        String phoneNumber = phonenumber.getText();
         try {
-            int supplierCode = Integer.parseInt(suppliercode.getText());
+            if (phoneNumber.matches("\\d{10}")) {
+                int supplierCode = Integer.parseInt(suppliercode.getText());
             Supplier supplier = new Supplier(supplierCode, firstname.getText(), lastname.getText(), adresse.getText(), city.getText(), country.getText(), phonenumber.getText());
             supplierrepository.update(supplier);
             JOptionPane.showMessageDialog(this, "Supplier modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -290,6 +292,12 @@ public class ModifySupplierView extends javax.swing.JFrame {
                 supplierview.setVisible(true);
             }
             this.setVisible(false);
+            phonenumber.setBackground(Color.WHITE);
+            }
+            else {
+        JOptionPane.showMessageDialog(this, "please add a valid number Exp\"06 XX XX XX XX\"", "validation Error", JOptionPane.ERROR_MESSAGE);
+        phonenumber.setBackground(Color.PINK);
+        }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Supplier code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {

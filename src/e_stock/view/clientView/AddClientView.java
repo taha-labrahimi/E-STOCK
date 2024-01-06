@@ -3,6 +3,7 @@ package e_stock.view.clientView;
 import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -229,13 +230,15 @@ public class AddClientView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addclientbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addclientbtnActionPerformed
-    try {
-            // Create client and save
+    String phoneNumber = phonenumber.getText();
+        try {
+            if (phoneNumber.matches("\\d{10}")) {
             Client client = new Client(firstname.getText(), lastname.getText(), adresse.getText(), city.getText(), country.getText(), phonenumber.getText());
             clientRepository.save(client);
 
             // Provide feedback
             JOptionPane.showMessageDialog(this, "Client added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            phonenumber.setBackground(Color.WHITE);
 
             // Refresh client list in ClientView (if necessary)
             if (clientView != null) {
@@ -247,6 +250,12 @@ public class AddClientView extends javax.swing.JFrame {
             if (clientView != null) {
                 clientView.setVisible(true);
             }
+            }
+            else {
+        JOptionPane.showMessageDialog(this, "please add a valid number Exp\"06 XX XX XX XX\"", "validation Error", JOptionPane.ERROR_MESSAGE);
+        phonenumber.setBackground(Color.PINK);
+    }
+            
         } catch (Exception e) {
             // Handle exception and provide feedback
             JOptionPane.showMessageDialog(this, "Error adding client: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

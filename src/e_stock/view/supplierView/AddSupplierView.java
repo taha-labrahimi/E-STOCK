@@ -8,6 +8,7 @@ import e_stock.Model.Supplier;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import e_stock.view.supplierView.SupplierView;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -268,15 +269,16 @@ public class AddSupplierView extends javax.swing.JFrame {
     }//GEN-LAST:event_LastNameActionPerformed
 
     private void addsupplierbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addsupplierbtnActionPerformed
-        // TODO add your handling code here:
+        String phoneNumber = Phone.getText();
         try {
-            // Create client and save
+            
+            if (phoneNumber.matches("\\d{10}")) {
             Supplier client = new Supplier(FirstName.getText(), LastName.getText(), Adresse.getText(), City.getText(), Country.getText(), Phone.getText());
             supplierrepository.save(client);
 
             // Provide feedback
             JOptionPane.showMessageDialog(this, "Supplier added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
+            Phone.setBackground(Color.WHITE);
             // Refresh client list in ClientView (if necessary)
             if (supplierview != null) {
                 supplierview.loadSuupliersAndPopulateTable();
@@ -287,6 +289,11 @@ public class AddSupplierView extends javax.swing.JFrame {
             if (supplierview != null) {
                 supplierview.setVisible(true);
             }
+            }
+            else {
+        JOptionPane.showMessageDialog(this, "please add a valid number Exp\"06 XX XX XX XX\"", "validation Error", JOptionPane.ERROR_MESSAGE);
+        Phone.setBackground(Color.PINK);
+        }
         } catch (Exception e) {
             // Handle exception and provide feedback
             JOptionPane.showMessageDialog(this, "Error adding supplier: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

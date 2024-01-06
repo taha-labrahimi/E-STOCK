@@ -44,17 +44,17 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Productsbtn" min="-2" pref="112" max="-2" attributes="0"/>
-                          <EmptySpace pref="501" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="Fournisseurbtn" min="-2" pref="117" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="181" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="388" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="391" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="Usersbtn" pref="138" max="32767" attributes="0"/>
                               <Component id="Clientsbtn" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="485" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -180,6 +180,9 @@
               <Image iconType="3" name="/resources/images/UsersIcon.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UsersbtnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

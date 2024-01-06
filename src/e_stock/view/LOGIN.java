@@ -181,7 +181,7 @@ public class LOGIN extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username = usernameField.getText();
-        String password = new String(passwordField.getPassword()); 
+        String password = new String(passwordField.getPassword());
         userstatic = userRepositoryImpl.login(username, password);
         if (userstatic != null) {
             // Login success
@@ -190,7 +190,6 @@ public class LOGIN extends javax.swing.JFrame {
              home.setLoggedInUser(userstatic);
              home.setVisible(true);
         } else {
-            // Login failed
             JOptionPane.showMessageDialog(this, "Login failed. Please check your username and password.", "Login Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
