@@ -19,21 +19,27 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author ilyas
+ */
 public class AddOrderView extends javax.swing.JPanel {
 
+    OrderView orderView;
     private ClientRepositoryImpl clientRepositoryImpl;
     private ProductRepositoryImpl productRepositoryImpl;
     private DefaultTableModel tableModel;
-    private OrderView orderView;
-    private int currentOrderId = -1;
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
-    Main main;
+    private int orderid;
+        private int currentOrderId = -1;
 
+    Main main;
     public AddOrderView(Main main) {
         this.main=main;
-        orderView = new OrderView(main);
         initComponents();
+        orderView = new OrderView(main);
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepositoryImpl = new ClientRepositoryImpl(dbConnector);
         productRepositoryImpl = new ProductRepositoryImpl(dbConnector);
@@ -41,9 +47,9 @@ public class AddOrderView extends javax.swing.JPanel {
         orderRepositoryImpl = new OrderRepositoryImpl(dbConnector);
         populateClientComboBox();
         populateProductComboBox();
-
     }
-    private void populateClientComboBox() {
+
+   private void populateClientComboBox() {
         List<Client> clients = clientRepositoryImpl.findAll();
 
         for (Client client : clients) {
@@ -101,14 +107,13 @@ public class AddOrderView extends javax.swing.JPanel {
     orderLineRepositoryImpl.save(orderLine);
 }
 
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        addorderbtn = new javax.swing.JButton();
+        modifyorderbtn = new javax.swing.JButton();
         clientcombobox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         productcombobox = new javax.swing.JComboBox<>();
@@ -121,10 +126,10 @@ public class AddOrderView extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel2.setText("ADD Order");
 
-        addorderbtn.setText("ADD");
-        addorderbtn.addActionListener(new java.awt.event.ActionListener() {
+        modifyorderbtn.setText("ADD");
+        modifyorderbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addorderbtnActionPerformed(evt);
+                modifyorderbtnActionPerformed(evt);
             }
         });
 
@@ -156,11 +161,8 @@ public class AddOrderView extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(458, 458, 458)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(360, 360, 360)
-                        .addComponent(addorderbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(modifyorderbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -177,13 +179,17 @@ public class AddOrderView extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(170, 170, 170))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(324, 324, 324))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clientcombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -194,7 +200,7 @@ public class AddOrderView extends javax.swing.JPanel {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(147, 147, 147)
-                .addComponent(addorderbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(modifyorderbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
         );
 
@@ -209,9 +215,9 @@ public class AddOrderView extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void addorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addorderbtnActionPerformed
-         try {
+    
+    private void modifyorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyorderbtnActionPerformed
+        try {
         if (currentOrderId == -1) {
             // Première fois que nous ajoutons un produit, créez donc une nouvelle commande
             String selectedClientName = clientcombobox.getSelectedItem().toString();
@@ -238,7 +244,7 @@ public class AddOrderView extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout du produit à la commande : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
     }
-    }//GEN-LAST:event_addorderbtnActionPerformed
+    }//GEN-LAST:event_modifyorderbtnActionPerformed
 
     private void clientcomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientcomboboxActionPerformed
         // TODO add your handling code here:
@@ -250,7 +256,6 @@ public class AddOrderView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addorderbtn;
     private javax.swing.JComboBox<String> clientcombobox;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -258,6 +263,7 @@ public class AddOrderView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JButton modifyorderbtn;
     private javax.swing.JComboBox<String> productcombobox;
     // End of variables declaration//GEN-END:variables
 }

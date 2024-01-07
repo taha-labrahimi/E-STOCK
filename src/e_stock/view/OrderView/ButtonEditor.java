@@ -131,8 +131,8 @@ public class ButtonEditor extends DefaultCellEditor {
                 int orderId = (Integer) model.getValueAt(i, 0); // Adjust column index as needed
                 if (orderId == orderIdClicked) {
                     String productName = (String) model.getValueAt(i, 3); // Adjust column index as needed
-                    int quantity = (Integer) model.getValueAt(i, 4); // Adjust column index as needed
-                    double price = (Double) model.getValueAt(i, 5); // Adjust column index as needed
+                    int quantity = (Integer) model.getValueAt(i, 5); // Adjust column index as needed
+                    double price = (Double) model.getValueAt(i, 4); // Adjust column index as needed
                     double total = (Double) model.getValueAt(i, 6); // Adjust column index as needed
 
                     fields.add(new FieldReportPayment(productName, quantity, price, total));
