@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="226" pageHeight="842" columnWidth="204" leftMargin="11" rightMargin="11" topMargin="0" bottomMargin="0" uuid="249c954c-6ce4-412a-b462-d5cb7099d379">
+	<property name="ireport.zoom" value="2.732053821460282"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="client" class="java.lang.String"/>
+	<parameter name="total" class="java.lang.String"/>
+	<parameter name="qrcode" class="java.io.InputStream"/>
+	<field name="pname" class="java.lang.String"/>
+	<field name="price" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="qty" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="204" height="29" uuid="e7531fb9-0a97-4ae6-82ef-d032cb3864b8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Invoice]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="78" height="20" uuid="40e52d5b-1b67-49d9-bb2d-aa77bb4242b1"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[Client]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="78" y="29" width="126" height="20" uuid="b5db3500-f0ee-4f23-a6b0-ae8fa5a1cbab"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{client}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="15">
+			<staticText>
+				<reportElement x="51" y="0" width="51" height="15" uuid="cf57db35-035f-4aa5-a56d-c5289bd4ccd6"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="0" width="51" height="15" uuid="106361c7-d811-4db0-8577-8dbbbcb65a17"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="0" width="51" height="15" uuid="fa4e99eb-baeb-4c21-bfd9-f31f7c90edc3"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="51" height="15" uuid="2a838674-f5e6-4d6a-8f66-00e1f4246326"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[product]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="51" y="0" width="51" height="15" uuid="e4356a1b-22bb-4399-b9b1-b0bfd71805d9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="153" y="0" width="51" height="15" uuid="f0c48f5b-ca41-4d96-8e14-b92b9cd926fd"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="0" width="51" height="15" uuid="595acf8d-8e18-4b5e-b130-57a1d0b53ce8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="51" height="15" uuid="05b4bb1f-b7c6-4b1b-a84b-ae0326b296fb"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="116" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="94" height="20" uuid="c69310cb-f244-421b-9ac6-b91bd0dd8dba"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="1" width="110" height="20" uuid="b672eafb-4e1d-42fe-990c-292abfc805c5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="31" width="204" height="80" uuid="8f6eccbf-357b-467c-842e-a3540d24dd25"/>
+				<imageExpression><![CDATA[$P{qrcode}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="0" width="204" height="1" uuid="cf9cafed-5929-4fdc-9e56-baa90a0fb4e3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

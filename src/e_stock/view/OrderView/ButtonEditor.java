@@ -5,12 +5,22 @@ import e_stock.view.clientView.*;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
+import e_stock.view.OrderView.report.FieldReportPayment;
+import e_stock.view.OrderView.report.ParameterReportPayment;
+import e_stock.view.OrderView.report.ReportManager;
 import e_stock.view.clientView.ClientView;
 import e_stock.view.clientView.ModifyClientView;
+
 import java.awt.Component;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
 
 public class ButtonEditor extends DefaultCellEditor {
 
@@ -23,11 +33,12 @@ public class ButtonEditor extends DefaultCellEditor {
     private DetailsClientView detailsClientView;
     private OrderView orderView;
     Main main;
-    public ButtonEditor(Icon icon, OrderRepositoryImpl orderRepositoryImpl, OrderLineRepositoryImpl orderLineRepositoryImpl, ModifyOrderView modifyOrderView, OrderView orderView ,Main main) {
+
+    public ButtonEditor(Icon icon, OrderRepositoryImpl orderRepositoryImpl, OrderLineRepositoryImpl orderLineRepositoryImpl, ModifyOrderView modifyOrderView, OrderView orderView, Main main) {
         super(new JCheckBox());
         this.orderRepositoryImpl = orderRepositoryImpl;
         this.orderLineRepositoryImpl = orderLineRepositoryImpl;
-        this.main=main;
+        this.main = main;
         this.modifyOrderView = modifyOrderView;
         this.orderView = orderView;
         this.button = new JButton(icon);
@@ -55,7 +66,11 @@ public class ButtonEditor extends DefaultCellEditor {
             } else if (table.getColumnName(table.getEditingColumn()).equals("Delete")) {
                 performDeleteAction(modelRow);
             } else if (table.getColumnName(table.getEditingColumn()).equals("View")) {
-                performViewAction(modelRow);
+                try {
+                    performViewAction(modelRow);
+                } catch (JRException ex) {
+                    Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         isPushed = false;
@@ -103,18 +118,46 @@ public class ButtonEditor extends DefaultCellEditor {
         super.fireEditingStopped();
     }
 
-    private void performViewAction(int modelRow) {
-//        if(detailsClientView ==null){
-//            detailsClientView =new DetailsClientView(main);
-//        }
-//         // Fetch client data from the row and set it to the modifyClientView
-//       
-//        detailsClientView.setFirstnam(table.getValueAt(modelRow, 1).toString());
-//        detailsClientView.setLastname(table.getValueAt(modelRow, 2).toString());
-//        detailsClientView.setAdresse(table.getValueAt(modelRow, 3).toString());
-//        detailsClientView.setCity(table.getValueAt(modelRow, 4).toString());
-//        detailsClientView.setCountry(table.getValueAt(modelRow, 5).toString());
-//        detailsClientView.setPhonenumber(table.getValueAt(modelRow, 6).toString());
-//        this.main.showForm(detailsClientView);
+    private void performViewAction(int modelRow) throws JRException {
+        try {
+            List<FieldReportPayment> fields = new ArrayList<>();
+
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            // Get the order ID of the clicked row
+            int orderIdClicked = (Integer) model.getValueAt(modelRow, 0); // Assuming order ID is in the first column
+
+            // Collect data for all rows with the same order ID
+            for (int i = 0; i < model.getRowCount(); i++) {
+                int orderId = (Integer) model.getValueAt(i, 0); // Adjust column index as needed
+                if (orderId == orderIdClicked) {
+                    String productName = (String) model.getValueAt(i, 3); // Adjust column index as needed
+                    int quantity = (Integer) model.getValueAt(i, 4); // Adjust column index as needed
+                    double price = (Double) model.getValueAt(i, 5); // Adjust column index as needed
+                    double total = (Double) model.getValueAt(i, 6); // Adjust column index as needed
+
+                    fields.add(new FieldReportPayment(productName, quantity, price, total));
+                }
+            }
+
+            // Assuming client name and total amount are same for all rows with same order ID
+            String clientName = (String) model.getValueAt(modelRow, 2); // Get client name from the clicked row
+            String totalAmount = calculateTotalAmount(fields); // Method to calculate total amount
+
+            InputStream qrCodeStream = null; // Implement QR code generation or retrieval method
+
+            ParameterReportPayment dataPrint = new ParameterReportPayment(clientName, totalAmount, qrCodeStream, fields);
+            ReportManager.getInstance().printReportPayment(dataPrint);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String calculateTotalAmount(List<FieldReportPayment> fields) {
+        double total = 0;
+        for (FieldReportPayment field : fields) {
+            total += field.getTotal();
+        }
+        return String.format("%.2f", total);
     }
 }

@@ -13,12 +13,15 @@ import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
+import e_stock.view.OrderView.report.ReportManager;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JRException;
+import org.apache.log4j.BasicConfigurator;
 public class OrderView extends javax.swing.JPanel {
 
      AddOrderView addOrderView;
@@ -40,10 +43,16 @@ public class OrderView extends javax.swing.JPanel {
     }
 
     protected void loadOrdersAndPopulateTable() {
+        try{
+            ReportManager.getInstance().compileReport();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         try {
             List<Order> orders = orderRepositoryImpl.findAllWithOrderLines();
             DefaultTableModel tableModel = (DefaultTableModel) tableorder.getModel();
-            String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name", "Total Items", "Total Amount","Edit", "Delete", "View"
+            String[] columnNames = {"Order ID", "Order Date", "Client Name", "Product Name","price", "Total Items", "Total Amount","Edit", "Delete", "View"
             };
             tableModel.setColumnIdentifiers(columnNames);
             tableModel.setRowCount(0);
@@ -58,12 +67,13 @@ public class OrderView extends javax.swing.JPanel {
 
                     int totalItems = line.getQuantityOrdered();
                     double totalAmount = line.getTotalPrice();
-
+                    double price = line.getPrice();
                     Object[] row = new Object[]{
                         order.getOrderId(),
                         order.getOrderDate(),
                         clientName,
                         productName,
+                        price,
                         totalItems,
                         totalAmount
                     };
@@ -81,22 +91,22 @@ public class OrderView extends javax.swing.JPanel {
         Icon ViewIcon = new ImageIcon(getClass().getResource("/resources/images/iconsview20.png"));
 
         TableColumnModel columnModel = tableorder.getColumnModel();
-        columnModel.getColumn(6).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(editIcon));
-        columnModel.getColumn(6).setCellEditor(new e_stock.view.OrderView.ButtonEditor(editIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this,mainFrame));
+        columnModel.getColumn(7).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(editIcon));
+        columnModel.getColumn(7).setCellEditor(new e_stock.view.OrderView.ButtonEditor(editIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this,mainFrame));
 
-        columnModel.getColumn(7).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(deleteIcon));
-        columnModel.getColumn(7).setCellEditor(new e_stock.view.OrderView.ButtonEditor(deleteIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this,mainFrame));
+        columnModel.getColumn(8).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(deleteIcon));
+        columnModel.getColumn(8).setCellEditor(new e_stock.view.OrderView.ButtonEditor(deleteIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this,mainFrame));
 
-        columnModel.getColumn(8).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(ViewIcon));
-        columnModel.getColumn(8).setCellEditor(new e_stock.view.OrderView.ButtonEditor(ViewIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this,mainFrame));
+        columnModel.getColumn(9).setCellRenderer(new e_stock.view.OrderView.ButtonRenderer(ViewIcon));
+        columnModel.getColumn(9).setCellEditor(new e_stock.view.OrderView.ButtonEditor(ViewIcon, orderRepositoryImpl,orderLineRepositoryImpl, modifyOrderView, this,mainFrame));
 
         int buttonWidth = new JButton(editIcon).getPreferredSize().width;
-        columnModel.getColumn(6).setPreferredWidth(40);
-        columnModel.getColumn(6).setMaxWidth(40);
-        columnModel.getColumn(7).setPreferredWidth(50);
-        columnModel.getColumn(7).setMaxWidth(50);
-        columnModel.getColumn(8).setPreferredWidth(40);
-        columnModel.getColumn(8).setMaxWidth(40);
+        columnModel.getColumn(7).setPreferredWidth(40);
+        columnModel.getColumn(7).setMaxWidth(40);
+        columnModel.getColumn(8).setPreferredWidth(50);
+        columnModel.getColumn(8).setMaxWidth(50);
+        columnModel.getColumn(9).setPreferredWidth(40);
+        columnModel.getColumn(9).setMaxWidth(40);
         tableorder.setRowHeight(40);
     }
 
@@ -105,7 +115,6 @@ public class OrderView extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        searchbtn = new javax.swing.JButton();
         printbtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableorder = new javax.swing.JTable();
@@ -114,18 +123,6 @@ public class OrderView extends javax.swing.JPanel {
         searchtextfield = new javax.swing.JTextField();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        searchbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconssearch.png"))); // NOI18N
-        searchbtn.setToolTipText("");
-        searchbtn.setBorder(null);
-        searchbtn.setBorderPainted(false);
-        searchbtn.setContentAreaFilled(false);
-        searchbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        searchbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchbtnActionPerformed(evt);
-            }
-        });
 
         printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsprint30.png"))); // NOI18N
         printbtn.setBorder(null);
@@ -155,7 +152,7 @@ public class OrderView extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tableorder);
 
-        addorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsadd30.png"))); // NOI18N
+        addorder.setText("Add new Order");
         addorder.setBorder(null);
         addorder.setContentAreaFilled(false);
         addorder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -180,46 +177,35 @@ public class OrderView extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addorder, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(addorder)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(printbtn)
-                        .addContainerGap(12, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1066, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(484, 484, 484)
+                .addGap(449, 449, 449)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(searchbtn)
-                    .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(addorder)
-                        .addGap(176, 176, 176)
-                        .addComponent(printbtn)))
-                .addGap(39, 39, 39))
+                    .addComponent(printbtn)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addorder, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -233,10 +219,6 @@ public class OrderView extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-
-    }//GEN-LAST:event_searchbtnActionPerformed
 
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
 
@@ -261,7 +243,6 @@ public class OrderView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton printbtn;
-    private javax.swing.JButton searchbtn;
     private javax.swing.JTextField searchtextfield;
     private javax.swing.JTable tableorder;
     // End of variables declaration//GEN-END:variables
