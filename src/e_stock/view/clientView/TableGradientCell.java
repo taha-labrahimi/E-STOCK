@@ -58,7 +58,7 @@ public class TableGradientCell extends DefaultTableCellRenderer{
             g2.setPaint(new GradientPaint(x,0,color1,width,0,color2));
             g2.fill(new Rectangle2D.Double(0,0,getWidth(),getHeight()));
             }else if(row%2==0){
-                g2.setPaint(new GradientPaint(x,0,Color.decode("#D1913C"),width,0,Color.decode("#FFD194")));
+                g2.setPaint(new GradientPaint(x,0,Color.decode("#000000"),width,0,Color.decode("#434343")));
                 g2.fill(new Rectangle2D.Double(0,0,getWidth(),getHeight()));
             }
         

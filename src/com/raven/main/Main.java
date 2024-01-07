@@ -3,6 +3,10 @@ package com.raven.main;
 import com.raven.event.EventMenu;
 import com.raven.form.Form;
 import com.raven.form.Form_1;
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import e_stock.view.OrderView.OrderView;
 import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
@@ -44,6 +48,8 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
+        FlatLaf.registerCustomDefaultsSource("e_stock.view.clientView");
+        FlatMacDarkLaf.setup();
         userProfil = new UserProfil(this);
         setBackground(new Color(0, 0, 0, 0));
         EventMenu event = new EventMenu() {
