@@ -30,7 +30,7 @@ public class TableGradientCell extends DefaultTableCellRenderer{
     
 
     public TableGradientCell() {
-        this(Color.decode("#D1913C"), Color.decode("#FFD194"));
+        this(Color.decode("#b92b27"), Color.decode("#1565C0"));
     }
 
     public TableGradientCell(Color color1, Color color2) {
