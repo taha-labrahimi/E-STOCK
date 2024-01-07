@@ -8,11 +8,9 @@ import java.awt.Color;
 import java.awt.Component;
 
 public class Main extends javax.swing.JFrame {
-    ClientView clientView;
 
     public Main() {
         initComponents();
-        clientView = new ClientView();
         setBackground(new Color(0, 0, 0, 0));
         EventMenu event = new EventMenu() {
             @Override
@@ -22,7 +20,7 @@ public class Main extends javax.swing.JFrame {
                 } else if (index == 8) {
                     System.out.println("Logout");
                     } else if (index == 2) {
-                    showForm(new ClientView());
+                    showForm(new ClientView(Main.this));
                 } else {
                     showForm(new Form(index));
                 }
