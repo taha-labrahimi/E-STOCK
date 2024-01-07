@@ -54,6 +54,7 @@ public class ClientView extends javax.swing.JPanel {
     public ClientView(Main main) {
         initComponents();
         this.mainFrame = main;
+        
         tableclient.setDefaultRenderer(Object.class, new TableGradientCell());
         tableclient.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "hoverBackground:null;"

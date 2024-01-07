@@ -15,11 +15,12 @@ public class AddClientView extends javax.swing.JPanel {
 
     private ClientRepositoryImpl clientRepository;
     private ClientView clientView;
-
+    private Main main;
    
 
      
     public AddClientView(Main main) {
+        this.main = main;
         initComponents();
         clientView = new ClientView(main);
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -242,10 +243,10 @@ public class AddClientView extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Client added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 phonenumber.setBackground(Color.WHITE);
 
-                // Refresh client list in ClientView (if necessary)
                 if (clientView != null) {
-                    clientView.loadClientsAndPopulateTable();
+                    clientView = new ClientView(main);
                 }
+                this.main.showForm(clientView);
                 
             }
             else {

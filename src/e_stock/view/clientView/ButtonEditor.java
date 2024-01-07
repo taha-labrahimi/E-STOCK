@@ -62,7 +62,7 @@ public class ButtonEditor extends DefaultCellEditor {
             modifyClientView = new ModifyClientView(main);
         }
 
-        // Fetch client data from the row and set it to the modifyClientView
+        
         modifyClientView.setClientcode(table.getValueAt(row, 0).toString());
         modifyClientView.setFirstname(table.getValueAt(row, 1).toString());
         modifyClientView.setLastname(table.getValueAt(row, 2).toString());
@@ -72,7 +72,7 @@ public class ButtonEditor extends DefaultCellEditor {
         modifyClientView.setPhonenumber(table.getValueAt(row, 6).toString());
 
         // Assuming ClientView.this refers to the current instance of your frame
-        this.main.showForm(new ModifyClientView(main));
+        this.main.showForm(modifyClientView);
     }
 
     private void performDeleteAction(int row) {
@@ -104,7 +104,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performViewAction(int modelRow) {
         if(detailsClientView ==null){
-            detailsClientView =new DetailsClientView();
+            detailsClientView =new DetailsClientView(main);
         }
          // Fetch client data from the row and set it to the modifyClientView
        
@@ -115,8 +115,6 @@ public class ButtonEditor extends DefaultCellEditor {
         detailsClientView.setCountry(table.getValueAt(modelRow, 5).toString());
         detailsClientView.setPhonenumber(table.getValueAt(modelRow, 6).toString());
 
-        // Assuming ClientView.this refers to the current instance of your frame
-        clientForm.setVisible(false);
-        detailsClientView.setVisible(true);
+        this.main.showForm(detailsClientView);
     }
 }
