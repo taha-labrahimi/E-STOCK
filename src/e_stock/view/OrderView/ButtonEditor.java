@@ -87,7 +87,7 @@ public class ButtonEditor extends DefaultCellEditor {
             modifyOrderView.setOrderid((int) model.getValueAt(selectedRow, 0));
             String clientName = model.getValueAt(selectedRow, 2).toString(); // Assuming client name is in the 3rd column
             String productName = model.getValueAt(selectedRow, 3).toString(); // Assuming product name is in the 4th column
-            int quantity = Integer.parseInt(model.getValueAt(selectedRow, 4).toString()); // Assuming quantity is in the 5th column
+            int quantity = Integer.parseInt(model.getValueAt(selectedRow, 5).toString()); // Assuming quantity is in the 5th column
 
             modifyOrderView.setSelectedOrderDetails(clientName, productName, quantity);
             this.main.showForm(modifyOrderView);
