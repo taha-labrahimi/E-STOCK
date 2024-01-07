@@ -319,7 +319,7 @@ public class HOME extends javax.swing.JFrame {
     private void clientbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientbtnActionPerformed
        if(clientView == null)
        {
-           clientView =  new ClientView();
+           //clientView =  new ClientView();
        }
        this.setVisible(false);
        clientView.setVisible(true);

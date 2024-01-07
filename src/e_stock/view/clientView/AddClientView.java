@@ -20,9 +20,9 @@ public class AddClientView extends javax.swing.JPanel {
    
 
      
-    public AddClientView() {
+    public AddClientView(Main main) {
         initComponents();
-        clientView = new ClientView();
+        clientView = new ClientView(main);
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepository = new ClientRepositoryImpl(dbConnector);
     }

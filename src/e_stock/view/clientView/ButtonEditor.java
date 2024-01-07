@@ -1,5 +1,6 @@
 package e_stock.view.clientView;
 
+import com.raven.main.Main;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.view.clientView.ClientView;
 import e_stock.view.clientView.ModifyClientView;
@@ -15,13 +16,14 @@ public class ButtonEditor extends DefaultCellEditor {
     private ClientRepositoryImpl clientRepository;
     private ModifyClientView modifyClientView;
     private DetailsClientView detailsClientView;
-    private ClientView clientView;
-
-    public ButtonEditor(Icon icon, ClientRepositoryImpl clientRepository, ModifyClientView modifyClientView, ClientView clientView) {
+    private ClientView clientForm;
+    private Main main;
+    public ButtonEditor(Icon icon, ClientRepositoryImpl clientRepository, ModifyClientView modifyClientView, ClientView clientForm,Main main) {
         super(new JCheckBox());
         this.clientRepository = clientRepository;
         this.modifyClientView = modifyClientView;
-        this.clientView = clientView;
+        this.clientForm = clientForm;
+        this.main = main;
         this.button = new JButton(icon);
         this.button.setOpaque(true);
         this.button.addActionListener(new ActionListener() {
@@ -57,7 +59,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performEditAction(int row) {
         if (modifyClientView == null) {
-            modifyClientView = new ModifyClientView();
+            modifyClientView = new ModifyClientView(main);
         }
 
         // Fetch client data from the row and set it to the modifyClientView
@@ -70,8 +72,7 @@ public class ButtonEditor extends DefaultCellEditor {
         modifyClientView.setPhonenumber(table.getValueAt(row, 6).toString());
 
         // Assuming ClientView.this refers to the current instance of your frame
-        clientView.setVisible(false);
-        modifyClientView.setVisible(true);
+        this.main.showForm(new ModifyClientView(main));
     }
 
     private void performDeleteAction(int row) {
@@ -80,13 +81,13 @@ public class ButtonEditor extends DefaultCellEditor {
             int clientCode = Integer.parseInt(table.getModel().getValueAt(modelRow, 0).toString());
             if (!clientRepository.hasClientOrders(clientCode)) {
                 clientRepository.delete(clientCode);
-                JOptionPane.showMessageDialog(clientView, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(clientForm, "Client deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(clientView, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(clientForm, "Cannot delete client. Client is referenced in orders.", "Deletion Error", JOptionPane.ERROR_MESSAGE);
             }
-            SwingUtilities.invokeLater(() -> clientView.loadClientsAndPopulateTable()); // Safely update the table model
+            SwingUtilities.invokeLater(() -> clientForm.loadClientsAndPopulateTable()); // Safely update the table model
         } else {
-            JOptionPane.showMessageDialog(clientView, "No row selected to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(clientForm, "No row selected to delete.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -115,7 +116,7 @@ public class ButtonEditor extends DefaultCellEditor {
         detailsClientView.setPhonenumber(table.getValueAt(modelRow, 6).toString());
 
         // Assuming ClientView.this refers to the current instance of your frame
-        clientView.setVisible(false);
+        clientForm.setVisible(false);
         detailsClientView.setVisible(true);
     }
 }
