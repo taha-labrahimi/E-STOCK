@@ -9,7 +9,6 @@ import e_stock.Model.Client;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import java.awt.Color;
-import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 public class AddClientView extends javax.swing.JPanel {
