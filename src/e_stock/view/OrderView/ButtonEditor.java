@@ -1,5 +1,11 @@
 package e_stock.view.OrderView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.raven.main.Main;
 import e_stock.view.clientView.*;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
@@ -14,11 +20,21 @@ import e_stock.view.clientView.ModifyClientView;
 import java.awt.Component;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 
@@ -143,7 +159,7 @@ public class ButtonEditor extends DefaultCellEditor {
             String clientName = (String) model.getValueAt(modelRow, 2); // Get client name from the clicked row
             String totalAmount = calculateTotalAmount(fields); // Method to calculate total amount
 
-            InputStream qrCodeStream = null; // Implement QR code generation or retrieval method
+            InputStream qrCodeStream = generateQrcode(); // Implement QR code generation or retrieval method
 
             ParameterReportPayment dataPrint = new ParameterReportPayment(clientName, totalAmount, qrCodeStream, fields);
             ReportManager.getInstance().printReportPayment(dataPrint);
@@ -159,5 +175,17 @@ public class ButtonEditor extends DefaultCellEditor {
             total += field.getTotal();
         }
         return String.format("%.2f", total);
+    }
+    private InputStream generateQrcode() throws WriterException, IOException {
+        NumberFormat nf = new DecimalFormat("0000000");
+        Random ran = new Random();
+        String invoice = nf.format(ran.nextInt(9999999) + 1);
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.MARGIN, 0);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(invoice, BarcodeFormat.QR_CODE, 100, 100, hints);
+        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", outputStream);
+        return new ByteArrayInputStream(outputStream.toByteArray());
     }
 }

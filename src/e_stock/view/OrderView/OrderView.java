@@ -57,6 +57,7 @@ public class OrderView extends javax.swing.JPanel {
 
     protected void loadOrdersAndPopulateTable() {
         try{
+            BasicConfigurator.configure();
             ReportManager.getInstance().compileReport();
         }catch(Exception e)
         {
