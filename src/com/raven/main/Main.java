@@ -3,14 +3,48 @@ package com.raven.main;
 import com.raven.event.EventMenu;
 import com.raven.form.Form;
 import com.raven.form.Form_1;
+import e_stock.view.OrderView.OrderView;
+import e_stock.view.ProductView.ProductView;
 import e_stock.view.clientView.ClientView;
+import e_stock.view.supplierView.SupplierView;
 import java.awt.Color;
 import java.awt.Component;
+import e_stock.Model.Supplier;
+import java.sql.*;
+import e_stock.Model.User;
+import e_stock.database.DatabaseConnector;
+import e_stock.view.LOGIN;
+import e_stock.view.OrderView.OrderView;
+import e_stock.view.ProductView.AddProductView;
+import e_stock.view.ProductView.ProductView;
+import e_stock.view.UserProfil;
+import static e_stock.view.UserProfil.userstatic;
+import e_stock.view.clientView.ClientView;
+import e_stock.view.supplierView.SupplierView;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Main extends javax.swing.JFrame {
 
+    private User user;
+    private OrderView orderView;
+    private ProductView productView;
+    private LOGIN login;
+    private ClientView clientView;
+    private SupplierView supplierView;
+    private UserProfil userProfil;
+    DatabaseConnector dbConnector = new DatabaseConnector();
+
     public Main() {
         initComponents();
+        userProfil = new UserProfil(this);
         setBackground(new Color(0, 0, 0, 0));
         EventMenu event = new EventMenu() {
             @Override
@@ -19,9 +53,25 @@ public class Main extends javax.swing.JFrame {
                     showForm(new Form_1());
                 } else if (index == 8) {
                     System.out.println("Logout");
-                    } else if (index == 2) {
+                    }  
+                else if (index == 1) {
                     showForm(new ClientView(Main.this));
-                } else {
+                }    
+                else if (index == 2) {
+                    showForm(new ProductView(Main.this));
+                } 
+                else if (index == 3) {
+                    showForm(new SupplierView(Main.this));
+                } 
+                else if (index == 4) {
+                    showForm(new OrderView(Main.this));
+                } 
+                else if (index == 5) {
+                    setLoggedInUser(userstatic);
+                    userProfil.displayUserData(userstatic);
+                    showForm(userProfil);
+                } 
+                else {
                     showForm(new Form(index));
                 }
             }
@@ -29,6 +79,32 @@ public class Main extends javax.swing.JFrame {
         menu1.initMenu(event);
         showForm(new Form_1());
     }
+    public void setLoggedInUser(User user) {
+    this.user = user;
+    menu1.setUsername(user.getUsername());
+    String sql = "SELECT image FROM users WHERE userID = ?";
+    
+    try (Connection conn = dbConnector.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setInt(1, user.getUserID()); // utilisez l'ID de l'utilisateur
+        ResultSet rs = pstmt.executeQuery();
+
+        ImageIcon imageIcon = null;
+        if (rs.next() && rs.getBlob("image") != null) {
+            Blob blob = rs.getBlob("image");
+            InputStream inputStream = blob.getBinaryStream();
+            BufferedImage userImage = ImageIO.read(inputStream);
+            imageIcon = new ImageIcon(userImage.getScaledInstance(menu1.imageAvatar1.getWidth(), menu1.imageAvatar1.getHeight(), Image.SCALE_SMOOTH));
+        } else {
+            imageIcon = new ImageIcon(getClass().getResource("/resources/images/home/Admin Settings Male.png"));
+        }
+
+        menu1.imageAvatar1.setIcon(imageIcon);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
     public void showForm(Component com) {
         body.removeAll();

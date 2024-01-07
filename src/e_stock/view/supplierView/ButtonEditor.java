@@ -4,6 +4,7 @@
  */
 package e_stock.view.supplierView;
 
+import com.raven.main.Main;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -29,11 +30,12 @@ public class ButtonEditor extends DefaultCellEditor {
     private ModifySupplierView modifySuppliertView;
     private DetailsSupplierView detailsSupplierView;
     private SupplierView supplierView;
-
-    public ButtonEditor(Icon icon, SupplierRepositoryImpl supplierRepository, ModifySupplierView modifySuppliertVieww, SupplierView supplierView) {
+    private Main main;
+    public ButtonEditor(Icon icon, SupplierRepositoryImpl supplierRepository, ModifySupplierView modifySuppliertVieww, SupplierView supplierView,Main main) {
         super(new JCheckBox());
         this.supplierRepository = supplierRepository;
         this.modifySuppliertView = modifySuppliertView;
+        this.main=main;
         this.supplierView = supplierView;
         this.button = new JButton(icon);
         this.button.setOpaque(true);
@@ -70,7 +72,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performEditAction(int row) {
         if (modifySuppliertView == null) {
-            modifySuppliertView = new ModifySupplierView();
+            modifySuppliertView = new ModifySupplierView(main);
         }
 
         // Fetch client data from the row and set it to the modifyClientView
@@ -82,9 +84,7 @@ public class ButtonEditor extends DefaultCellEditor {
         modifySuppliertView.setCountry(table.getValueAt(row, 5).toString());
         modifySuppliertView.setPhonenumber(table.getValueAt(row, 6).toString());
 
-        // Assuming ClientView.this refers to the current instance of your frame
-        supplierView.setVisible(false);
-        modifySuppliertView.setVisible(true);
+        this.main.showForm(modifySuppliertView);
     }
 
     private void performDeleteAction(int row) {
@@ -114,10 +114,10 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performViewAction(int modelRow) {
         if(detailsSupplierView ==null){
-            detailsSupplierView =new DetailsSupplierView();
+            detailsSupplierView =new DetailsSupplierView(main);
         }
          // Fetch client data from the row and set it to the modifyClientView
-       
+        detailsSupplierView.setSuppliercode(table.getValueAt(modelRow, 0).toString());
         detailsSupplierView.setFirstname(table.getValueAt(modelRow, 1).toString());
         detailsSupplierView.setLastname(table.getValueAt(modelRow, 2).toString());
         detailsSupplierView.setAdresse(table.getValueAt(modelRow, 3).toString());
@@ -125,9 +125,7 @@ public class ButtonEditor extends DefaultCellEditor {
         detailsSupplierView.setCountry(table.getValueAt(modelRow, 5).toString());
         detailsSupplierView.setPhonenumber(table.getValueAt(modelRow, 6).toString());
 
-        // Assuming ClientView.this refers to the current instance of your frame
-        supplierView.setVisible(false);
-        detailsSupplierView.setVisible(true);
+        this.main.showForm(detailsSupplierView);
     }
 }
 

@@ -1,14 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package e_stock.view.ProductView;
 
-import e_stock.Model.Product;
+import com.raven.main.Main;
 import e_stock.Model.ImageRenderer;
+import e_stock.Model.Product;
 import e_stock.Model.Supplier;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
-import e_stock.view.HOME;
-import e_stock.view.ProductView.ButtonEditor;
-import e_stock.view.ProductView.ButtonRenderer;
+import e_stock.view.clientView.AddClientView;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -26,26 +29,27 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-public class ProductView extends javax.swing.JFrame {
+/**
+ *
+ * @author ilyas
+ */
+public class ProductView extends javax.swing.JPanel {
 
-    private ProductRepositoryImpl productRepository;
+   private ProductRepositoryImpl productRepository;
     private SupplierRepositoryImpl supplierRepository;
     private AddProductView addProductView;
     private ModifyProductView modifyProductView;
     private DetailsProductView detailsProductView;
-    private HOME homeView;
-
-    public ProductView() {
+    private Main mainFrame;
+    public ProductView(Main main) {
         initComponents();
-        setResizable(false);
-        setLocationRelativeTo(null);
-        // Initialize the database connection and repository
+        this.mainFrame = main;
+
+
         DatabaseConnector dbConnector = new DatabaseConnector();
         productRepository = new ProductRepositoryImpl(dbConnector);
         supplierRepository = new SupplierRepositoryImpl(dbConnector);
@@ -60,13 +64,13 @@ public class ProductView extends javax.swing.JFrame {
     // Assuming the column indices for "Edit" and "Delete" are correct
     TableColumnModel columnModel = tableproducts.getColumnModel();
     columnModel.getColumn(6).setCellRenderer(new ButtonRenderer(editIcon));
-    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this));
+    columnModel.getColumn(6).setCellEditor(new ButtonEditor(editIcon, productRepository, modifyProductView, this,mainFrame));
     
     columnModel.getColumn(7).setCellRenderer(new ButtonRenderer(deleteIcon));
-    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this));
+    columnModel.getColumn(7).setCellEditor(new ButtonEditor(deleteIcon, productRepository, modifyProductView, this,mainFrame));
     
     columnModel.getColumn(8).setCellRenderer(new ButtonRenderer(ViewIcon));
-    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this));
+    columnModel.getColumn(8).setCellEditor(new ButtonEditor(ViewIcon, productRepository, modifyProductView, this,mainFrame));
 
     // Set the preferred width for the "Edit" and "Delete" columns
     int buttonWidth = new JButton(editIcon).getPreferredSize().width;
@@ -120,13 +124,47 @@ public class ProductView extends javax.swing.JFrame {
         
         
     }
-    
+     private void printTable() {
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setJobName("Print Data");
 
+        job.setPrintable(new Printable() {
+            public int print(Graphics pg, PageFormat pf, int pageNum) {
+                if (pageNum > 0) {
+                    return Printable.NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2 = (Graphics2D) pg;
+                g2.translate(pf.getImageableX(), pf.getImageableY());
+                g2.scale(0.6, 0.6); // Adjust the scaling if needed
+
+                // Print the table header
+                JTableHeader header = tableproducts.getTableHeader();
+                g2.translate(0, 0);
+                header.print(g2);
+
+                // Print the table. The table is translated below the header.
+                g2.translate(0, header.getHeight());
+                tableproducts.print(g2);
+
+                return Printable.PAGE_EXISTS;
+            }
+        });
+
+        boolean doPrint = job.printDialog();
+        if (doPrint) {
+            try {
+                job.print();
+            } catch (PrinterException e) {
+                // Handle the printer exceptions
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableproducts = new javax.swing.JTable();
@@ -136,11 +174,6 @@ public class ProductView extends javax.swing.JFrame {
         searchbtn = new javax.swing.JButton();
         printbtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        Back = new javax.swing.JButton();
-
-        jButton1.setText("jButton1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -217,13 +250,6 @@ public class ProductView extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        Back.setText("Back");
-        Back.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -234,21 +260,20 @@ public class ProductView extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 914, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(111, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
+                                .addGap(39, 39, 39)
                                 .addComponent(addProduct)
-                                .addGap(36, 36, 36)
+                                .addGap(18, 18, 18)
                                 .addComponent(printbtn)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(369, 369, 369))))
@@ -256,79 +281,53 @@ public class ProductView extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchtextfield, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchbtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(addProduct, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(printbtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(searchbtn)
+                    .addComponent(searchtextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addProduct)
+                    .addComponent(printbtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductActionPerformed
+        mainFrame.showForm(new AddProductView(mainFrame));
+    }//GEN-LAST:event_addProductActionPerformed
 
     private void searchtextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchtextfieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchtextfieldActionPerformed
 
-    private void addProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductActionPerformed
-        if (addProductView == null) {
-            addProductView = new AddProductView();
-        }
-        this.setVisible(false);
-        addProductView.setVisible(true);
-    }//GEN-LAST:event_addProductActionPerformed
-
-    public void setSearchtextfield(int productcode) {
-        this.searchtextfield.setText(String.valueOf(productcode));
-        searchbtn.doClick();
-    }
-    
-    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        
-    }//GEN-LAST:event_searchbtnActionPerformed
-
-    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
-        printTable();
-    }//GEN-LAST:event_printbtnActionPerformed
-    
-    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        if (homeView == null) {
-            homeView = new HOME();
-        }
-        this.setVisible(false);
-        homeView.setVisible(true);
-    }//GEN-LAST:event_BackActionPerformed
-
     private void searchtextfieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchtextfieldKeyReleased
-       String searchText = searchtextfield.getText().trim().toLowerCase();
-       if (searchtextfield.getText().trim().isEmpty()) {
+        String searchText = searchtextfield.getText().trim().toLowerCase();
+        if (searchtextfield.getText().trim().isEmpty()) {
             loadProductAndPopulateTable();
             return;
         }
-            
+
         DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
         String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
         tableModel.setColumnIdentifiers(columnNames);
@@ -336,121 +335,52 @@ public class ProductView extends javax.swing.JFrame {
         List<Product> allProducts = productRepository.findAll();
 
         for (Product product : allProducts) {
-        if (product.getProductName().toLowerCase().startsWith(searchText)) {
-            Supplier supplier = supplierRepository.findById(product.getSupplierCode());
-            String supplierName = (supplier != null) ? supplier.getFirstName() + " " + supplier.getLastName() : "Unknown Supplier";
-            byte[] imageBytes = product.getImage();
-            ImageIcon image = null;
-            if (imageBytes != null) {
-                BufferedImage img = null;
-            try {
-                img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-            } catch (IOException ex) {
-                Logger.getLogger(ProductView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Image scaledImg = img.getScaledInstance(90, 110, Image.SCALE_SMOOTH);
-            image = new ImageIcon(scaledImg);
-            }
-            tableModel.addRow(new Object[]{
+            if (product.getProductName().toLowerCase().startsWith(searchText)) {
+                Supplier supplier = supplierRepository.findById(product.getSupplierCode());
+                String supplierName = (supplier != null) ? supplier.getFirstName() + " " + supplier.getLastName() : "Unknown Supplier";
+                byte[] imageBytes = product.getImage();
+                ImageIcon image = null;
+                if (imageBytes != null) {
+                    BufferedImage img = null;
+                    try {
+                        img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                    } catch (IOException ex) {
+                        Logger.getLogger(ProductView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Image scaledImg = img.getScaledInstance(90, 110, Image.SCALE_SMOOTH);
+                    image = new ImageIcon(scaledImg);
+                }
+                tableModel.addRow(new Object[]{
                     String.valueOf(product.getProductCode()),
                     product.getProductName(),
                     product.getQteStock(),
                     product.getProductUnitPrice(),
                     supplierName,
                     image,
-                    "Edit", 
+                    "Edit",
                     "Delete",
                     "View"
                 });
 
-
-
             }
-        } 
+        }
         setUpTableButtons();
 
         tableproducts.setRowHeight(70);
         tableproducts.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());
     }//GEN-LAST:event_searchtextfieldKeyReleased
-    private void printTable() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setJobName("Print Data");
 
-        job.setPrintable(new Printable() {
-            public int print(Graphics pg, PageFormat pf, int pageNum) {
-                if (pageNum > 0) {
-                    return Printable.NO_SUCH_PAGE;
-                }
+    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
 
-                Graphics2D g2 = (Graphics2D) pg;
-                g2.translate(pf.getImageableX(), pf.getImageableY());
-                g2.scale(0.6, 0.6); // Adjust the scaling if needed
+    }//GEN-LAST:event_searchbtnActionPerformed
 
-                // Print the table header
-                JTableHeader header = tableproducts.getTableHeader();
-                g2.translate(0, 0);
-                header.print(g2);
+    private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
+        printTable();
+    }//GEN-LAST:event_printbtnActionPerformed
 
-                // Print the table. The table is translated below the header.
-                g2.translate(0, header.getHeight());
-                tableproducts.print(g2);
-
-                return Printable.PAGE_EXISTS;
-            }
-        });
-
-        boolean doPrint = job.printDialog();
-        if (doPrint) {
-            try {
-                job.print();
-            } catch (PrinterException e) {
-                // Handle the printer exceptions
-            }
-        }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ProductView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Back;
     private javax.swing.JButton addProduct;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

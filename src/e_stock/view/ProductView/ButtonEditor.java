@@ -1,5 +1,6 @@
 package e_stock.view.ProductView;
 
+import com.raven.main.Main;
 import e_stock.view.clientView.*;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
@@ -18,14 +19,15 @@ public class ButtonEditor extends DefaultCellEditor {
     private ModifyProductView modifyProductView;
     private DetailsProductView detailProductView;
     private ProductView productView;
-
-    public ButtonEditor(Icon icon, ProductRepositoryImpl productRepository, ModifyProductView modifyProductView, ProductView productView) {
+    private Main main;
+    public ButtonEditor(Icon icon, ProductRepositoryImpl productRepository, ModifyProductView modifyProductView, ProductView productView,Main main) {
         super(new JCheckBox());
         this.productRepository = productRepository;
         this.modifyProductView = modifyProductView;
         this.productView = productView;
         this.button = new JButton(icon);
         this.button.setOpaque(true);
+        this.main = main;
         this.button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
@@ -59,7 +61,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performEditAction(int row) {
         if (modifyProductView == null) {
-            modifyProductView = new ModifyProductView();
+            modifyProductView = new ModifyProductView(main);
         }
 
         // Fetch client data from the row and set it to the modifyClientView
@@ -71,9 +73,7 @@ public class ButtonEditor extends DefaultCellEditor {
         ImageIcon imageicon = (ImageIcon) table.getValueAt(row, 5);
         modifyProductView.setImage(imageicon);
 
-        // Assuming ClientView.this refers to the current instance of your frame
-        productView.setVisible(false);
-        modifyProductView.setVisible(true);
+        this.main.showForm(modifyProductView);
     }
 
     private void performDeleteAction(int row) {
@@ -105,7 +105,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performViewAction(int modelRow) {
         if(detailProductView ==null){
-            detailProductView =new DetailsProductView();
+            detailProductView =new DetailsProductView(main);
         }
          // Fetch client data from the row and set it to the modifyClientView
        
@@ -117,8 +117,6 @@ public class ButtonEditor extends DefaultCellEditor {
         ImageIcon imageicon = (ImageIcon) table.getValueAt(modelRow, 5);
         detailProductView.setImage(imageicon);
 
-        // Assuming ClientView.this refers to the current instance of your frame
-        productView.setVisible(false);
-        detailProductView.setVisible(true);
+        this.main.showForm(detailProductView);
     }
 }

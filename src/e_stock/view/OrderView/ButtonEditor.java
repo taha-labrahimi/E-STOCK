@@ -1,5 +1,6 @@
 package e_stock.view.OrderView;
 
+import com.raven.main.Main;
 import e_stock.view.clientView.*;
 import e_stock.RepositoryImplementation.ClientRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
@@ -21,11 +22,12 @@ public class ButtonEditor extends DefaultCellEditor {
     private ModifyOrderView modifyOrderView;
     private DetailsClientView detailsClientView;
     private OrderView orderView;
-
-    public ButtonEditor(Icon icon, OrderRepositoryImpl orderRepositoryImpl, OrderLineRepositoryImpl orderLineRepositoryImpl, ModifyOrderView modifyOrderView, OrderView orderView) {
+    Main main;
+    public ButtonEditor(Icon icon, OrderRepositoryImpl orderRepositoryImpl, OrderLineRepositoryImpl orderLineRepositoryImpl, ModifyOrderView modifyOrderView, OrderView orderView ,Main main) {
         super(new JCheckBox());
         this.orderRepositoryImpl = orderRepositoryImpl;
         this.orderLineRepositoryImpl = orderLineRepositoryImpl;
+        this.main=main;
         this.modifyOrderView = modifyOrderView;
         this.orderView = orderView;
         this.button = new JButton(icon);
@@ -63,7 +65,7 @@ public class ButtonEditor extends DefaultCellEditor {
     private void performEditAction(int row) {
         int selectedRow = table.getSelectedRow();
         if (modifyOrderView == null) {
-            modifyOrderView = new ModifyOrderView();
+            modifyOrderView = new ModifyOrderView(main);
         }
         if (selectedRow != -1) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -73,8 +75,7 @@ public class ButtonEditor extends DefaultCellEditor {
             int quantity = Integer.parseInt(model.getValueAt(selectedRow, 4).toString()); // Assuming quantity is in the 5th column
 
             modifyOrderView.setSelectedOrderDetails(clientName, productName, quantity);
-            modifyOrderView.setVisible(true);
-            orderView.setVisible(false);
+            this.main.showForm(modifyOrderView);
         }
     }
 
@@ -104,7 +105,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
     private void performViewAction(int modelRow) {
 //        if(detailsClientView ==null){
-//            detailsClientView =new DetailsClientView();
+//            detailsClientView =new DetailsClientView(main);
 //        }
 //         // Fetch client data from the row and set it to the modifyClientView
 //       
@@ -114,9 +115,6 @@ public class ButtonEditor extends DefaultCellEditor {
 //        detailsClientView.setCity(table.getValueAt(modelRow, 4).toString());
 //        detailsClientView.setCountry(table.getValueAt(modelRow, 5).toString());
 //        detailsClientView.setPhonenumber(table.getValueAt(modelRow, 6).toString());
-//
-//        // Assuming ClientView.this refers to the current instance of your frame
-//        clientView.setVisible(false);
-//        detailsClientView.setVisible(true);
+//        this.main.showForm(detailsClientView);
     }
 }
