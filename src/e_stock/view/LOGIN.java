@@ -1,5 +1,6 @@
 package e_stock.view;
 
+import com.raven.main.Main;
 import e_stock.RepositoryImplementation.UserRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import static e_stock.view.UserProfil.userstatic;
@@ -15,7 +16,8 @@ import javax.swing.border.LineBorder;
 public class LOGIN extends javax.swing.JFrame {
 
     private UserRepositoryImpl userRepositoryImpl;
-    private HOME home;
+
+    private Main main;
 
     public LOGIN() {
         initComponents();
@@ -23,7 +25,7 @@ public class LOGIN extends javax.swing.JFrame {
         this.setSize(1298, 709);
         DatabaseConnector dbConnector = new DatabaseConnector();
         userRepositoryImpl = new UserRepositoryImpl(dbConnector);
-        home = new HOME();
+        main = new Main();
         ImageIcon img = new ImageIcon("/resources/images/login/warehouse.png");
         setIconImage(img.getImage());
         setLocationRelativeTo(null);
@@ -173,8 +175,8 @@ public class LOGIN extends javax.swing.JFrame {
             // Login success
             JOptionPane.showMessageDialog(this, "Login successful!");
             this.setVisible(false);
-            home.setLoggedInUser(userstatic);
-            home.setVisible(true);
+            main.setLoggedInUser(userstatic);
+            main.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Login failed. Please check your username and password.", "Login Error", JOptionPane.ERROR_MESSAGE);
         }

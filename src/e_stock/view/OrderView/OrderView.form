@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
-  <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
-  </Properties>
-  <SyntheticProperties>
-    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
-  </SyntheticProperties>
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -54,18 +47,14 @@
                       <Component id="jScrollPane1" alignment="1" min="-2" pref="1040" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           <Component id="addorder" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="deleteorder" min="-2" max="-2" attributes="0"/>
-                              <Component id="modifyorder" min="-2" max="-2" attributes="0"/>
-                              <Component id="printbtn" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="printbtn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -82,7 +71,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="57" max="-2" attributes="0"/>
-                  <EmptySpace pref="39" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="searchbtn" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="searchtextfield" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
@@ -95,11 +84,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="addorder" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                          <Component id="modifyorder" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                          <Component id="deleteorder" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="176" max="-2" attributes="0"/>
                           <Component id="printbtn" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -182,40 +167,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addorderActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="modifyorder">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/resources/images/iconsedit30.png"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="contentAreaFilled" type="boolean" value="false"/>
-            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Hand Cursor"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="modifyorderActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="deleteorder">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/resources/images/iconsdelete30.png"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="contentAreaFilled" type="boolean" value="false"/>
-            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Hand Cursor"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteorderActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">

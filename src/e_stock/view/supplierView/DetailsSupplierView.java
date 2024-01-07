@@ -1,30 +1,23 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package e_stock.view.supplierView;
 
+
+import com.raven.main.Main;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import javax.swing.JTextField;
-
-/**
- *
- * @author douae
- */
-public class DetailsSupplierView extends javax.swing.JFrame {
-     private SupplierRepositoryImpl supplierrepository;
+public class DetailsSupplierView extends javax.swing.JPanel {
+private SupplierRepositoryImpl supplierrepository;
     private SupplierView supplierview;
-    /**
-
-    /**
-     * Creates new form DetailsSupplierView
-     */
-    public DetailsSupplierView() {
+    Main main;
+    public DetailsSupplierView(Main main) {
+        this.main=main;
         initComponents();
-        supplierview = new SupplierView();
-        setResizable(false);
-        setLocationRelativeTo(null);
+        supplierview = new SupplierView(main);
+
         DatabaseConnector dbConnector = new DatabaseConnector();
         supplierrepository = new SupplierRepositoryImpl(dbConnector);
     }
@@ -110,8 +103,6 @@ public class DetailsSupplierView extends javax.swing.JFrame {
         supplierCode = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -174,6 +165,8 @@ public class DetailsSupplierView extends javax.swing.JFrame {
                 BackbtnActionPerformed(evt);
             }
         });
+
+        supplierCode.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -241,7 +234,7 @@ public class DetailsSupplierView extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addGap(49, 49, 49)
                 .addComponent(Backbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
@@ -264,13 +257,13 @@ public class DetailsSupplierView extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -279,8 +272,6 @@ public class DetailsSupplierView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
@@ -300,48 +291,9 @@ public class DetailsSupplierView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void BackbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackbtnActionPerformed
-        // TODO add your handling code here:
-        if (supplierview == null) {
-                supplierview = new SupplierView();
-            }
-            this.setVisible(false);
-            supplierview.setVisible(true);    
+       
     }//GEN-LAST:event_BackbtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DetailsSupplierView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DetailsSupplierView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DetailsSupplierView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DetailsSupplierView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new DetailsSupplierView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Adresse;

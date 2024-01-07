@@ -1,5 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package e_stock.view.OrderView;
 
+import com.raven.main.Main;
 import e_stock.Model.Client;
 import e_stock.Model.Order;
 import e_stock.Model.OrderLine;
@@ -14,18 +19,20 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+public class AddOrderView extends javax.swing.JPanel {
 
-public class AddOrderView extends javax.swing.JFrame {
     private ClientRepositoryImpl clientRepositoryImpl;
     private ProductRepositoryImpl productRepositoryImpl;
     private DefaultTableModel tableModel;
+    private OrderView orderView;
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
+    Main main;
 
-    public AddOrderView() {
+    public AddOrderView(Main main) {
+        this.main=main;
+        orderView = new OrderView(main);
         initComponents();
-        setResizable(false);
-        setLocationRelativeTo(null);
         DatabaseConnector dbConnector = new DatabaseConnector();
         clientRepositoryImpl = new ClientRepositoryImpl(dbConnector);
         productRepositoryImpl = new ProductRepositoryImpl(dbConnector);
@@ -51,16 +58,53 @@ public class AddOrderView extends javax.swing.JFrame {
             productcombobox.addItem(productName);
         }
     }
-   
+   private int getClientCodeByName(String clientName) {
+    List<Client> clients = clientRepositoryImpl.findAll();
+    for (Client client : clients) {
+        String fullName = client.getFirstName() + " " + client.getLastName();
+        if (fullName.equals(clientName)) {
+            return client.getClientCode();
+        }
+    }
+    return -1;
+}
 
+    
+    private int getProductCodeByName(String productName) {
+    List<Product> products = productRepositoryImpl.findAll();
+    for (Product product : products) {
+        if (product.getProductName().equals(productName)) {
+            return product.getProductCode();
+        }
+    }
+    return -1;
+}
+    private int createNewOrder(int clientCode) {
+    Order newOrder = new Order();
+    newOrder.setClientCode(clientCode);
+    newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); // Set current date as order date
+
+    // Save and get generated order ID
+    int orderId = orderRepositoryImpl.save(newOrder);
+    newOrder.setOrderId(orderId); // Set the retrieved order ID back to the Order object
+
+    System.out.println(newOrder.getOrderId()); // This should now print the correct ID
+    return orderId;
+}
+
+    private void addOrderLine(int orderId, int productCode, int quantity) {
+    OrderLine orderLine = new OrderLine();
+    orderLine.setOrderId(orderId);
+    orderLine.setProductCode(productCode);
+    orderLine.setQuantityOrdered(quantity);
+    orderLineRepositoryImpl.save(orderLine);
+}
 
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popupMenu1 = new java.awt.PopupMenu();
-        popupMenu2 = new java.awt.PopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         addorderbtn = new javax.swing.JButton();
@@ -70,12 +114,6 @@ public class AddOrderView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
-
-        popupMenu1.setLabel("popupMenu1");
-
-        popupMenu2.setLabel("popupMenu2");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -133,7 +171,7 @@ public class AddOrderView extends javax.swing.JFrame {
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(productcombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 424, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -144,7 +182,7 @@ public class AddOrderView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clientcombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -159,8 +197,8 @@ public class AddOrderView extends javax.swing.JFrame {
                 .addGap(57, 57, 57))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -169,70 +207,31 @@ public class AddOrderView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-    private int getClientCodeByName(String clientName) {
-    List<Client> clients = clientRepositoryImpl.findAll();
-    for (Client client : clients) {
-        String fullName = client.getFirstName() + " " + client.getLastName();
-        if (fullName.equals(clientName)) {
-            return client.getClientCode();
-        }
-    }
-    return -1;
-}
-
-    
-private int getProductCodeByName(String productName) {
-    List<Product> products = productRepositoryImpl.findAll();
-    for (Product product : products) {
-        if (product.getProductName().equals(productName)) {
-            return product.getProductCode();
-        }
-    }
-    return -1;
-}
-private int createNewOrder(int clientCode) {
-    Order newOrder = new Order();
-    newOrder.setClientCode(clientCode);
-    newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); // Set current date as order date
-
-    // Save and get generated order ID
-    int orderId = orderRepositoryImpl.save(newOrder);
-    newOrder.setOrderId(orderId); // Set the retrieved order ID back to the Order object
-
-    System.out.println(newOrder.getOrderId()); // This should now print the correct ID
-    return orderId;
-}
-
-private void addOrderLine(int orderId, int productCode, int quantity) {
-    OrderLine orderLine = new OrderLine();
-    orderLine.setOrderId(orderId);
-    orderLine.setProductCode(productCode);
-    orderLine.setQuantityOrdered(quantity);
-    orderLineRepositoryImpl.save(orderLine);
-}
 
     private void addorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addorderbtnActionPerformed
-         try {
-        String selectedClientName = clientcombobox.getSelectedItem().toString();
-        int clientCode = getClientCodeByName(selectedClientName);
+        try {
+            String selectedClientName = clientcombobox.getSelectedItem().toString();
+            int clientCode = getClientCodeByName(selectedClientName);
 
-        String selectedProductName = productcombobox.getSelectedItem().toString();
-        int productCode = getProductCodeByName(selectedProductName);
+            String selectedProductName = productcombobox.getSelectedItem().toString();
+            int productCode = getProductCodeByName(selectedProductName);
 
-        int quantity = (Integer) jSpinner1.getValue();
+            int quantity = (Integer) jSpinner1.getValue();
 
-        int orderId = createNewOrder(clientCode);
-        addOrderLine(orderId, productCode, quantity);
+            int orderId = createNewOrder(clientCode);
+            addOrderLine(orderId, productCode, quantity);
 
-        // Display a confirmation message or refresh the view as needed
-        JOptionPane.showMessageDialog(this, "Order added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error adding order: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
+            // Display a confirmation message or refresh the view as needed
+            JOptionPane.showMessageDialog(this, "Order added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (orderView != null) {
+                    orderView = new OrderView(main);
+                }
+                this.main.showForm(orderView);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error adding order: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_addorderbtnActionPerformed
 
     private void clientcomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientcomboboxActionPerformed
@@ -243,41 +242,6 @@ private void addOrderLine(int orderId, int productCode, int quantity) {
         // TODO add your handling code here:
     }//GEN-LAST:event_productcomboboxActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddOrderView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddOrderView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addorderbtn;
@@ -288,8 +252,6 @@ private void addOrderLine(int orderId, int productCode, int quantity) {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSpinner jSpinner1;
-    private java.awt.PopupMenu popupMenu1;
-    private java.awt.PopupMenu popupMenu2;
     private javax.swing.JComboBox<String> productcombobox;
     // End of variables declaration//GEN-END:variables
 }

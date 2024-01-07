@@ -23,7 +23,9 @@ public class ModifyClientView extends javax.swing.JPanel {
      */
      private ClientRepositoryImpl clientRepository;
     private ClientView clientView;
+    private Main main;
     public ModifyClientView(Main main) {
+        this.main = main;
          clientView = new ClientView(main);
         initComponents();
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -256,11 +258,9 @@ public void setClientcode(String clientcode) {
                 clientRepository.update(client);
                 JOptionPane.showMessageDialog(this, "Client modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 if (clientView != null) {
-                    clientView.loadClientsAndPopulateTable();
-                    clientView.setVisible(true);
+                    clientView = new ClientView(main);
                 }
-                this.setVisible(false);
-                phonenumber.setBackground(Color.WHITE);
+                this.main.showForm(clientView);
             }
             else {
                 JOptionPane.showMessageDialog(this, "please add a valid number Exp : \"06 XX XX XX XX\"", "validation Error", JOptionPane.ERROR_MESSAGE);

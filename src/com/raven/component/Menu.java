@@ -2,6 +2,7 @@ package com.raven.component;
 
 import com.raven.event.EventMenu;
 import com.raven.swing.ButtonMenu;
+import com.raven.swing.ImageAvatar;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
@@ -28,16 +29,29 @@ public class Menu extends javax.swing.JPanel {
     public void initMenu(EventMenu event) {
         this.event = event;
         addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/1.png")), "Dashboard", 0);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), "Application", 1);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), "Client", 2);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/4.png")), "Report", 3);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/5.png")), "Note", 4);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/6.png")), "Export", 5);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), "Client", 1);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), "Product", 2);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/4.png")), "Supplier", 3);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/5.png")), "Order", 4);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/6.png")), "Edit Profile", 5);
         addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/7.png")), "Import", 6);
         addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/8.png")), "Setting", 7);
         addEmpty();
         addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/logout.png")), "Logout", 8);
     }
+
+//    public void setImageAvatar1(ImageIcon imageAvatar1) {
+//       this.imageAvatar1.setIcon(imageAvatar1);
+//    }
+
+    public void setUsername(String Username) {
+        this.Username.setText(Username);
+    }
+//
+//    public ImageAvatar getImageAvatar1() {
+//        return imageAvatar1;
+//    }
+//    
 
     private void addEmpty() {
         panelMenu.add(new JLabel(), "push");
@@ -73,7 +87,7 @@ public class Menu extends javax.swing.JPanel {
 
         roundPanel1 = new com.raven.swing.RoundPanel();
         imageAvatar1 = new com.raven.swing.ImageAvatar();
-        jLabel1 = new javax.swing.JLabel();
+        Username = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         roundPanel2 = new com.raven.swing.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -85,9 +99,9 @@ public class Menu extends javax.swing.JPanel {
         imageAvatar1.setBorderSize(2);
         imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/profile.jpg"))); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(224, 224, 224));
-        jLabel1.setText("User Name");
+        Username.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        Username.setForeground(new java.awt.Color(224, 224, 224));
+        Username.setText("User Name");
 
         jLabel2.setForeground(new java.awt.Color(203, 203, 203));
         jLabel2.setText("Admin");
@@ -101,7 +115,7 @@ public class Menu extends javax.swing.JPanel {
                 .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(Username)
                     .addComponent(jLabel2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -111,7 +125,7 @@ public class Menu extends javax.swing.JPanel {
                 .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel1)
+                        .addComponent(Username)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2))
                     .addGroup(roundPanel1Layout.createSequentialGroup()
@@ -174,8 +188,8 @@ public class Menu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.ImageAvatar imageAvatar1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel Username;
+    public com.raven.swing.ImageAvatar imageAvatar1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelMenu;

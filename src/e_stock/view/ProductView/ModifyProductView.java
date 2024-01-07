@@ -1,12 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package e_stock.view.ProductView;
 
-
+import com.raven.main.Main;
 import e_stock.Model.Product;
 import e_stock.Model.Supplier;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.RepositoryImplementation.SupplierRepositoryImpl;
 import e_stock.database.DatabaseConnector;
 import e_stock.view.LOGIN;
+import static e_stock.view.ProductView.ModifyProductView.imageContentStatic;
 import java.awt.Image;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -37,15 +42,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
-public class ModifyProductView extends javax.swing.JFrame {
+public class ModifyProductView extends javax.swing.JPanel {
 
     private ProductRepositoryImpl productRepository;
     private ProductView productView;
     private SupplierRepositoryImpl supplierRepository;
-
+    Main main;
     private LOGIN loginView;
-    public ModifyProductView() {
+    public ModifyProductView(Main main) {
+        this.main = main;
         initComponents();
+        productView = new ProductView(main);
         NumberFormatter formatterfloat = createNumberFormatterFloat();
         NumberFormatter formatterint= createNumberFormatterInt();
         ProductPrice.setFormatterFactory(new DefaultFormatterFactory(formatterfloat));
@@ -71,9 +78,8 @@ public class ModifyProductView extends javax.swing.JFrame {
         }
     });
 
-        productView = new ProductView();
-        setResizable(false);
-        setLocationRelativeTo(null);
+        productView = new ProductView(main);
+        
         
         DatabaseConnector dbConnector = new DatabaseConnector();
         productRepository = new ProductRepositoryImpl(dbConnector);
@@ -184,11 +190,10 @@ public class ModifyProductView extends javax.swing.JFrame {
     ImageLabel.setIcon(null); // Reset image label
     imageContentStatic = null;
 }
-    
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         ProductName = new javax.swing.JTextField();
@@ -210,11 +215,6 @@ public class ModifyProductView extends javax.swing.JFrame {
         UserLabel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-
-        jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
-        jLabel1.setText("CLIENTS");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -338,7 +338,7 @@ public class ModifyProductView extends javax.swing.JFrame {
                             .addComponent(jlabel)
                             .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(aaa)
@@ -420,7 +420,7 @@ public class ModifyProductView extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(207, Short.MAX_VALUE)
+                .addContainerGap(78, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -429,8 +429,8 @@ public class ModifyProductView extends javax.swing.JFrame {
                 .addGap(40, 40, 40))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -446,148 +446,87 @@ public class ModifyProductView extends javax.swing.JFrame {
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void modifyProductbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyProductbtnActionPerformed
-    try {
-        
-        byte[] imageBytes = null;
-
-        if (ImageLabel.getIcon() != null) {
-            ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
-            BufferedImage bufferedImage = new BufferedImage(
-                imageIconDeLabel.getIconWidth(),
-                imageIconDeLabel.getIconHeight(),
-                BufferedImage.TYPE_INT_RGB);
-            bufferedImage.createGraphics().drawImage(
-                imageIconDeLabel.getImage(),
-                0,
-                0,
-                null);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            imageBytes = baos.toByteArray();
-        }
-        
-        
-        int productCode = Integer.parseInt(ProductCode.getText());
-        
-        float productPriceUnit = ((Number)ProductPrice.getValue()).floatValue();
-        String productName = ProductName.getText();
-        int qte = ((Number)QteTextField.getValue()).intValue();
-        String selectedSupplierName = SupplierCombo.getSelectedItem().toString();
-        int supplierCode = getSupplierCodeByName(selectedSupplierName);
-        Product product = new Product(productCode,productName,qte,productPriceUnit,imageBytes,supplierCode);
-        productRepository.update(product);
-        
-        JOptionPane.showMessageDialog(this, "product modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-        if (productView != null) {
-            productView.loadProductAndPopulateTable();
-            productView.setVisible(true);
-        }
-        this.setVisible(false);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Product code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error updating product: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
-    }//GEN-LAST:event_modifyProductbtnActionPerformed
-public static byte[] imageContentStatic = null;
-    private void AddImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddImageBtnActionPerformed
-    JFileChooser fileChooser = new JFileChooser();
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "png", "jpg", "jpeg");
-    fileChooser.addChoosableFileFilter(filter);
-
-    int result = fileChooser.showOpenDialog(null);
-
-    if (result == JFileChooser.APPROVE_OPTION) {
-        File selectedFile = fileChooser.getSelectedFile();
-        
-        try {
-            
-            imageContentStatic = Files.readAllBytes(selectedFile.toPath());
-            ImageIcon imageIcon = new ImageIcon(imageContentStatic);
-            Image image = imageIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            ImageLabel.setIcon(new ImageIcon(image));
-            
-        } catch (IOException ex) {
-            ex.printStackTrace(); // Gérer l'exception ici
-        }
-    }
-    }//GEN-LAST:event_AddImageBtnActionPerformed
-
-    private void exitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitbtnActionPerformed
-        if (productView == null) {
-            productView = new ProductView();
-        }
-        this.setVisible(false);
-        productView.setVisible(true);
-    }//GEN-LAST:event_exitbtnActionPerformed
 
     private void ProductNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductNameActionPerformed
         this.ProductName.setText(null);
     }//GEN-LAST:event_ProductNameActionPerformed
-        
-    private void deconnecteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnecteActionPerformed
-        if (loginView == null) {
-            loginView = new LOGIN();
+
+    private void modifyProductbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyProductbtnActionPerformed
+        try {
+
+            byte[] imageBytes = null;
+
+            if (ImageLabel.getIcon() != null) {
+                ImageIcon imageIconDeLabel = (ImageIcon) ImageLabel.getIcon();
+                BufferedImage bufferedImage = new BufferedImage(
+                    imageIconDeLabel.getIconWidth(),
+                    imageIconDeLabel.getIconHeight(),
+                    BufferedImage.TYPE_INT_RGB);
+                bufferedImage.createGraphics().drawImage(
+                    imageIconDeLabel.getImage(),
+                    0,
+                    0,
+                    null);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(bufferedImage, "png", baos);
+                imageBytes = baos.toByteArray();
+            }
+
+            int productCode = Integer.parseInt(ProductCode.getText());
+
+            float productPriceUnit = ((Number)ProductPrice.getValue()).floatValue();
+            String productName = ProductName.getText();
+            int qte = ((Number)QteTextField.getValue()).intValue();
+            String selectedSupplierName = SupplierCombo.getSelectedItem().toString();
+            int supplierCode = getSupplierCodeByName(selectedSupplierName);
+            Product product = new Product(productCode,productName,qte,productPriceUnit,imageBytes,supplierCode);
+            productRepository.update(product);
+
+            JOptionPane.showMessageDialog(this, "product modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (productView != null) {
+                    productView = new ProductView(main);
+                }
+                this.main.showForm(productView);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Product code must be a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating product: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-        this.setVisible(false);
-        loginView.setVisible(true);
+    }//GEN-LAST:event_modifyProductbtnActionPerformed
+public static byte[] imageContentStatic = null;
+    private void AddImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddImageBtnActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "png", "jpg", "jpeg");
+        fileChooser.addChoosableFileFilter(filter);
+
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            try {
+
+                imageContentStatic = Files.readAllBytes(selectedFile.toPath());
+                ImageIcon imageIcon = new ImageIcon(imageContentStatic);
+                Image image = imageIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                ImageLabel.setIcon(new ImageIcon(image));
+
+            } catch (IOException ex) {
+                ex.printStackTrace(); // Gérer l'exception ici
+            }
+        }
+    }//GEN-LAST:event_AddImageBtnActionPerformed
+
+    private void exitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitbtnActionPerformed
+        
+    }//GEN-LAST:event_exitbtnActionPerformed
+
+    private void deconnecteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnecteActionPerformed
+        
     }//GEN-LAST:event_deconnecteActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModifyProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModifyProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModifyProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModifyProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModifyProductView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddImageBtn;
@@ -601,7 +540,6 @@ public static byte[] imageContentStatic = null;
     private javax.swing.JLabel aaa;
     private javax.swing.JButton deconnecte;
     private javax.swing.JButton exitbtn;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -613,8 +551,4 @@ public static byte[] imageContentStatic = null;
     private javax.swing.JLabel jlabel1;
     private javax.swing.JButton modifyProductbtn;
     // End of variables declaration//GEN-END:variables
-
-    public void setUserLabel(String UserLabel) {
-        this.UserLabel.setText(UserLabel);
-    }
 }

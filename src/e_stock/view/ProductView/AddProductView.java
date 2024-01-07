@@ -1,5 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package e_stock.view.ProductView;
 
+import com.raven.main.Main;
 import e_stock.Model.Product;
 import e_stock.Model.Supplier;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
@@ -32,14 +37,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
-public class AddProductView extends javax.swing.JFrame {
+public class AddProductView extends javax.swing.JPanel {
 
     private ProductRepositoryImpl productRepository;
     private SupplierRepositoryImpl supplierRepository;
     private ProductView productView;
     private LOGIN loginView;
-
-    public AddProductView() {
+    private Main main;
+    public AddProductView(Main main) {
+        this.main = main;
         initComponents();
         NumberFormatter formatterfloat = createNumberFormatterFloat();
         NumberFormatter formatterint= createNumberFormatterInt();
@@ -48,9 +54,7 @@ public class AddProductView extends javax.swing.JFrame {
         for (MouseWheelListener listener : ProductPrice.getMouseWheelListeners()) {
         ProductPrice.removeMouseWheelListener(listener);
         }
-        productView = new ProductView();
-        setResizable(false);
-        setLocationRelativeTo(null);
+        productView = new ProductView(main);
         DatabaseConnector dbConnector = new DatabaseConnector();
         productRepository = new ProductRepositoryImpl(dbConnector);
         supplierRepository= new SupplierRepositoryImpl(dbConnector);
@@ -132,7 +136,12 @@ public class AddProductView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        deconnecte = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        UserLabel = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         ProductName = new javax.swing.JTextField();
@@ -147,143 +156,6 @@ public class AddProductView extends javax.swing.JFrame {
         SupplierCombo = new javax.swing.JComboBox<>();
         ProductPrice = new javax.swing.JFormattedTextField();
         QteTextField = new javax.swing.JFormattedTextField();
-        jPanel2 = new javax.swing.JPanel();
-        deconnecte = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        UserLabel = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-
-        jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
-        jLabel1.setText("CLIENTS");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel3.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/prodname.png"))); // NOI18N
-        jLabel3.setText("Product Name : ");
-
-        ProductName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ProductName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProductNameActionPerformed(evt);
-            }
-        });
-
-        aaa.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
-        aaa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ADDIMAGE.png"))); // NOI18N
-        aaa.setText("Image : ");
-
-        jlabel.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
-        jlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/price.png"))); // NOI18N
-        jlabel.setText("Price :");
-
-        addclientbtn.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        addclientbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/add.png"))); // NOI18N
-        addclientbtn.setText("ADD");
-        addclientbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 102, 255)));
-        addclientbtn.setBorderPainted(false);
-        addclientbtn.setContentAreaFilled(false);
-        addclientbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addclientbtnActionPerformed(evt);
-            }
-        });
-
-        AddImageBtn.setText("Choose Image");
-        AddImageBtn.setBorderPainted(false);
-        AddImageBtn.setContentAreaFilled(false);
-        AddImageBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddImageBtnActionPerformed(evt);
-            }
-        });
-
-        jlabel1.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
-        jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/quantity.png"))); // NOI18N
-        jlabel1.setText("Qte en Stock :");
-
-        exitbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/annuler.png"))); // NOI18N
-        exitbtn.setBorderPainted(false);
-        exitbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitbtnActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Arial", 2, 48)); // NOI18N
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ajouterproduit.png"))); // NOI18N
-        jLabel2.setText("  ADD PRODUCT");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(aaa, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(85, 85, 85)
-                        .addComponent(exitbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(AddImageBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(ProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(SupplierCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(126, 126, 126)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(47, 47, 47)
-                                .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jlabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(313, 313, 313))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(235, 235, 235)
-                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(exitbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addComponent(SupplierCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlabel)
-                    .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aaa)
-                    .addComponent(jlabel1)
-                    .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
 
         jPanel2.setBackground(new java.awt.Color(255, 179, 65));
         jPanel2.setForeground(new java.awt.Color(153, 102, 255));
@@ -350,7 +222,7 @@ public class AddProductView extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(207, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -359,8 +231,135 @@ public class AddProductView extends javax.swing.JFrame {
                 .addGap(76, 76, 76))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/prodname.png"))); // NOI18N
+        jLabel3.setText("Product Name : ");
+
+        ProductName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ProductName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProductNameActionPerformed(evt);
+            }
+        });
+
+        aaa.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
+        aaa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ADDIMAGE.png"))); // NOI18N
+        aaa.setText("Image : ");
+
+        jlabel.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
+        jlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/price.png"))); // NOI18N
+        jlabel.setText("Price :");
+
+        addclientbtn.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        addclientbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/add.png"))); // NOI18N
+        addclientbtn.setText("ADD");
+        addclientbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 102, 255)));
+        addclientbtn.setBorderPainted(false);
+        addclientbtn.setContentAreaFilled(false);
+        addclientbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addclientbtnActionPerformed(evt);
+            }
+        });
+
+        AddImageBtn.setText("Choose Image");
+        AddImageBtn.setBorderPainted(false);
+        AddImageBtn.setContentAreaFilled(false);
+        AddImageBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddImageBtnActionPerformed(evt);
+            }
+        });
+
+        jlabel1.setFont(new java.awt.Font("Verdana Pro Semibold", 3, 18)); // NOI18N
+        jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/quantity.png"))); // NOI18N
+        jlabel1.setText("Qte en Stock :");
+
+        exitbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/annuler.png"))); // NOI18N
+        exitbtn.setBorderPainted(false);
+        exitbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitbtnActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Arial", 2, 48)); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ajouterproduit.png"))); // NOI18N
+        jLabel2.setText("  ADD PRODUCT");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(313, 313, 313))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(aaa, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(85, 85, 85)
+                                .addComponent(exitbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(AddImageBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                                    .addComponent(ProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                                    .addComponent(SupplierCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(126, 126, 126)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jlabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(235, 235, 235)
+                        .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(exitbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addComponent(SupplierCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlabel)
+                    .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AddImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aaa)
+                    .addComponent(jlabel1)
+                    .addComponent(QteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(addclientbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -371,21 +370,30 @@ public class AddProductView extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void deconnecteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnecteActionPerformed
+        if (loginView == null) {
+            loginView = new LOGIN();
+        }
+        this.setVisible(false);
+        loginView.setVisible(true);
+    }//GEN-LAST:event_deconnecteActionPerformed
+
+    private void ProductNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductNameActionPerformed
+        this.ProductName.setText(null);
+    }//GEN-LAST:event_ProductNameActionPerformed
+
     private void addclientbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addclientbtnActionPerformed
-    try {
+        try {
             // Create client and save
             String selectedClientName = SupplierCombo.getSelectedItem().toString();
             int supplierCode = getSupplierCodeByName(selectedClientName);//
-            
+
             float productPriceUnit = ((Number)ProductPrice.getValue()).floatValue();
             int qte = ((Number)QteTextField.getValue()).intValue();
             Product product = new Product(ProductName.getText(),qte,productPriceUnit,imageContentStatic2,supplierCode);
@@ -397,100 +405,46 @@ public class AddProductView extends javax.swing.JFrame {
             if (productView != null) {
                 productView.loadProductAndPopulateTable();
             }
-                                                        
+
             // Hide this view and show the client list
-            this.setVisible(false);
             if (productView != null) {
-                productView.setVisible(true);
-            }
+                    productView = new ProductView(main);
+                }
+                this.main.showForm(productView);
         } catch (Exception e) {
             // Handle exception and provide feedback
             JOptionPane.showMessageDialog(this, "Error adding Product: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-
     }//GEN-LAST:event_addclientbtnActionPerformed
 public static byte[] imageContentStatic2 = null;
     private void AddImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddImageBtnActionPerformed
-    JFileChooser fileChooser = new JFileChooser();
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "png", "jpg", "jpeg");
-    fileChooser.addChoosableFileFilter(filter);
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "png", "jpg", "jpeg");
+        fileChooser.addChoosableFileFilter(filter);
 
-    int result = fileChooser.showOpenDialog(null);
+        int result = fileChooser.showOpenDialog(null);
 
-    if (result == JFileChooser.APPROVE_OPTION) {
-        File selectedFile = fileChooser.getSelectedFile();
-        
-        try {
-            
-            imageContentStatic2 = Files.readAllBytes(selectedFile.toPath());
-            ImageIcon imageIcon = new ImageIcon(imageContentStatic2);
-            Image image = imageIcon.getImage().getScaledInstance(100,100, Image.SCALE_SMOOTH);
-            ImageLabel.setIcon(new ImageIcon(image));
-            
-        } catch (IOException ex) {
-            ex.printStackTrace(); // Gérer l'exception ici
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            try {
+
+                imageContentStatic2 = Files.readAllBytes(selectedFile.toPath());
+                ImageIcon imageIcon = new ImageIcon(imageContentStatic2);
+                Image image = imageIcon.getImage().getScaledInstance(100,100, Image.SCALE_SMOOTH);
+                ImageLabel.setIcon(new ImageIcon(image));
+
+            } catch (IOException ex) {
+                ex.printStackTrace(); // Gérer l'exception ici
+            }
         }
-    }
     }//GEN-LAST:event_AddImageBtnActionPerformed
 
     private void exitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitbtnActionPerformed
-        if (productView == null) {
-            productView = new ProductView();
-        }
-        this.setVisible(false);
-        productView.setVisible(true);
+        
     }//GEN-LAST:event_exitbtnActionPerformed
 
-    private void ProductNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductNameActionPerformed
-        this.ProductName.setText(null);
-    }//GEN-LAST:event_ProductNameActionPerformed
-        
-    private void deconnecteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deconnecteActionPerformed
-        if (loginView == null) {
-            loginView = new LOGIN();
-        }
-        this.setVisible(false);
-        loginView.setVisible(true);
-    }//GEN-LAST:event_deconnecteActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddProductView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddImageBtn;
@@ -504,7 +458,6 @@ public static byte[] imageContentStatic2 = null;
     private javax.swing.JButton addclientbtn;
     private javax.swing.JButton deconnecte;
     private javax.swing.JButton exitbtn;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -515,8 +468,4 @@ public static byte[] imageContentStatic2 = null;
     private javax.swing.JLabel jlabel;
     private javax.swing.JLabel jlabel1;
     // End of variables declaration//GEN-END:variables
-
-    public void setUserLabel(String UserLabel) {
-        this.UserLabel.setText(UserLabel);
-    }
 }
