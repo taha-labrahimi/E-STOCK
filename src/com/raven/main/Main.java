@@ -3,13 +3,16 @@ package com.raven.main;
 import com.raven.event.EventMenu;
 import com.raven.form.Form;
 import com.raven.form.Form_1;
+import e_stock.view.clientView.ClientView;
 import java.awt.Color;
 import java.awt.Component;
 
 public class Main extends javax.swing.JFrame {
+    ClientView clientView;
 
     public Main() {
         initComponents();
+        clientView = new ClientView();
         setBackground(new Color(0, 0, 0, 0));
         EventMenu event = new EventMenu() {
             @Override
@@ -18,6 +21,8 @@ public class Main extends javax.swing.JFrame {
                     showForm(new Form_1());
                 } else if (index == 8) {
                     System.out.println("Logout");
+                    } else if (index == 2) {
+                    showForm(new ClientView());
                 } else {
                     showForm(new Form(index));
                 }
@@ -27,7 +32,7 @@ public class Main extends javax.swing.JFrame {
         showForm(new Form_1());
     }
 
-    private void showForm(Component com) {
+    public void showForm(Component com) {
         body.removeAll();
         body.add(com);
         body.revalidate();
@@ -122,7 +127,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel body;
+    public javax.swing.JPanel body;
     private com.raven.component.Header header2;
     private com.raven.component.Menu menu1;
     private com.raven.swing.RoundPanel roundPanel1;
