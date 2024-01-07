@@ -85,13 +85,13 @@ public class OrderLineRepositoryImpl implements OrderLineRepository{
 
     @Override
     public void update(OrderLine orderLine) {
-        String sql = "UPDATE OrderLines SET quantityOrdered = ? WHERE orderId = ? AND productCode = ?";
+        String sql = "UPDATE OrderLines SET quantityOrdered = ?,productCode= ? WHERE orderId = ?";
         try (Connection conn = dbConnector.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setInt(1, orderLine.getQuantityOrdered());
-            pstmt.setInt(2, orderLine.getOrderId());
-            pstmt.setInt(3, orderLine.getProductCode());
+            pstmt.setInt(2, orderLine.getProductCode());
+            pstmt.setInt(3, orderLine.getOrderId());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -25,6 +25,7 @@ public class AddOrderView extends javax.swing.JPanel {
     private ProductRepositoryImpl productRepositoryImpl;
     private DefaultTableModel tableModel;
     private OrderView orderView;
+    private int currentOrderId = -1;
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
     Main main;
@@ -210,28 +211,33 @@ public class AddOrderView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addorderbtnActionPerformed
-        try {
+         try {
+        if (currentOrderId == -1) {
+            // Première fois que nous ajoutons un produit, créez donc une nouvelle commande
             String selectedClientName = clientcombobox.getSelectedItem().toString();
             int clientCode = getClientCodeByName(selectedClientName);
-
-            String selectedProductName = productcombobox.getSelectedItem().toString();
-            int productCode = getProductCodeByName(selectedProductName);
-
-            int quantity = (Integer) jSpinner1.getValue();
-
-            int orderId = createNewOrder(clientCode);
-            addOrderLine(orderId, productCode, quantity);
-
-            // Display a confirmation message or refresh the view as needed
-            JOptionPane.showMessageDialog(this, "Order added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            if (orderView != null) {
-                    orderView = new OrderView(main);
-                }
-                this.main.showForm(orderView);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error adding order: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            currentOrderId = createNewOrder(clientCode);
         }
+
+        String selectedProductName = productcombobox.getSelectedItem().toString();
+        int productCode = getProductCodeByName(selectedProductName);
+        int quantity = (Integer) jSpinner1.getValue();
+        addOrderLine(currentOrderId, productCode, quantity);
+
+        JOptionPane.showMessageDialog(this, "Produit ajouté à la commande.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+        int response = JOptionPane.showConfirmDialog(this, "Voulez-vous ajouter un autre produit à cette commande ?", "Confirmer l'ajout du produit", JOptionPane.YES_NO_OPTION);
+        if (response != JOptionPane.YES_OPTION) {
+            // L'utilisateur a fini d'ajouter des produits, affichez la vue des commandes et réinitialisez l'ID de la commande
+            currentOrderId = -1;
+            this.main.showForm(new OrderView(this.main));
+        } else {
+            // Réinitialisez les composants pour un nouveau produit (si nécessaire)
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout du produit à la commande : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_addorderbtnActionPerformed
 
     private void clientcomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientcomboboxActionPerformed

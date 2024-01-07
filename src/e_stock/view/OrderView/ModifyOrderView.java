@@ -206,7 +206,7 @@ public class ModifyOrderView extends javax.swing.JPanel {
     private void updateOrder(int clientCode) {
         Order newOrder = new Order();
         newOrder.setClientCode(clientCode);
-        newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); // Set current date as order date
+        newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); 
         newOrder.setOrderId(getOrderid());
         // Save and get generated order ID
         orderRepositoryImpl.update(newOrder);
@@ -227,7 +227,7 @@ public class ModifyOrderView extends javax.swing.JPanel {
 
             String selectedProductName = productcombobox.getSelectedItem().toString();
             int productCode = getProductCodeByName(selectedProductName);
-
+            
             int quantity = (Integer) jSpinner1.getValue();
 
             updateOrder(clientCode);
