@@ -141,6 +141,22 @@ public class ProductRepositoryImpl implements ProductRepository{
             Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void updateqte2(int codeProd,int qte) {
+        String sql = "UPDATE products SET QteStock = QteStock+? WHERE ProductCode = ?";
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, qte);
+            pstmt.setInt(2, codeProd);
+
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void delete(int ProductCode) {
         String sql = "DELETE FROM products WHERE ProductCode = ?";

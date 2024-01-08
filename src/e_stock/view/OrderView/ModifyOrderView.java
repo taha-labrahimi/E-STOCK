@@ -34,8 +34,9 @@ public class ModifyOrderView extends javax.swing.JPanel {
     OrderLineRepositoryImpl orderLineRepositoryImpl;
     private int orderid;
     Main main;
+
     public ModifyOrderView(Main main) {
-        this.main=main;
+        this.main = main;
         initComponents();
         orderView = new OrderView(main);
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -75,6 +76,7 @@ public class ModifyOrderView extends javax.swing.JPanel {
     public void setOrderid(int orderid) {
         this.orderid = orderid;
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -217,7 +219,7 @@ public class ModifyOrderView extends javax.swing.JPanel {
     private void updateOrder(int clientCode) {
         Order newOrder = new Order();
         newOrder.setClientCode(clientCode);
-        newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); 
+        newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis()));
         newOrder.setOrderId(getOrderid());
         // Save and get generated order ID
         orderRepositoryImpl.update(newOrder);
@@ -238,17 +240,23 @@ public class ModifyOrderView extends javax.swing.JPanel {
 
             String selectedProductName = productcombobox.getSelectedItem().toString();
             int productCode = getProductCodeByName(selectedProductName);
-            
-            int quantity = (Integer) jSpinner1.getValue();
 
-            updateOrder(clientCode);
-            ModifyOrderLine(getOrderid(), productCode, quantity);
-            
-            JOptionPane.showMessageDialog(this, "Order Modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            int quantity = (Integer) jSpinner1.getValue();
+            Product product = productRepositoryImpl.findById(productCode);
+
+            if (product != null && product.getQteStock() >= quantity) {
+                updateOrder(clientCode);
+                ModifyOrderLine(getOrderid(), productCode, quantity);
+                productRepositoryImpl.updateqte2(productCode, quantity);
+                JOptionPane.showMessageDialog(this, "Order Modified successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 if (orderView != null) {
                     orderView = new OrderView(main);
                 }
                 this.main.showForm(orderView);
+            } else {
+                JOptionPane.showMessageDialog(this, "Quantité demandée non disponible en stock.", "Avertissement", JOptionPane.WARNING_MESSAGE);
+
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error modifying order: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
