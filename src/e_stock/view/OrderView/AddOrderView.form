@@ -65,7 +65,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="335" max="-2" attributes="0"/>
-                          <Component id="modifyorderbtn" min="-2" pref="492" max="-2" attributes="0"/>
+                          <Component id="addorderbtn" min="-2" pref="492" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
@@ -90,14 +90,14 @@
                       <Component id="jSpinner1" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
-                  <Component id="modifyorderbtn" min="-2" max="-2" attributes="0"/>
+                  <Component id="addorderbtn" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="modifyorderbtn">
+        <Component class="javax.swing.JButton" name="addorderbtn">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/resources/images/ic_add.png"/>
@@ -105,7 +105,7 @@
             <Property name="text" type="java.lang.String" value="ADD"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="modifyorderbtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addorderbtnActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="clientcombobox">

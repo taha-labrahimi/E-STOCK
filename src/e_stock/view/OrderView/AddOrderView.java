@@ -33,11 +33,12 @@ public class AddOrderView extends javax.swing.JPanel {
     OrderRepositoryImpl orderRepositoryImpl;
     OrderLineRepositoryImpl orderLineRepositoryImpl;
     private int orderid;
-        private int currentOrderId = -1;
+    private int currentOrderId = -1;
 
     Main main;
+
     public AddOrderView(Main main) {
-        this.main=main;
+        this.main = main;
         initComponents();
         orderView = new OrderView(main);
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -49,7 +50,7 @@ public class AddOrderView extends javax.swing.JPanel {
         populateProductComboBox();
     }
 
-   private void populateClientComboBox() {
+    private void populateClientComboBox() {
         List<Client> clients = clientRepositoryImpl.findAll();
 
         for (Client client : clients) {
@@ -57,6 +58,7 @@ public class AddOrderView extends javax.swing.JPanel {
             clientcombobox.addItem(clientName);
         }
     }
+
     private void populateProductComboBox() {
         List<Product> products = productRepositoryImpl.findAll();
 
@@ -65,54 +67,55 @@ public class AddOrderView extends javax.swing.JPanel {
             productcombobox.addItem(productName);
         }
     }
-   private int getClientCodeByName(String clientName) {
-    List<Client> clients = clientRepositoryImpl.findAll();
-    for (Client client : clients) {
-        String fullName = client.getFirstName() + " " + client.getLastName();
-        if (fullName.equals(clientName)) {
-            return client.getClientCode();
-        }
-    }
-    return -1;
-}
 
-    
+    private int getClientCodeByName(String clientName) {
+        List<Client> clients = clientRepositoryImpl.findAll();
+        for (Client client : clients) {
+            String fullName = client.getFirstName() + " " + client.getLastName();
+            if (fullName.equals(clientName)) {
+                return client.getClientCode();
+            }
+        }
+        return -1;
+    }
+
     private int getProductCodeByName(String productName) {
-    List<Product> products = productRepositoryImpl.findAll();
-    for (Product product : products) {
-        if (product.getProductName().equals(productName)) {
-            return product.getProductCode();
+        List<Product> products = productRepositoryImpl.findAll();
+        for (Product product : products) {
+            if (product.getProductName().equals(productName)) {
+                return product.getProductCode();
+            }
         }
+        return -1;
     }
-    return -1;
-}
+
     private int createNewOrder(int clientCode) {
-    Order newOrder = new Order();
-    newOrder.setClientCode(clientCode);
-    newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); // Set current date as order date
+        Order newOrder = new Order();
+        newOrder.setClientCode(clientCode);
+        newOrder.setOrderDate(new java.sql.Date(System.currentTimeMillis())); // Set current date as order date
 
-    // Save and get generated order ID
-    int orderId = orderRepositoryImpl.save(newOrder);
-    newOrder.setOrderId(orderId); // Set the retrieved order ID back to the Order object
+        // Save and get generated order ID
+        int orderId = orderRepositoryImpl.save(newOrder);
+        newOrder.setOrderId(orderId); // Set the retrieved order ID back to the Order object
 
-    System.out.println(newOrder.getOrderId()); // This should now print the correct ID
-    return orderId;
-}
+        System.out.println(newOrder.getOrderId()); // This should now print the correct ID
+        return orderId;
+    }
 
     private void addOrderLine(int orderId, int productCode, int quantity) {
-    OrderLine orderLine = new OrderLine();
-    orderLine.setOrderId(orderId);
-    orderLine.setProductCode(productCode);
-    orderLine.setQuantityOrdered(quantity);
-    orderLineRepositoryImpl.save(orderLine);
-}
+        OrderLine orderLine = new OrderLine();
+        orderLine.setOrderId(orderId);
+        orderLine.setProductCode(productCode);
+        orderLine.setQuantityOrdered(quantity);
+        orderLineRepositoryImpl.save(orderLine);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        modifyorderbtn = new javax.swing.JButton();
+        addorderbtn = new javax.swing.JButton();
         clientcombobox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         productcombobox = new javax.swing.JComboBox<>();
@@ -123,11 +126,11 @@ public class AddOrderView extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        modifyorderbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ic_add.png"))); // NOI18N
-        modifyorderbtn.setText("ADD");
-        modifyorderbtn.addActionListener(new java.awt.event.ActionListener() {
+        addorderbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ic_add.png"))); // NOI18N
+        addorderbtn.setText("ADD");
+        addorderbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modifyorderbtnActionPerformed(evt);
+                addorderbtnActionPerformed(evt);
             }
         });
 
@@ -184,7 +187,7 @@ public class AddOrderView extends javax.swing.JPanel {
                                 .addComponent(productcombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(335, 335, 335)
-                        .addComponent(modifyorderbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(addorderbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(85, 85, 85))
         );
         jPanel1Layout.setVerticalGroup(
@@ -203,7 +206,7 @@ public class AddOrderView extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(117, 117, 117)
-                .addComponent(modifyorderbtn)
+                .addComponent(addorderbtn)
                 .addGap(79, 79, 79))
         );
 
@@ -220,36 +223,43 @@ public class AddOrderView extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void modifyorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyorderbtnActionPerformed
+
+    private void addorderbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addorderbtnActionPerformed
         try {
-        if (currentOrderId == -1) {
-            // Première fois que nous ajoutons un produit, créez donc une nouvelle commande
-            String selectedClientName = clientcombobox.getSelectedItem().toString();
-            int clientCode = getClientCodeByName(selectedClientName);
-            currentOrderId = createNewOrder(clientCode);
+            String selectedProductName = productcombobox.getSelectedItem().toString();
+            int productCode = getProductCodeByName(selectedProductName);
+            int quantity = (Integer) jSpinner1.getValue();
+            Product product = productRepositoryImpl.findById(productCode);
+            if (product != null && product.getQteStock() >= quantity) {
+                if (currentOrderId == -1) {
+                    // Première fois que nous ajoutons un produit, créez donc une nouvelle commande
+                    String selectedClientName = clientcombobox.getSelectedItem().toString();
+                    int clientCode = getClientCodeByName(selectedClientName);
+                    currentOrderId = createNewOrder(clientCode);
+                }
+
+                addOrderLine(currentOrderId, productCode, quantity);
+                productRepositoryImpl.updateqte(productCode, quantity);
+                JOptionPane.showMessageDialog(this, "Produit ajouté à la commande.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+                int response = JOptionPane.showConfirmDialog(this, "Voulez-vous ajouter un autre produit à cette commande ?", "Confirmer l'ajout du produit", JOptionPane.YES_NO_OPTION);
+                if (response != JOptionPane.YES_OPTION) {
+                    // L'utilisateur a fini d'ajouter des produits, affichez la vue des commandes et réinitialisez l'ID de la commande
+                    currentOrderId = -1;
+                    this.main.showForm(new OrderView(this.main));
+                } else {
+                    // Réinitialisez les composants pour un nouveau produit (si nécessaire)
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Quantité demandée non disponible en stock.", "Avertissement", JOptionPane.WARNING_MESSAGE);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout du produit à la commande : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-        String selectedProductName = productcombobox.getSelectedItem().toString();
-        int productCode = getProductCodeByName(selectedProductName);
-        int quantity = (Integer) jSpinner1.getValue();
-        addOrderLine(currentOrderId, productCode, quantity);
-
-        JOptionPane.showMessageDialog(this, "Produit ajouté à la commande.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
-        int response = JOptionPane.showConfirmDialog(this, "Voulez-vous ajouter un autre produit à cette commande ?", "Confirmer l'ajout du produit", JOptionPane.YES_NO_OPTION);
-        if (response != JOptionPane.YES_OPTION) {
-            // L'utilisateur a fini d'ajouter des produits, affichez la vue des commandes et réinitialisez l'ID de la commande
-            currentOrderId = -1;
-            this.main.showForm(new OrderView(this.main));
-        } else {
-            // Réinitialisez les composants pour un nouveau produit (si nécessaire)
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout du produit à la commande : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
-    }//GEN-LAST:event_modifyorderbtnActionPerformed
+    }//GEN-LAST:event_addorderbtnActionPerformed
 
     private void clientcomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientcomboboxActionPerformed
         // TODO add your handling code here:
@@ -261,6 +271,7 @@ public class AddOrderView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addorderbtn;
     private javax.swing.JComboBox<String> clientcombobox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -268,7 +279,6 @@ public class AddOrderView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JButton modifyorderbtn;
     private javax.swing.JComboBox<String> productcombobox;
     // End of variables declaration//GEN-END:variables
 }
