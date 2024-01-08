@@ -1,3 +1,4 @@
+THIS IS DATA BASE CREATION 
 CREATE TABLE IF NOT EXISTS clients (
     clientCode int auto_increment PRIMARY KEY,
     firstName VARCHAR(100),
