@@ -80,7 +80,7 @@ public class OrderView extends javax.swing.JPanel {
                     String productName = (product != null) ? product.getProductName() : "Unknown Product";
 
                     int totalItems = line.getQuantityOrdered();
-                    double totalAmount = line.getTotalPrice();
+                    double totalAmount =  Double.parseDouble(String.format("%.2f", line.getTotalPrice()));
                     double price = line.getPrice();
                     Object[] row = new Object[]{
                         order.getOrderId(),

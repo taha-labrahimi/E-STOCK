@@ -14,16 +14,10 @@ import e_stock.RepositoryImplementation.OrderLineRepositoryImpl;
 import e_stock.RepositoryImplementation.OrderRepositoryImpl;
 import e_stock.RepositoryImplementation.ProductRepositoryImpl;
 import e_stock.database.DatabaseConnector;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author ilyas
- */
 public class AddOrderView extends javax.swing.JPanel {
 
     OrderView orderView;
@@ -232,7 +226,7 @@ public class AddOrderView extends javax.swing.JPanel {
             Product product = productRepositoryImpl.findById(productCode);
             if (product != null && product.getQteStock() >= quantity) {
                 if (currentOrderId == -1) {
-                    // Première fois que nous ajoutons un produit, créez donc une nouvelle commande
+                    
                     String selectedClientName = clientcombobox.getSelectedItem().toString();
                     int clientCode = getClientCodeByName(selectedClientName);
                     currentOrderId = createNewOrder(clientCode);
@@ -244,12 +238,9 @@ public class AddOrderView extends javax.swing.JPanel {
 
                 int response = JOptionPane.showConfirmDialog(this, "Voulez-vous ajouter un autre produit à cette commande ?", "Confirmer l'ajout du produit", JOptionPane.YES_NO_OPTION);
                 if (response != JOptionPane.YES_OPTION) {
-                    // L'utilisateur a fini d'ajouter des produits, affichez la vue des commandes et réinitialisez l'ID de la commande
                     currentOrderId = -1;
                     this.main.showForm(new OrderView(this.main));
-                } else {
-                    // Réinitialisez les composants pour un nouveau produit (si nécessaire)
-                }
+                } 
             } else {
                 JOptionPane.showMessageDialog(this, "Quantité demandée non disponible en stock.", "Avertissement", JOptionPane.WARNING_MESSAGE);
 

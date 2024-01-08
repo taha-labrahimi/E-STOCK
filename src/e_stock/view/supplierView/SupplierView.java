@@ -162,7 +162,7 @@ public class SupplierView extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(1794, 716));
 
         AddSupplier.setBackground(new java.awt.Color(51, 51, 51));
-        AddSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/2.png"))); // NOI18N
+        AddSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/1.png"))); // NOI18N
         AddSupplier.setBorder(null);
         AddSupplier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,7 +191,7 @@ public class SupplierView extends javax.swing.JPanel {
         });
 
         printbtn.setBackground(new java.awt.Color(51, 51, 51));
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/1.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/2.png"))); // NOI18N
         printbtn.setBorder(null);
         printbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,6 +202,7 @@ public class SupplierView extends javax.swing.JPanel {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         scroll.setBorder(null);
+        scroll.setFocusable(false);
 
         tablesupplier.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -231,9 +232,9 @@ public class SupplierView extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(searchfield, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(printbtn)
+                                .addComponent(AddSupplier)
                                 .addGap(18, 18, 18)
-                                .addComponent(AddSupplier))))
+                                .addComponent(printbtn))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(398, 398, 398)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))

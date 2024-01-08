@@ -90,14 +90,14 @@ public class ProductView extends javax.swing.JPanel {
     columnModel.getColumn(8).setPreferredWidth(40);
     columnModel.getColumn(8).setMaxWidth(40);
 
-    tableproducts.setRowHeight(90);
+    tableproducts.setRowHeight(70);
     }
     protected void loadProductAndPopulateTable() {
         List<Product> products = productRepository.findAll();
         DefaultTableModel tableModel = (DefaultTableModel) tableproducts.getModel();
         String[] columnNames = {"Product Code", "Product Name", "QteStock","Product Unit Price", "Supplier","Image","Edit", "Delete","View"};
         tableModel.setColumnIdentifiers(columnNames);
-        tableproducts.setRowHeight(90);
+        tableproducts.setRowHeight(70);
         tableModel.setRowCount(0); // Clear the table before loading new data
 
         for (Product product : products) {
