@@ -35,6 +35,11 @@ public class PanelLogin extends javax.swing.JPanel {
         cmd.setForeground(new java.awt.Color(255, 255, 255));
         cmd.setText("Login");
         cmd.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        cmd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -65,6 +70,10 @@ public class PanelLogin extends javax.swing.JPanel {
                 .addContainerGap(124, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmdActionPerformed
 
     public void addEventLogin(ActionListener event) {
         cmd.addActionListener(event);
