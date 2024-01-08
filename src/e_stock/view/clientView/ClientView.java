@@ -176,7 +176,7 @@ public class ClientView extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        addclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsadd30.png"))); // NOI18N
+        addclient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/1.png"))); // NOI18N
         addclient.setBorder(null);
         addclient.setContentAreaFilled(false);
         addclient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -186,7 +186,7 @@ public class ClientView extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 3, 48)); // NOI18N
         jLabel1.setText("Clients");
 
         searchtextfield.setFont(new java.awt.Font("/resources/fonts/PoppinsBlack.otf", java.awt.Font.PLAIN, 18)
@@ -204,7 +204,7 @@ public class ClientView extends javax.swing.JPanel {
             }
         });
 
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsprint30.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/2.png"))); // NOI18N
         printbtn.setBorder(null);
         printbtn.setContentAreaFilled(false);
         printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

@@ -3,6 +3,7 @@ package com.raven.main;
 import com.raven.event.EventMenu;
 import com.raven.form.Form;
 import com.raven.form.Form_1;
+import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -39,7 +40,7 @@ public class Main extends javax.swing.JFrame {
     private User user;
     private OrderView orderView;
     private ProductView productView;
-    private LOGIN login;
+    private Login2 login;
     private ClientView clientView;
     private SupplierView supplierView;
     private UserProfil userProfil;
@@ -56,9 +57,7 @@ public class Main extends javax.swing.JFrame {
             public void selected(int index) {
                 if (index == 0) {
                     showForm(new Form_1());
-                } else if (index == 8) {
-                    System.out.println("Logout");
-                    }  
+                }  
                 else if (index == 1) {
                     showForm(new ClientView(Main.this));
                 }    
@@ -75,6 +74,13 @@ public class Main extends javax.swing.JFrame {
                     setLoggedInUser(userstatic);
                     userProfil.displayUserData(userstatic);
                     showForm(userProfil);
+                }
+                else if (index == 8) {
+                    if(login == null){
+                        login = new Login2();
+                    }
+                    visible();
+                    login.setVisible(true);
                 } 
                 else {
                     showForm(new Form(index));
@@ -83,6 +89,9 @@ public class Main extends javax.swing.JFrame {
         };
         menu1.initMenu(event);
         showForm(new Form_1());
+    }
+    void visible(){
+        this.setVisible(false);
     }
     public void setLoggedInUser(User user) {
     this.user = user;
@@ -94,6 +103,7 @@ public class Main extends javax.swing.JFrame {
         
         pstmt.setInt(1, user.getUserID()); // utilisez l'ID de l'utilisateur
         ResultSet rs = pstmt.executeQuery();
+        
 
         ImageIcon imageIcon = null;
         if (rs.next() && rs.getBlob("image") != null) {

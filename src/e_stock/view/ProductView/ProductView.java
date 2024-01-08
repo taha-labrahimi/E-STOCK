@@ -187,7 +187,7 @@ public class ProductView extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        addProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsadd30.png"))); // NOI18N
+        addProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/1.png"))); // NOI18N
         addProduct.setBorder(null);
         addProduct.setContentAreaFilled(false);
         addProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -212,7 +212,7 @@ public class ProductView extends javax.swing.JPanel {
             }
         });
 
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/iconsprint30.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/2.png"))); // NOI18N
         printbtn.setBorder(null);
         printbtn.setContentAreaFilled(false);
         printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

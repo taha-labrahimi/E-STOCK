@@ -1,5 +1,7 @@
 package e_stock.view;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.raven.main.Main;
 import e_stock.RepositoryImplementation.UserRepositoryImpl;
 import e_stock.database.DatabaseConnector;
@@ -22,6 +24,8 @@ public class LOGIN extends javax.swing.JFrame {
     public LOGIN() {
         initComponents();
         setResizable(false);
+        FlatLaf.registerCustomDefaultsSource("e_stock.view.clientView");
+        FlatMacDarkLaf.setup();
         this.setSize(1298, 709);
         DatabaseConnector dbConnector = new DatabaseConnector();
         userRepositoryImpl = new UserRepositoryImpl(dbConnector);
@@ -52,19 +56,20 @@ public class LOGIN extends javax.swing.JFrame {
         bgimage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(51, 51, 51));
         getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Verdana Pro Cond Black", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("E-STOCK");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(580, 150, 210, 50);
+        jLabel1.setBounds(550, 150, 230, 50);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login/warehouse.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(530, 150, 50, 50);
+        jLabel3.setBounds(500, 150, 50, 50);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         usernameField.setFont(new java.awt.Font("/resources/fonts/PoppinsBlack.otf", java.awt.Font.PLAIN, 18)

@@ -139,7 +139,7 @@ public class OrderView extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/icons8-imprimante-64.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/2.png"))); // NOI18N
         printbtn.setBorder(null);
         printbtn.setContentAreaFilled(false);
         printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -149,7 +149,7 @@ public class OrderView extends javax.swing.JPanel {
             }
         });
 
-        addorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/ic_add.png"))); // NOI18N
+        addorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/1.png"))); // NOI18N
         addorder.setBorder(null);
         addorder.setContentAreaFilled(false);
         addorder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -187,6 +187,7 @@ public class OrderView extends javax.swing.JPanel {
 
             }
         ));
+        tableorder.setFocusable(false);
         tableorder.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableorderMouseClicked(evt);

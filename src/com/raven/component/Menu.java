@@ -28,14 +28,13 @@ public class Menu extends javax.swing.JPanel {
 
     public void initMenu(EventMenu event) {
         this.event = event;
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/1.png")), "Dashboard", 0);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), "Client", 1);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), "Product", 2);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/4.png")), "Supplier", 3);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/5.png")), "Order", 4);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/6.png")), "Edit Profile", 5);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/7.png")), "Import", 6);
-        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/8.png")), "Setting", 7);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/d.png")), "Dashboard", 0);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/12.png")), "Client", 1);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/13.png")), "Product", 2);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/14.png")), "Supplier", 3);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/15.png")), "Order", 4);
+        addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/16.png")), "Edit Profile", 5);
+        
         addEmpty();
         addMenu(new ImageIcon(getClass().getResource("/com/raven/icon/logout.png")), "Logout", 8);
     }
