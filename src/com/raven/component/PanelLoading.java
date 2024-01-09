@@ -153,6 +153,11 @@ public class PanelLoading extends javax.swing.JLayeredPane {
         cmdContinue.setForeground(new java.awt.Color(255, 255, 255));
         cmdContinue.setText("Continue");
         cmdContinue.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        cmdContinue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdContinueActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout profileLayout = new javax.swing.GroupLayout(profile);
         profile.setLayout(profileLayout);
@@ -252,6 +257,10 @@ public class PanelLoading extends javax.swing.JLayeredPane {
 
         add(message, "card2");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdContinueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmdContinueActionPerformed
 
     @Override
     public void paint(Graphics grphcs) {
